@@ -6,7 +6,7 @@ Gem::Specification.new do |spec|
   spec.name    = "bootpay-rest-client"
   spec.version = Bootpay::VERSION
   spec.authors = ["gosomi"]
-  spec.email   = ["gosomi@udid.co.kr"]
+  spec.email   = ["gosomi@bootpay.co.kr"]
 
   spec.summary     = "Bootpay Rest Client Version 2.0"
   spec.description = "Bootpay Rest Client Version 2.0용입니다."
