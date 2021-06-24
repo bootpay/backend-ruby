@@ -3,7 +3,7 @@
 require_relative "lib/bootpay/version"
 
 Gem::Specification.new do |spec|
-  spec.name    = "bootpay-rest-client"
+  spec.name    = "bootpay-rest-client-ruby"
   spec.version = Bootpay::VERSION
   spec.authors = ["gosomi"]
   spec.email   = ["gosomi@bootpay.co.kr"]
