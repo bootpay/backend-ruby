@@ -14,11 +14,11 @@ RSpec.describe Bootpay::Api do
         order_id:         '1234',
         pg:               'nicepay',
         item_name:        '테스트 결제',
-        card_no:          '5570420456641074',
-        card_pw:          '83',
-        expire_year:      '26',
-        expire_month:     '12',
-        identify_number:  '8610141038021'
+        card_no:          '', # 값 할당 필요
+        card_pw:          '', # 값 할당 필요
+        expire_year:      '', # 값 할당 필요
+        expire_month:     '', # 값 할당 필요
+        identify_number:  '' # 값 할당 필요
       )
       print response.data.to_json
     end
