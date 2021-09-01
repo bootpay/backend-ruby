@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 RSpec.describe Bootpay::Api do
+
+
+
   # 빌링키 발급받기
   it "get billing key" do
     print "\nget billing key\n"

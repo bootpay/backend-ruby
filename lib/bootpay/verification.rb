@@ -51,7 +51,5 @@ module Bootpay::Verification
         }.compact
       )
     end
-
-
   end
 end

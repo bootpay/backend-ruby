@@ -17,7 +17,7 @@ module Bootpay::Cancel
                tax_free:        cancel_tax_free,
                name:            cancel_username,
                reason:          cancel_message,
-               refund:          refund[:bank_account].presence || nil
+               refund:          refund.values.any? {|v|v != nil} ? refund : nil
              }.compact
       )
     end
