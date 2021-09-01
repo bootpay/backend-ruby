@@ -7,7 +7,7 @@ module Bootpay::Billing
     # Date: 2021-08-30
     def get_billing_key(order_id: nil, pg: nil, item_name: nil, card_no: nil, card_pw: nil, expire_year: nil, expire_month: nil, identify_number: nil,
                        user_info: {id: nil, username: nil, email: nil, phone: nil, gender: nil, area: nil, birth: nil},
-                       extra: {subscribeTestPayment: 0, raw_data: 0})
+                       extra: {subscribeTestPayment: nil, raw_data: nil})
       request(
         uri: 'request/card_rebill',
         payload:
@@ -21,7 +21,7 @@ module Bootpay::Billing
             expire_month:    expire_month,
             identify_number: identify_number,
             user_info:       user_info,
-            extra:           extra
+            extra:           extra.values.any? {|v|v != nil} ? extra : nil
           }.compact
       )
     end
@@ -42,7 +42,7 @@ module Bootpay::Billing
     def subscribe_billing(billing_key: nil, item_name: nil, price: 0, tax_free: 0, order_id: nil, quota: nil, interest: nil,
                           user_info: {id: nil, username: nil, email: nil, phone: nil, gender: nil, area: nil, birth: nil},
                           feedback_url: nil, feedback_content_type: nil,
-                          extra: {subscribeTestPayment: 0, raw_data: 0})
+                          extra: {subscribeTestPayment: nil, raw_data: nil})
       raise 'billing_key 값을 입력해주세요.' if billing_key.blank?
       raise 'item_name 값을 입력해주세요.' if item_name.blank?
       raise 'price 금액을 설정을 해주세요.' if price.blank?
@@ -57,10 +57,10 @@ module Bootpay::Billing
           order_id:       order_id,
           quota:          quota,
           interest:       interest,
-          user_info:      user_info,
+          user_info:      user_info.values.any? {|v|v != nil} ? user_info : nil,
           feedback_url:   feedback_url,
           feedback_content_type: feedback_content_type,
-          extra:          extra
+          extra:          extra.values.any? {|v|v != nil} ? extra : nil
         }.compact,
       )
     end
@@ -87,10 +87,10 @@ module Bootpay::Billing
           order_id:       order_id,
           quota:          quota,
           interest:       interest,
-          user_info:      user_info,
+          user_info:      user_info.values.any? {|v|v != nil} ? user_info : nil,
           feedback_url:   feedback_url,
           feedback_content_type: feedback_content_type,
-          extra:          extra,
+          extra:          extra.values.any? {|v|v != nil} ? extra : nil,
           scheduler_type: scheduler_type.presence || 'oneshot',
           execute_at:     execute_at.presence || (Time.now + 10.seconds).to_i
         }.compact,

@@ -25,7 +25,7 @@ module Bootpay::Link
             user_info:        user_info,
             items:            items,
             return_url:       return_url,
-            extra:            extra
+            extra:            extra.values.any? {|v|v != nil} ? extra : nil
           }.compact
       )
     end
