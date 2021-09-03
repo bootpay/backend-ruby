@@ -1,43 +1,49 @@
-# Backend::Ruby
+# Bootpay Ruby 플러그인 
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/backend/ruby`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+Bootpay Ruby 라이브러리는 Ruby 언어로 작성된 어플리케이션, 프레임워크 등에서 사용가능합니다.
 
 ## Installation
 
-Add this line to your application's Gemfile:
+Gemfile 파일을 이용하여 설치하기  
 
 ```ruby
-gem 'backend-ruby'
+gem 'bootpay'
 ```
 
-And then execute:
+Gemfile에 위 라인을 추가하고, 아래 라인으로 인스톨 합니다.
 
     $ bundle install
 
-Or install it yourself as:
+
+
+또는 아래 문장을 통해 바로 설치할 수 있습니다:
 
     $ gem install backend-ruby
 
-## Usage
+## Getting Started
 
-TODO: Write usage instructions here
+```ruby
+    # 결제 검증하기 
+    receipt_id = '612df0250d681b001de61de6'
 
-## Development
+    api = Bootpay::Api.new(
+      application_id: '5b8f6a4d396fa665fdc2b5ea',
+      private_key:    'rm6EYECr6aroQVG2ntW0A6LpWnkTgP4uQ3H18sDDUYw=',
+    )
+    if api.request_access_token.success?
+      response = api.verify(receipt_id)
+      print  response.data.to_json
+    end
+```
 
-After checking out the repo, run `bin/setup` to install dependencies. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+## Documentation
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and the created tag, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+[부트페이 개발매뉴얼](https://app.gitbook.com/@bootpay)을 참조해주세요
 
-## Contributing
+## 기술문의
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/backend-ruby. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [code of conduct](https://github.com/[USERNAME]/backend-ruby/blob/master/CODE_OF_CONDUCT.md).
+[부트페이 홈페이지](https://www.bootpay.co.kr) 우측 하단 채팅을 통해 기술문의 주세요!
 
 ## License
 
 The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
-
-## Code of Conduct
-
-Everyone interacting in the Backend::Ruby project's codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/[USERNAME]/backend-ruby/blob/master/CODE_OF_CONDUCT.md).

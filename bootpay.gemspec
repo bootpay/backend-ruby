@@ -5,13 +5,13 @@
 require_relative "lib/bootpay/version"
 
 Gem::Specification.new do |spec|
-  spec.name          = "backend-ruby"
+  spec.name          = "bootpay"
   spec.version       = Bootpay::VERSION
-  spec.authors       = ["ehowlsla"]
-  spec.email         = ["rupy1014@gmail.com"]
+  spec.authors       = ["bootpay"]
+  spec.email         = ["bootpay.co.kr@gmail.com"]
 
-  spec.summary       = "Bootpay Rest Client Version 2.0"
-  spec.description   = "Bootpay Rest Client Version 2.0용입니다."
+  spec.summary       = "Bootpay server side plugin for ruby"
+  spec.description   = "결제검증 및 취소 등의 기능 연동을 위한 bootpay ruby 플러그인 입니다."
   spec.homepage      = "http://www.bootpay.co.kr"
   spec.license       = "MIT"
   spec.required_ruby_version = ">= 2.4.0"
