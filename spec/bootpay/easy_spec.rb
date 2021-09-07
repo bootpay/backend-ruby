@@ -2,7 +2,7 @@
 
 RSpec.describe Bootpay::Api do
   it "easy payment" do
-    print "\neasy payment\n"
+    puts "easy payment"
     api = Bootpay::Api.new(
       application_id: '5b8f6a4d396fa665fdc2b5ea',
       private_key:    'rm6EYECr6aroQVG2ntW0A6LpWnkTgP4uQ3H18sDDUYw=',
@@ -13,7 +13,7 @@ RSpec.describe Bootpay::Api do
         email: 'test@gmail.com',
         name: '테스트',
       )
-      print response.data.to_json
+      puts response.data.to_json
     end
   end
 end

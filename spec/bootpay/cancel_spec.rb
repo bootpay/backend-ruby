@@ -2,7 +2,7 @@
 
 RSpec.describe Bootpay::Api do
   it "cancel payment" do
-    print "\ncancel payment\n"
+    puts "cancel payment"
     api = Bootpay::Api.new(
       application_id: '5b8f6a4d396fa665fdc2b5ea',
       private_key:    'rm6EYECr6aroQVG2ntW0A6LpWnkTgP4uQ3H18sDDUYw=',
@@ -14,7 +14,7 @@ RSpec.describe Bootpay::Api do
         cancel_username:        'test',
         cancel_message:         'test'
       )
-      print response.data.to_json
+      puts response.data.to_json
     end
   end
 end

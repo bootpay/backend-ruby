@@ -2,7 +2,7 @@
 
 RSpec.describe Bootpay::Api do
   it "link payment" do
-    print "\nlink payment\n"
+    puts "link payment"
     api = Bootpay::Api.new(
       application_id: '5b8f6a4d396fa665fdc2b5ea',
       private_key:    'rm6EYECr6aroQVG2ntW0A6LpWnkTgP4uQ3H18sDDUYw=',
@@ -15,7 +15,7 @@ RSpec.describe Bootpay::Api do
         order_id:       '1234',
         name:           '결제테스트'
       )
-      print response.data.to_json
+      puts response.data.to_json
     end
   end
 end
