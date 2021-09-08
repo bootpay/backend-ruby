@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Bootpay
-  VERSION = "1.0.3"
+  VERSION = "1.0.4"
   BANKCODE = {
     "한국은행" => "001",
     "기업은행" => "003",
