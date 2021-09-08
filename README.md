@@ -1,5 +1,5 @@
 
-## Bootpay Java Server Side Library
+## Bootpay Ruby Server Side Library
 부트페이 공식 Ruby 라이브러리 입니다 (서버사이드 용)
 
 Ruby 언어로 작성된 어플리케이션, 프레임워크 등에서 사용가능합니다.
@@ -261,7 +261,7 @@ end
 
 ## Example 프로젝트
 
-[적용한 샘플 프로젝트](https://github.com/bootpay/backend-java-example)을 참조해주세요
+[적용한 샘플 프로젝트](https://github.com/bootpay/backend-ruby-example)을 참조해주세요
 
 ## Documentation
 
