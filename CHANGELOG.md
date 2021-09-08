@@ -1,3 +1,7 @@
+## 1.0.4
+
+- cancel에 refund 형식 수정 
+
 ## 1.0.3 
 
 - BankCode 추가
