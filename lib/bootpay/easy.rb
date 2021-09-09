@@ -12,12 +12,12 @@ module Bootpay::Easy
       request(
         uri: 'request/user/token',
         payload: {
-          user_id: user_id,
-          email: email,
-          name: name,
-          gender: gender,
-          birth: birth,
-          phone: phone
+          user_id: user_id, # 개발사에서 관리하는 회원 고유 id
+          email: email, # 회원 email
+          name: name, # 회원명
+          gender: gender, # 0:여자, 1:남자
+          birth: birth, # 생일 901004
+          phone: phone # 01012341234
         }.compact
       )
     end
