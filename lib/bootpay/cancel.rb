@@ -6,7 +6,11 @@ module Bootpay::Cancel
     # Comment by Gosomi
     # Date: 2021-05-21
     def cancel_payment(cancel_id: nil, receipt_id:, cancel_price: nil, cancel_tax_free: 0, cancel_username: '시스템', cancel_message: '결제취소',
-                       refund: { account: nil, accountholder: nil, bankcode: nil })
+                       refund: { # (선택사항) 가상계좌 환불요청시, 전제조건으로 PG사와 CMS 특약이 체결되어 있을 경우에만 환불요청 가능, 기본적으로 가상계좌는 결제취소가 안됨
+                         account: nil, #  환불받을 계좌번호 - 675601***1234
+                         accountholder: nil, # 환불받을 계좌주 - 홍길동
+                         bankcode: nil # 은행 코드
+                       })
       request(
         uri: 'cancel',
         payload:
