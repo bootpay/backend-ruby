@@ -11,7 +11,7 @@ module Bootpay::Link
                      items: nil,
                      extra: {
                        escrow: nil, # 에스크로 연동 시 true, 기본값 false
-                       quota: nil, #List<int> 형태,  결제금액이 5만원 이상시 할부개월 허용범위를 설정할 수 있음, ex) "0,2,3" 지정시 - [0(일시불), 2개월, 3개월] 허용, 미설정시 PG사별 기본값 적용
+                       quota: nil, #List<int> 형태,  결제금액이 5만원 이상시 할부개월 허용범위를 설정할 수 있음, ex) "0,2,3" 지정시 - [0(일시불), 2개월, 3개월] 허용, 미설정시 PG사별 기본값 적용, 1 지정시 에러가 발생할 수 있음
                        disp_cash_result: nil, # 현금영수증 노출할지 말지 (가상계좌 이용시)
                        offer_period: nil, # 통합결제창, PG 정기결제창에서 표시되는 '월 자동결제'에 해당하는 문구를 지정한 값으로 변경, 지원하는 PG사만 적용 가능
                        theme: nil, # 통합결제창 테마, [ red, purple(기본), custom ] 중 택 1

@@ -107,7 +107,7 @@ module Bootpay::Billing
           price:          price, # 결제할 상품금액
           tax_free:       tax_free, # 면세 상품일 경우 해당만큼의 금액을 설정
           order_id:       order_id, # 개발사에서 지정하는 고유주문번호
-          quota:          quota, # 5만원 이상 결제건에 대한 할부개월 노출 설정. 00-일시불, 01-1개월, 02-2개월 ... 12까지 지정가능, 만약 09로 지정할 경우 최대 9개월까지 선택가능. 지정하지 않을 경우 해당 PG사의 기본값 적용
+          quota:          quota, # 5만원 이상 결제건에 적용하는 할부개월수. 0-일시불, 1은 지정시 에러 발생함, 2-2개월, 3-3개월... 12까지 지정가능
           interest:       interest, # 웰컴페이먼츠 전용, 무이자여부를 보내는 파라미터가 있다
           user_info:      user_info.values.any? {|v|v != nil} ? user_info : nil,
           feedback_url:   feedback_url,  # webhook 통지시 받으실 url 주소 (localhost 사용 불가)
