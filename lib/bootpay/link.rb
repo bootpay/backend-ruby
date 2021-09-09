@@ -6,9 +6,27 @@ module Bootpay::Link
   extend ActiveSupport::Concern
 
   included do
+    # item 모델 설명
+    # {
+    #   item_name: '', # 상품명
+    #   qty: 1, # 수량
+    #   unique: '', # 상품 고유키
+    #   price: 1000, # 상품단가
+    #   cat1: '', # 카테고리 상
+    #   cat2: '', # 카테고리 중
+    #   cat3: '' # 카테고리 하
+    # }
     def request_link(pg: nil, method: nil, methods: nil, price: nil, order_id: nil, params: nil, tax_free: nil, name: nil,
-                     user_info: {id: nil, username: nil, email: nil, phone: nil, gender: nil, area: nil, birth: nil},
-                     items: nil,
+                     user_info: {
+                       id: nil, # 개발사에서 관리하는 회원 고유 id
+                       username: nil, # 구매자 이름
+                       email: nil, # 구매자 email
+                       phone: nil, # 01012341234
+                       gender: nil, # 0:여자, 1:남자
+                       area: nil, # 서울|인천|대구|광주|부산|울산|경기|강원|충청북도|충북|충청남도|충남|전라북도|전북|전라남도|전남|경상북도|경북|경상남도|경남|제주|세종|대전 중 택 1
+                       birth: nil # 생일 901004
+                     },
+                     items: nil, # item array
                      extra: {
                        escrow: nil, # 에스크로 연동 시 true, 기본값 false
                        quota: nil, #List<int> 형태,  결제금액이 5만원 이상시 할부개월 허용범위를 설정할 수 있음, ex) "0,2,3" 지정시 - [0(일시불), 2개월, 3개월] 허용, 미설정시 PG사별 기본값 적용, 1 지정시 에러가 발생할 수 있음
