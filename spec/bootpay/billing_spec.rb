@@ -17,11 +17,11 @@ RSpec.describe Bootpay::Api do
         order_id:         '1234',
         pg:               'nicepay',
         item_name:        '테스트 결제',
-        card_no:          '', # 값 할당 필요
-        card_pw:          '', # 값 할당 필요
-        expire_year:      '', # 값 할당 필요
-        expire_month:     '', # 값 할당 필요
-        identify_number:  '' # 값 할당 필요
+        card_no:          '5570**********1074', # 실제 테스트시에는 *** 마스크처리가 아닌 숫자여야 함
+        card_pw:          '**', # 실제 테스트시에는 *** 마스크처리가 아닌 숫자여야 함
+        expire_year:      '**', # 실제 테스트시에는 *** 마스크처리가 아닌 숫자여야 함
+        expire_month:     '**', # 실제 테스트시에는 *** 마스크처리가 아닌 숫자여야 함
+        identify_number:  '**' # 주민등록번호 또는 사업자 등록번호 (- 없이 입력)
       )
       puts response.data.to_json
     end
