@@ -6,12 +6,14 @@ require_relative 'response'
 require_relative 'bootpay/payment'
 require_relative 'bootpay/rest'
 require_relative "bootpay/version"
+require_relative 'bootpay/subscription'
 require_relative 'bootpay/token'
 
 module Bootpay
   class RestClient
     include Payment
     include Rest
+    include Subscription
     include Token
 
     API =

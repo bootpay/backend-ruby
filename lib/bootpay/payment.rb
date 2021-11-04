@@ -6,7 +6,7 @@ module Bootpay::Payment
     # Comment by Gosomi
     # Date: 2021-05-21
     def cancel_payment(cancel_id: nil, receipt_id:, cancel_price: nil, cancel_tax_free: 0, cancel_username: '시스템', cancel_message: '결제취소',
-                       refund: { bank_account: nil, bank_username: nil, bank_code: nil })
+                       refund: { bank_account: nil, bank_username: nil, bank_code: nil }, items: nil)
       request(
         uri: 'cancel',
         payload:
@@ -17,7 +17,8 @@ module Bootpay::Payment
                cancel_tax_free: cancel_tax_free,
                cancel_username: cancel_username,
                cancel_message:  cancel_message,
-               refund:          refund
+               refund:          refund,
+               items:           items
              }.compact
       )
     end
