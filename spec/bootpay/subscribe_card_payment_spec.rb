@@ -15,7 +15,7 @@ RSpec.describe Bootpay::RestClient do
         card_quota:  '00',
         order_id:    Time.current.to_i,
         user: {
-          phone: '01095735114'
+          phone: '01000000000'
         }
       )
       print response.data.to_json
