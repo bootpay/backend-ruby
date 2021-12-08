@@ -28,7 +28,7 @@ module Bootpay::Subscription
           card_interest: card_interest,
           order_id:      order_id,
           items:         items,
-          user:          user,
+          user:     user,
           extra:         extra
         }
       )
@@ -40,7 +40,30 @@ module Bootpay::Subscription
     def destroy_billing_key(billing_key)
       request(
         method: :delete,
-        uri: "subscribe/billing_key/#{billing_key}"
+        uri:    "subscribe/billing_key/#{billing_key}"
+      )
+    end
+
+    # 빌링키를 REST
+    # Comment by Gosomi
+    # Date: 2021-11-04
+    def request_subscribe_billing_key(pg:, name:, subscription_id:, card_no:, card_pw:,
+                                      card_identity_no:, card_expire_year:, card_expire_month:, extra: {}, user: {}, user_params: {})
+      request(
+        uri:     'request/subscribe',
+        payload: {
+          pg:                pg,
+          name:              name,
+          subscription_id:   subscription_id,
+          card_no:           card_no,
+          card_pw:           card_pw,
+          card_identity_no:  card_identity_no,
+          card_expire_year:  card_expire_year,
+          card_expire_month: card_expire_month,
+          extra:             extra,
+          user:              user,
+          user_params:       user_params
+        }
       )
     end
   end

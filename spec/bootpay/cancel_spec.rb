@@ -9,18 +9,18 @@ RSpec.describe Bootpay::RestClient do
     )
     if api.request_access_token.success?
       response = api.cancel_payment(
-        receipt_id:      "61833d5d1fc19202dd57334a",
+        receipt_id:      "61a9e1e01fc192030badb156",
         cancel_price:    1000,
         cancel_username: 'test_user',
         cancel_message:  'test_message',
-        # items:           [
-        #                    {
-        #                      id:    'test_1',
-        #                      name:  '테스트 아이템2',
-        #                      price: 500,
-        #                      qty:   1
-        #                    }
-        #                  ]
+      # items:           [
+      #                    {
+      #                      id:    'test_1',
+      #                      name:  '테스트 아이템2',
+      #                      price: 500,
+      #                      qty:   1
+      #                    }
+      #                  ]
       )
       print response.data.to_json
     end

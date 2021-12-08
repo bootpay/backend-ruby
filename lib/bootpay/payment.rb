@@ -2,6 +2,16 @@ module Bootpay::Payment
   extend ActiveSupport::Concern
 
   included do
+    # 결제 정보 가져오기
+    # Comment by Gosomi
+    # Date: 2021-12-08
+    def receipt_payment(receipt_id)
+      request(
+        method: :get,
+        uri:    "receipt/#{receipt_id}"
+      )
+    end
+
     # 결제 취소 요청
     # Comment by Gosomi
     # Date: 2021-05-21
