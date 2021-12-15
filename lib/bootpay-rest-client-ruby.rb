@@ -4,6 +4,8 @@ require 'active_support/all'
 require 'http'
 require_relative 'response'
 require_relative 'bootpay/authenticate'
+require_relative 'bootpay/cash_receipt'
+require_relative 'bootpay/escrow'
 require_relative 'bootpay/payment'
 require_relative 'bootpay/rest'
 require_relative "bootpay/version"
@@ -13,6 +15,8 @@ require_relative 'bootpay/token'
 module Bootpay
   class RestClient
     include Authenticate
+    include CashReceipt
+    include Escrow
     include Payment
     include Rest
     include Subscription
