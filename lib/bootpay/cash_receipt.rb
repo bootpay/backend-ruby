@@ -26,13 +26,19 @@ module Bootpay::CashReceipt
       )
     end
 
-    # 현금 영수증 취소
+    # 현금영수증 발행 취소
     # Comment by Gosomi
-    # Date: 2021-12-15
-    def cancel_cash_receipt(receipt_id)
+    # Date: 2021-12-16
+    def cancel_cash_receipt(receipt_id:, cancel_username:, cancel_message:)
       request(
-        method: :delete,
-        uri:    "request/cash/receipt/#{receipt_id}"
+        method:  :delete,
+        uri:     "request/cash/receipt/#{receipt_id}",
+        headers: {
+          params: {
+            cancel_username: cancel_username,
+            cancel_message:  cancel_message
+          }
+        }
       )
     end
   end
