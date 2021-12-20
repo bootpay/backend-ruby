@@ -1,4 +1,4 @@
-module Bootpay::Payment
+module Bootpay::Concern::Payment
   extend ActiveSupport::Concern
 
   included do

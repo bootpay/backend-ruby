@@ -1,4 +1,4 @@
-module Bootpay::Rest
+module Bootpay::Concern::Rest
   extend ActiveSupport::Concern
 
   included do
