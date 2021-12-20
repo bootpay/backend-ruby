@@ -2,7 +2,7 @@
 
 RSpec.describe Bootpay::Rest::Client do
   it "has a version number" do
-    expect(Bootpay::Rest::Client::VERSION).not_to be nil
+    expect(Bootpay::Rest::Client::V2_VERSION).not_to be nil
   end
 
   it "does something useful" do
