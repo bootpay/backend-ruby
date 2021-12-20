@@ -1,4 +1,4 @@
-module Bootpay::Authenticate
+module Bootpay::Concern::Authenticate
   extend ActiveSupport::Concern
 
   included do

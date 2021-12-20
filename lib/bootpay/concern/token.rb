@@ -1,4 +1,4 @@
-module Bootpay::Token
+module Bootpay::Concern::Token
   extend ActiveSupport::Concern
 
   included do

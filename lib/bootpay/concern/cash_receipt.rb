@@ -1,4 +1,4 @@
-module Bootpay::CashReceipt
+module Bootpay::Concern::CashReceipt
   extend ActiveSupport::Concern
 
   included do

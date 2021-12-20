@@ -1,4 +1,4 @@
-module Bootpay::Escrow
+module Bootpay::Concern::Escrow
   extend ActiveSupport::Concern
 
   included do
