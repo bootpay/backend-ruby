@@ -7,6 +7,7 @@ module Bootpay
     require_relative 'concern/rest'
     require_relative 'concern/subscription'
     require_relative 'concern/token'
+    require_relative 'concern/webhook'
 
     include Authenticate
     include CashReceipt
@@ -15,5 +16,6 @@ module Bootpay
     include Rest
     include Subscription
     include Token
+    include Webhook
   end
 end
