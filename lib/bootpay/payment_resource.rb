@@ -18,11 +18,12 @@ module Bootpay::PaymentResource
     # Comment by Gosomi
     # Date: 2021-12-21
     #----------------------------------------------------------
-    def create_webhook(receipt_id)
+    def create_webhook(receipt_id:, webhook_url:)
       request(
         uri:     'webhook',
         payload: {
-          receipt_id: receipt_id
+          receipt_id:  receipt_id,
+          webhook_url: webhook_url
         }
       )
     end
