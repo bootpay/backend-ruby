@@ -5,11 +5,12 @@ module Bootpay::Concern::Webhook
     # Access Token을 요청한다
     # Comment by Gosomi
     # Date: 2021-05-21
-    def request_webhook(receipt_id)
+    def request_webhook(receipt_id:, webhook_url:)
       request(
         uri:     'request/webhook',
         payload: {
-          receipt_id: receipt_id
+          receipt_id:  receipt_id,
+          webhook_url: webhook_url
         }
       )
     end
