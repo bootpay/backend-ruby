@@ -12,7 +12,7 @@ RSpec.describe Bootpay::RestClient do
         pg:                '이니시스',
         price:             1000,
         tax_free:          0,
-        item_name:         '테스트',
+        order_name:         '테스트',
         cash_receipt_type: '소득공제',
         user:              {
           username: '부트페이',

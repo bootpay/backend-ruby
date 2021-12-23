@@ -5,14 +5,14 @@ module Bootpay::Concern::CashReceipt
     # 현금 영수증 발행 처리 하기
     # Comment by Gosomi
     # Date: 2021-12-15
-    def request_cash_receipt(pg:, item_name:, identity_no:, purchased_at:, cash_receipt_type:, price:, tax_free:, user: {},
+    def request_cash_receipt(pg:, order_name:, identity_no:, purchased_at:, cash_receipt_type:, price:, tax_free:, user: {},
                              user_params: {}, extra: {}, order_id:)
       request(
         method:  :post,
         uri:     'request/cash/receipt',
         payload: {
           pg:                pg,
-          item_name:         item_name,
+          order_name:         order_name,
           identity_no:       identity_no,
           purchased_at:      purchased_at,
           cash_receipt_type: cash_receipt_type,

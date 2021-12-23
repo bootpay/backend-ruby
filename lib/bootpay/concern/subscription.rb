@@ -15,13 +15,13 @@ module Bootpay::Concern::Subscription
     # 빌링키로 결제 요청하기
     # Comment by Gosomi
     # Date: 2021-11-02
-    def request_subscribe_card_payment(billing_key:, item_name:, price:, tax_free: 0, card_quota: '00',
+    def request_subscribe_card_payment(billing_key:, order_name:, price:, tax_free: 0, card_quota: '00',
                                        card_interest: nil, order_id:, items: [], user: {}, extra: {})
       request(
         uri:     'subscribe/payment',
         payload: {
           billing_key:   billing_key,
-          item_name:     item_name,
+          order_name:     order_name,
           price:         price,
           tax_free:      tax_free,
           card_quota:    card_quota,
