@@ -12,6 +12,18 @@ module Bootpay::Concern::Payment
       )
     end
 
+    # 결제 승인처리
+    # Comment by Gosomi
+    # Date: 2022-01-04
+    def confirm_payment(receipt_id)
+      request(
+        uri:     'confirm',
+        payload: {
+          receipt_id: receipt_id
+        }
+      )
+    end
+
     # 결제 취소 요청
     # Comment by Gosomi
     # Date: 2021-05-21
