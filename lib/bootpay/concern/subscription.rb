@@ -47,13 +47,13 @@ module Bootpay::Concern::Subscription
     # 빌링키를 REST
     # Comment by Gosomi
     # Date: 2021-11-04
-    def request_subscribe_billing_key(pg:, name:, subscription_id:, card_no:, card_pw:,
+    def request_subscribe_billing_key(pg:, order_name:, subscription_id:, card_no:, card_pw:,
                                       card_identity_no:, card_expire_year:, card_expire_month:, extra: {}, user: {}, return_parameters: {})
       request(
         uri:     'request/subscribe',
         payload: {
           pg:                pg,
-          name:              name,
+          order_name:        order_name,
           subscription_id:   subscription_id,
           card_no:           card_no,
           card_pw:           card_pw,
@@ -64,6 +64,16 @@ module Bootpay::Concern::Subscription
           user:              user,
           return_parameters: return_parameters
         }
+      )
+    end
+
+    # 정기결제를 계속해서 진행한다
+    # Comment by Gosomi
+    # Date: 2022-01-18
+    def request_subscribe_on_continue(receipt_id)
+      request(
+        method: :put,
+        uri:    "request/subscribe/#{receipt_id}"
       )
     end
   end
