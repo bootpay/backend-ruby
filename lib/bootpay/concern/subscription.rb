@@ -48,7 +48,7 @@ module Bootpay::Concern::Subscription
     # Comment by Gosomi
     # Date: 2021-11-04
     def request_subscribe_billing_key(pg:, order_name:, subscription_id:, card_no:, card_pw:,
-                                      card_identity_no:, card_expire_year:, card_expire_month:, extra: {}, user: {}, return_parameters: {})
+                                      card_identity_no:, card_expire_year:, card_expire_month:, extra: {}, user: {}, metadata: {})
       request(
         uri:     'request/subscribe',
         payload: {
@@ -62,7 +62,7 @@ module Bootpay::Concern::Subscription
           card_expire_month: card_expire_month,
           extra:             extra,
           user:              user,
-          return_parameters: return_parameters
+          metadata:          metadata
         }
       )
     end
