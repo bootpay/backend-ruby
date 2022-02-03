@@ -6,7 +6,7 @@ module Bootpay::Concern::CashReceipt
     # Comment by Gosomi
     # Date: 2021-12-15
     def request_cash_receipt(pg:, order_name:, identity_no:, purchased_at:, cash_receipt_type:, price:, tax_free:, user: {},
-                             return_parameters: {}, extra: {}, order_id:)
+                             metadata: {}, extra: {}, order_id:)
       request(
         method:  :post,
         uri:     'request/cash/receipt',
@@ -19,7 +19,7 @@ module Bootpay::Concern::CashReceipt
           price:             price,
           tax_free:          tax_free,
           user:              user,
-          return_parameters: return_parameters,
+          metadata:          metadata,
           order_id:          order_id,
           extra:             extra
         }
