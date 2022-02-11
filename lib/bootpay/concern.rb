@@ -2,6 +2,7 @@ module Bootpay
   module Concern
     require_relative 'concern/authenticate'
     require_relative 'concern/cash_receipt'
+    require_relative 'concern/easy'
     require_relative 'concern/escrow'
     require_relative 'concern/payment'
     require_relative 'concern/reseller'
@@ -13,6 +14,7 @@ module Bootpay
 
     include Authenticate
     include CashReceipt
+    include Easy
     include Escrow
     include Payment
     include Reseller
