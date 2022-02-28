@@ -32,9 +32,10 @@ module Bootpay
 
     API =
       {
-        development: 'https://dev-api.bootpay.co.kr/',
-        stage:       'https://stage-api.bootpay.co.kr/',
-        production:  'https://api.bootpay.co.kr/'
+        development: 'https://dev-api.bootpay.co.kr',
+        stage:       'https://stage-api.bootpay.co.kr',
+        production:  'https://api.bootpay.co.kr',
+        ehowlsla:    'https://ehowlsla.bootpay.co.kr/api/v2'
       }.freeze
 
     def initialize(application_id:, private_key:, mode: 'production')
