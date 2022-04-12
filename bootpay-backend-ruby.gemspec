@@ -3,13 +3,13 @@
 require_relative "lib/bootpay/version"
 
 Gem::Specification.new do |spec|
-  spec.name    = "bootpay-rest-client-ruby"
+  spec.name    = "bootpay-backend-ruby"
   spec.version = Bootpay::V2_VERSION
   spec.authors = ["gosomi"]
   spec.email   = ["gosomi@bootpay.co.kr"]
 
-  spec.summary     = "Bootpay Rest Client Version 2.0"
-  spec.description = "Bootpay Rest Client Version 2.0용입니다."
+  spec.summary     = "Bootpay Ruby REST Client"
+  spec.description = "Bootpay REST API / Search One Receipt or Cancel Payment, Subscription Payment on REST API."
   spec.license     = "MIT"
   # Specify which files should be added to the gem when it is released.
   # The `git ls-files -z` loads the files in the RubyGem that have been added into git.
