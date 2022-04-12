@@ -9,7 +9,7 @@ RSpec.describe Bootpay::RestClient do
     )
     if api.request_access_token.success?
       response = api.destroy_billing_key(
-        '61a8879d1fc192030b0938fe'
+        '6209e85b1fc19203127651cf'
       )
       print response.data.to_json
     end

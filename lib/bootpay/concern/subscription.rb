@@ -47,7 +47,7 @@ module Bootpay::Concern::Subscription
     # 빌링키를 REST
     # Comment by Gosomi
     # Date: 2021-11-04
-    def request_subscribe_billing_key(pg:, order_name:, subscription_id:, card_no:, card_pw:,
+    def request_subscribe_billing_key(pg:, order_name:, price: nil, tax_free: nil, subscription_id:, card_no:, card_pw:,
                                       card_identity_no:, card_expire_year:, card_expire_month:, extra: {}, user: {}, metadata: {})
       request(
         uri:     'request/subscribe',
@@ -55,6 +55,8 @@ module Bootpay::Concern::Subscription
           pg:                pg,
           order_name:        order_name,
           subscription_id:   subscription_id,
+          price:             price,
+          tax_free:          tax_free,
           card_no:           card_no,
           card_pw:           card_pw,
           card_identity_no:  card_identity_no,
