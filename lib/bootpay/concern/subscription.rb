@@ -5,7 +5,7 @@ module Bootpay::Concern::Subscription
     # 빌링키 결제 데이터 가져오기
     # Comment by Gosomi
     # Date: 2021-11-01
-    def subscribe_billing_key(receipt_id)
+    def lookup_subscribe_billing_key(receipt_id)
       request(
         method: :get,
         uri:    "subscribe/billing_key/#{receipt_id}"
