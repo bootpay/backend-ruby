@@ -34,6 +34,39 @@ module Bootpay::Concern::Subscription
       )
     end
 
+    # 자동결제 예약
+    # Comment by Gosomi
+    # Date: 2022-04-21
+    def subscribe_payment_reserve(billing_key:, reserve_execute_at:, order_name:, price:, tax_free: 0, items: nil, order_id:,
+                                  metadata: {}, user: nil, feedback_url: nil, content_type: nil)
+      request(
+        uri:     'subscribe/payment/reserve',
+        payload: {
+          billing_key:        billing_key,
+          reserve_execute_at: reserve_execute_at,
+          order_name:         order_name,
+          order_id:           order_id,
+          metadata:           metadata,
+          price:              price,
+          tax_free:           tax_free,
+          items:              items,
+          user:               user,
+          feedback_url:       feedback_url,
+          content_type:       content_type
+        }
+      )
+    end
+
+    # 자동결제 예약 취소
+    # Comment by Gosomi
+    # Date: 2022-04-21
+    def cancel_subscribe_reserve(reserve_id)
+      request(
+        method: :delete,
+        uri:    "subscribe/payment/reserve/#{reserve_id}"
+      )
+    end
+
     # 빌링키를 강제로 만료한다
     # Comment by Gosomi
     # Date: 2021-11-04
