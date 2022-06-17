@@ -27,7 +27,7 @@ module Bootpay::Concern::Payment
     # 결제 취소 요청
     # Comment by Gosomi
     # Date: 2021-05-21
-    def cancel_payment(cancel_id: nil, receipt_id:, cancel_price: nil, cancel_tax_free: 0, cancel_username: '시스템', cancel_message: '결제취소',
+    def cancel_payment(cancel_id: nil, receipt_id:, cancel_price: nil, cancel_tax_free: nil, cancel_username: '시스템', cancel_message: '결제취소',
                        refund: { bank_account: nil, bank_username: nil, bank_code: nil }, items: nil)
       request(
         uri: 'cancel',

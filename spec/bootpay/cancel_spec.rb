@@ -13,14 +13,7 @@ RSpec.describe Bootpay::RestClient do
         cancel_price:    1000,
         cancel_username: 'test_user',
         cancel_message:  'test_message',
-      # items:           [
-      #                    {
-      #                      id:    'test_1',
-      #                      name:  '테스트 아이템2',
-      #                      price: 500,
-      #                      qty:   1
-      #                    }
-      #                  ]
+
       )
       print response.data.to_json
     end
