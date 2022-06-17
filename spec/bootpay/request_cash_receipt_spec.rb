@@ -9,10 +9,10 @@ RSpec.describe Bootpay::RestClient do
     )
     if api.request_access_token.success?
       response = api.request_cash_receipt(
-        pg:                '이니시스',
+        pg:                '토스',
         price:             1000,
         tax_free:          0,
-        order_name:         '테스트',
+        order_name:        '테스트',
         cash_receipt_type: '소득공제',
         user:              {
           username: '부트페이',
