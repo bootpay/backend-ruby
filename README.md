@@ -29,6 +29,7 @@ Ruby 언어로 작성된 어플리케이션, 프레임워크 등에서 사용가
 5. (생체인증, 비밀번호 결제를 위한) 구매자 토큰 발급
 6. 서버 승인 요청
 7. 본인 인증 결과 조회
+8. (에스크로 이용시) PG사로 배송정보 보내기 
 
 ## Gem으로 설치하기
 
@@ -82,7 +83,7 @@ api.request_access_token.success?
 
 
 ## 2. 결제 단건 조회
-   결제창 및 정기결제에서 승인/취소된 결제건에 대하여 올바른 결제건인지 서버간 통신으로 결제검증을 합니다.
+   승인/취소된 결제건을 조회합니다. 위변조된 결제인지 검증하기 위해 사용됩니다.
 ```ruby  
 api = Bootpay::RestClient.new(
       application_id: '59bfc738e13f337dbd6ca48a',
@@ -125,7 +126,7 @@ end
 ```
 
 ## 4-1. 빌링키 발급
-REST API 방식으로 고객으로부터 카드 정보를 전달하여, PG사에게 빌링키를 발급받을 수 있습니다.
+REST API 방식으로 고객의 카드 정보를 전달하여, PG사로부터 빌링키를 발급받을 수 있습니다. (부트페이에서는 PG사의 빌링키를 개발사에게 전달하지 않고, 부트페이가 내부적으로 발급한 빌링키를 전달합니다)
 발급받은 빌링키를 저장하고 있다가, 원하는 시점, 원하는 금액에 결제 승인 요청하여 좀 더 자유로운 결제시나리오에 적용이 가능합니다.
 * 비인증 정기결제(REST API) 방식을 지원하는 PG사만 사용 가능합니다.
 ```ruby 
@@ -175,7 +176,7 @@ if api.request_access_token.success?
 end
 ```
 ## 4-3. 발급된 빌링키로 결제 예약 요청
-원하는 시점에 4-1로 결제 승인 요청을 보내도 되지만, 빌링키 발급 이후에 바로 결제 예약 할 수 있습니다. (빌링키당 최대 5건)
+원하는 시점에 4-1로 결제 승인 요청을 보내도 되지만, 빌링키 발급 이후에 바로 결제 예약 할 수 있습니다. (빌링키당 최대 10건)
 ```ruby  
 api = Bootpay::RestClient.new(
    application_id: '59bfc738e13f337dbd6ca48a',
@@ -226,7 +227,7 @@ if api.request_access_token.success?
 end
 ```
 ## 4-5. 빌링키 삭제
-발급된 빌링키로 더 이상 사용되지 않도록, 삭제 요청합니다.
+발급된 빌링키가 더 이상 사용되지 않도록, 삭제 요청합니다.
 ```ruby 
 api = Bootpay::RestClient.new(
    application_id: '59bfc738e13f337dbd6ca48a',
@@ -241,6 +242,7 @@ end
 ```
 
 ## 4-6. 해당 결제건의 빌링키 조회 (빌링)
+해당 결제건이 어떤 빌링키로 결제되었는지 조회합니다. 
 ```java 
 api = Bootpay::RestClient.new(
    application_id: '59bfc738e13f337dbd6ca48a',
@@ -255,7 +257,7 @@ end
 ```
 
 ## 5. (생체인증, 비밀번호 결제를 위한) 구매자 토큰 발급
-(부트페이 단독) 부트페이에서 제공하는 간편결제창, 생체인증 기반의 결제 사용을 위해서는 개발사에서 회원 고유번호를 관리해야하며, 해당 회원에 대한 사용자 토큰을 발급합니다.
+부트페이에서 제공하는 간편결제창, 생체인증 기반의 결제 사용을 위해서는 개발사에서 회원 고유번호를 관리해야하며, 해당 회원에 대한 사용자 토큰을 발급합니다.
 이 토큰값을 기반으로 클라이언트에서 결제요청 하시면 되겠습니다.
 ```ruby  
 api = Bootpay::RestClient.new(
@@ -304,6 +306,32 @@ api = Bootpay::RestClient.new(
 if api.request_access_token.success?
   response = api.certificate(
     "624d2e531fc19202e4746f40"
+  )
+  print response.data.to_json
+end
+```
+
+
+## 8. (에스크로 이용시) PG사로 배송정보 보내기
+다날 본인인증 후 결과값을 조회합니다.
+다날 본인인증에서 통신사, 외국인여부, 전화번호 이 3가지 정보는 다날에 추가로 요청하셔야 받으실 수 있습니다.
+```ruby 
+api = Bootpay::RestClient.new(
+   application_id: '59bfc738e13f337dbd6ca48a',
+   private_key:    'pDc0NwlkEX3aSaHTp/PPL/i8vn5E/CqRChgyEp/gHD0=',
+   mode:           'development'
+)
+if api.request_access_token.success?
+  response = api.shipping_start(
+    receipt_id:      "62a818cf1fc19203154a8f2e",
+    tracking_number: '123456',
+    delivery_corp:   'CJ대한통운',
+    user:            {
+      username: '강훈',
+      phone:    '01095735114',
+      address:  '경기도 화성시 동탄기흥로 277번길 59',
+      zipcode:  '08490'
+    }
   )
   print response.data.to_json
 end
