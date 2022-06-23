@@ -24,7 +24,7 @@ Ruby 언어로 작성된 어플리케이션, 프레임워크 등에서 사용가
 
    4-5. 빌링키 삭제
 
-   4-6. 4-6. 빌링키 조회
+   4-6. 빌링키 조회
 
 5. (생체인증, 비밀번호 결제를 위한) 구매자 토큰 발급
 6. 서버 승인 요청
@@ -243,7 +243,7 @@ end
 
 ## 4-6. 빌링키 조회
 (빌링키 발급 완료시 리턴받았던 receipt_id에 한정) 어떤 빌링키였는지 조회합니다.
-```java 
+```ruby 
 api = Bootpay::RestClient.new(
    application_id: '59bfc738e13f337dbd6ca48a',
    private_key:    'pDc0NwlkEX3aSaHTp/PPL/i8vn5E/CqRChgyEp/gHD0='
