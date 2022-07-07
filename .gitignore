@@ -13,4 +13,5 @@
 *.iml
 Gemfile.lock
 /spec/bootpay/request_rest_billing_key_spec.rb
+/spec/bootpay/__stage_test_unit_spec.rb
 .DS_Store

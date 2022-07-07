@@ -2,14 +2,19 @@
 
 RSpec.describe Bootpay::RestClient do
   it "receipt payment data" do
+    # api = Bootpay::RestClient.new(
+    #   application_id: '59bfc738e13f337dbd6ca48a',
+    #   private_key:    '***REMOVED***',
+    #   mode:           'development'
+    # )
     api = Bootpay::RestClient.new(
-      application_id: '59bfc738e13f337dbd6ca48a',
+      application_id: '59b731f084382614ebf72215',
       private_key:    '***REMOVED***',
-      mode:           'development'
+      mode:           'stage'
     )
     if api.request_access_token.success?
       response = api.receipt_payment(
-        "62a818cf1fc19203154a8f2e"
+        "62c6d202aa1d9d0016009fc2"
       )
       print response.data.to_json
     end
