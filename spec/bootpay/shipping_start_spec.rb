@@ -9,14 +9,15 @@ RSpec.describe Bootpay::RestClient do
     )
     if api.request_access_token.success?
       response = api.shipping_start(
-        receipt_id:      "62a818cf1fc19203154a8f2e",
+        receipt_id:      "62d61a831fc192036b7c7c5f",
         tracking_number: '123456',
         delivery_corp:   'CJ대한통운',
+        redirect_url:    'https://dev-api.bootpay.co.kr/callback',
         user:            {
-          username: '강훈',
-          phone:    '01095735114',
-          address:  '경기도 화성시 동탄기흥로 277번길 59',
-          zipcode:  '08490'
+          username: '부트페이',
+          phone:    '01000000000',
+          address:  '서울특별시 구로구 디지털로 26길 61',
+          zipcode:  '08882'
         }
       )
       print response.data.to_json
