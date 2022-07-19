@@ -9,11 +9,11 @@ RSpec.describe Bootpay::RestClient do
     )
     if api.request_access_token.success?
       response = api.shipping_start(
-        receipt_id:      "62d61a831fc192036b7c7c5f",
-        tracking_number: '123456',
-        delivery_corp:   'CJ대한통운',
-        redirect_url:    'https://dev-api.bootpay.co.kr/callback',
-        user:            {
+        receipt_id:        "62d682921fc192036b919a80",
+        tracking_number:   '123456',
+        delivery_corp:     'CJ대한통운',
+        redirect_url:      'https://dev-api.bootpay.co.kr/callback',
+        user:              {
           username: '부트페이',
           phone:    '01000000000',
           address:  '서울특별시 구로구 디지털로 26길 61',
