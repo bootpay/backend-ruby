@@ -6,7 +6,7 @@ module Bootpay::Concern::Escrow
     # Comment by Gosomi
     # Date: 2021-12-14
     def shipping_start(receipt_id:, tracking_number:, delivery_corp:, shipping_prepayment: true,
-                       shipping_day: 5, user: nil, company: {})
+                       shipping_day: 5, user: nil, company: {}, redirect_url: nil)
       request(
         method:  :put,
         uri:     "escrow/shipping/start/#{receipt_id}",
@@ -16,7 +16,8 @@ module Bootpay::Concern::Escrow
           shipping_prepayment: shipping_prepayment,
           shipping_day:        shipping_day,
           user:                user,
-          company:             company
+          company:             company,
+          redirect_url:        redirect_url
         }
       )
     end
