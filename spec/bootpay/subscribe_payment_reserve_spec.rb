@@ -7,10 +7,6 @@ RSpec.describe Bootpay::RestClient do
       private_key:    'pDc0NwlkEX3aSaHTp/PPL/i8vn5E/CqRChgyEp/gHD0=',
       mode:           'development'
     )
-    # api = Bootpay::RestClient.new(
-    #   application_id: '59b731f084382614ebf72215',
-    #   private_key:    'WwDv0UjfwFa04wYG0LJZZv1xwraQnlhnHE375n52X0U='
-    # )
     if api.request_access_token.success?
       response = api.subscribe_payment_reserve(
         # billing_key:        '62820fa61fc19202e5ef240e',

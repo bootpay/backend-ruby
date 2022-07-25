@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.email   = ["gosomi@bootpay.co.kr"]
 
   spec.summary     = "Bootpay Ruby REST Client"
-  spec.description = "Bootpay REST API / Search One Receipt or Cancel Payment, Subscription Payment on REST API."
+  spec.description = "부트페이 공식 Ruby 서버사이드 모듈입니다. 결제조회, 취소, 빌링키 결제시 사용됩니다."
   spec.license     = "MIT"
   # Specify which files should be added to the gem when it is released.
   # The `git ls-files -z` loads the files in the RubyGem that have been added into git.

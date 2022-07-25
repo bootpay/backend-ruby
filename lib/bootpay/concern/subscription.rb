@@ -2,7 +2,7 @@ module Bootpay::Concern::Subscription
   extend ActiveSupport::Concern
 
   included do
-    # 빌링키 결제 데이터 가져오기
+    # 헤당 결제건의 빌링키 가져오기
     # Comment by Gosomi
     # Date: 2021-11-01
     def lookup_subscribe_billing_key(receipt_id)
@@ -77,7 +77,7 @@ module Bootpay::Concern::Subscription
       )
     end
 
-    # 빌링키를 REST
+    # 빌링키 발급받기
     # Comment by Gosomi
     # Date: 2021-11-04
     def request_subscribe_billing_key(pg:, order_name:, price: nil, tax_free: nil, subscription_id:, card_no:, card_pw:,
