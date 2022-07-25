@@ -16,10 +16,10 @@ RSpec.describe Bootpay::RestClient do
         cash_receipt_type: '소득공제',
         user:              {
           username: '부트페이',
-          phone:    '01095735114',
+          phone:    '01000000000',
           email:    'aqure84@naver.com'
         },
-        identity_no:       '01095735114',
+        identity_no:       '0100000000',
         purchased_at:      Time.current.strftime('%Y-%m-%d %H:%M:%S'),
         order_id:          Time.current.to_f
       )
