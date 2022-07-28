@@ -13,7 +13,8 @@ module Bootpay::Concern::Rest
           Authorization:       "Bearer #{@token}",
           content_type:        'application/json',
           accept:              'application/json',
-          bootpay_api_version: @api_version
+          bootpay_api_version: @api_version,
+          bootpay_sdk_version: "backend-ruby-#{Bootpay::V2_VERSION}"
         }.merge!(headers).compact
       ).send(
         method.to_sym,
