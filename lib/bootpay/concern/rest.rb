@@ -10,9 +10,10 @@ module Bootpay::Concern::Rest
     def request(method: :post, uri:, payload: {}, headers: {})
       response = HTTP.headers(
         {
-          Authorization: "Bearer #{@token}",
-          content_type:  'application/json',
-          accept:        'application/json'
+          Authorization:       "Bearer #{@token}",
+          content_type:        'application/json',
+          accept:              'application/json',
+          bootpay_api_version: Bootpay::RestClient::SDK_VERSION
         }.merge!(headers).compact
       ).send(
         method.to_sym,
