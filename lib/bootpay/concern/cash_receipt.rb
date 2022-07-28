@@ -45,11 +45,11 @@ module Bootpay::Concern::CashReceipt
     # 결제된 계좌이체/가상계좌 결제건중 누락된 현금영수증을 발행해주는 API
     # Comment by Gosomi
     # Date: 2022-07-21
-    def cash_publish_on_receipt(receipt_id:, username:, email:, phone:, identity_no:, currency: 'WON', cash_receipt_type: '소득공제')
+    def cash_receipt_publish_on_receipt(receipt_id:, username:, email:, phone:, identity_no:, currency: 'WON', cash_receipt_type: '소득공제')
       request(
-        method: :post,
-        uri:    "request/receipt/cash/publish",
-        payload:   {
+        method:  :post,
+        uri:     "request/receipt/cash/publish",
+        payload: {
           receipt_id:        receipt_id,
           username:          username,
           email:             email,
@@ -64,7 +64,7 @@ module Bootpay::Concern::CashReceipt
     # 결제에 포함된 현금영수증 취소
     # Comment by Gosomi
     # Date: 2022-07-21
-    def cash_cancel_on_receipt(receipt_id:, cancel_username:, cancel_message:)
+    def cash_receipt_cancel_on_receipt(receipt_id:, cancel_username:, cancel_message:)
       request(
         method:  :delete,
         uri:     "request/receipt/cash/cancel/#{receipt_id}",

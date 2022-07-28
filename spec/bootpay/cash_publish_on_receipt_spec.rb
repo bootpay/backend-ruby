@@ -8,14 +8,15 @@ RSpec.describe Bootpay::RestClient do
       mode:           'development'
     )
     if api.request_access_token.success?
-      response = api.cash_publish_on_receipt(
-        receipt_id:  "62d911ee1fc192036b1b3b5e",
+      response = api.cash_receipt_publish_on_receipt(
+        receipt_id:  "62e24a641fc192036b1b3cf9",
         username:    '테스트',
         email:       'test@bootpay.co.kr',
         phone:       '01000000000',
         identity_no: '01000000000'
       )
       print response.data.to_json
+      print Time.now
     end
   end
 end
