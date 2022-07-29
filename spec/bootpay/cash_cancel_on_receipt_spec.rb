@@ -9,7 +9,7 @@ RSpec.describe Bootpay::RestClient do
     )
     if api.request_access_token.success?
       response = api.cash_receipt_cancel_on_receipt(
-        receipt_id:      "62e24a641fc192036b1b3cf9",
+        receipt_id:      "62e32b3f1fc192036e8db942",
         cancel_username: '테스트',
         cancel_message:  '테스트취소'
       )

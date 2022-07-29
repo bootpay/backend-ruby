@@ -14,7 +14,8 @@ module Bootpay::Concern::Rest
           content_type:        'application/json',
           accept:              'application/json',
           bootpay_api_version: @api_version,
-          bootpay_sdk_version: "backend-ruby-#{Bootpay::V2_VERSION}"
+          bootpay_sdk_version: Bootpay::V2_VERSION,
+          bootpay_sdk_type:    '300'
         }.merge!(headers).compact
       ).send(
         method.to_sym,
