@@ -17,7 +17,7 @@ RSpec.describe Bootpay::RestClient do
         user:              {
           username: '부트페이',
           phone:    '01000000000',
-          email:    'aqure84@naver.com'
+          email:    'bootpay@bootpay.co.kr'
         },
         identity_no:       '0100000000',
         purchased_at:      Time.current.strftime('%Y-%m-%d %H:%M:%S'),
