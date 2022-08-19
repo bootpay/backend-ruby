@@ -9,7 +9,7 @@ RSpec.describe Bootpay::RestClient do
     )
     if api.request_access_token.success?
       response = api.certificate(
-        "624d2e531fc19202e4746f40"
+        "62f4f3471fc192036f9f4bfd"
       )
       print response.data.to_json
     end
