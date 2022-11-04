@@ -2,14 +2,19 @@
 
 RSpec.describe Bootpay::RestClient do
   it "request cash receipt" do
+    # api = Bootpay::RestClient.new(
+    #   application_id: '59bfc738e13f337dbd6ca48a',
+    #   private_key:    '***REMOVED***',
+    #   mode:           'development'
+    # )
     api = Bootpay::RestClient.new(
-      application_id: '59bfc738e13f337dbd6ca48a',
+      application_id: '59b731f084382614ebf72215',
       private_key:    '***REMOVED***',
-      mode:           'development'
+      mode:           'stage'
     )
     if api.request_access_token.success?
       response = api.request_cash_receipt(
-        pg:                '토스',
+        pg:                '나이스페이',
         price:             1000,
         tax_free:          0,
         order_name:        '테스트',

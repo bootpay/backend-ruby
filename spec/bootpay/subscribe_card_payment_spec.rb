@@ -2,22 +2,27 @@
 
 RSpec.describe Bootpay::RestClient do
   it "billing key" do
+    # api = Bootpay::RestClient.new(
+    #   application_id: '59bfc738e13f337dbd6ca48a',
+    #   private_key:    '***REMOVED***',
+    #   mode:           'development'
+    # )
     api = Bootpay::RestClient.new(
-      application_id: '59bfc738e13f337dbd6ca48a',
+      application_id: '59b731f084382614ebf72215',
       private_key:    '***REMOVED***',
-      mode:           'development'
+      mode:           'production'
     )
     if api.request_access_token.success?
       response = api.request_subscribe_card_payment(
-        billing_key: '62d903671fc192036b1b3b56',
-        order_name:   '테스트결제',
-        price:       10000,
+        billing_key: '633f69ccd01c7e001a282fd4',
+        order_name:  '테스트결제',
+        price:       100,
         card_quota:  '00',
         order_id:    Time.current.to_i,
-        user: {
-          phone: '01000000000',
+        user:        {
+          phone:    '01000000000',
           username: '홍길동',
-          email: 'test@bootpay.co.kr'
+          email:    'test@bootpay.co.kr'
         }
       )
       print response.data.to_json

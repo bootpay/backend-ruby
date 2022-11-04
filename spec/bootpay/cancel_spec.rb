@@ -14,9 +14,7 @@ RSpec.describe Bootpay::RestClient do
     )
     if api.request_access_token.success?
       response = api.cancel_payment(
-        receipt_id:      "62ddd3c556d0c60016969657",
-        cancel_price:    1111,
-        cancel_tax_free: 0,
+        receipt_id:      "6327ab8143c9be001679f5d2",
         cancel_username: 'test_user',
         cancel_message:  'test_message',
       )
