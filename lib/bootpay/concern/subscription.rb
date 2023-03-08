@@ -57,6 +57,26 @@ module Bootpay::Concern::Subscription
       )
     end
 
+    # 예약결제 조회 기능
+    # Comment by Gosomi
+    # Date: 2023-03-08
+    def subscribe_payment_reserve_lookup(reserve_id)
+      request(
+        method: :get,
+        uri:    "subscribe/payment/reserve/#{reserve_id}"
+      )
+    end
+
+    # 자동결제 조회하기
+    # Comment by Gosomi
+    # Date: 2023-02-24
+    def subscribe_lookup(reserve_id)
+      request(
+        method: :get,
+        uri:    "subscribe/payment/reserve/#{reserve_id}"
+      )
+    end
+
     # 자동결제 예약 취소
     # Comment by Gosomi
     # Date: 2022-04-21
