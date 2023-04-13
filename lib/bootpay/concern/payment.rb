@@ -5,10 +5,10 @@ module Bootpay::Concern::Payment
     # 결제 정보 가져오기
     # Comment by Gosomi
     # Date: 2021-12-08
-    def receipt_payment(receipt_id)
+    def receipt_payment(receipt_id, lookup_user_data = false)
       request(
         method: :get,
-        uri:    "receipt/#{receipt_id}"
+        uri:    "receipt/#{receipt_id}?lookup_user_data=#{lookup_user_data}",
       )
     end
 
