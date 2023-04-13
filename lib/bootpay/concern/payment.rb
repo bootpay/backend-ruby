@@ -48,30 +48,31 @@ module Bootpay::Concern::Payment
     # REST API로 결제 요청하기
     # Comment by Gosomi
     # Date: 2023-03-28
-    def request_payment(pg:, method: nil, price:, tax_free: 0, order_name:, order_id:, user_token: nil, uuid: nil, sk: nil,
+    def request_payment(platform_application_id:, pg:, method: nil, price:, tax_free: 0, order_name:, order_id:, user_token: nil, uuid: nil, sk: nil,
                         ti: 0, tk: nil, items: [], extra: {}, user: {}, agent: nil)
       rand_uuid = SecureRandom.uuid
       request(
         uri: 'request/payment',
         payload:
              {
-               pg:          pg,
-               method:      method,
-               price:       price,
-               tax_free:    tax_free,
-               order_name:  order_name,
-               order_id:    order_id,
-               user_token:  user_token,
-               uuid:        uuid.presence || rand_uuid,
-               sk:          sk.presence || "#{rand_uuid}-#{Time.current.to_i}",
-               ti:          ti,
-               tk:          tk.presence || "#{rand_uuid}-#{Time.current.to_i}",
-               items:       items,
-               extra:       extra,
-               user:        user,
-               __agent:     agent,
-               ver:         Bootpay::RestClient::SDK_VERSION,
-               sdk_version: Bootpay::V2_VERSION
+               platform_application_id: platform_application_id,
+               pg:                      pg,
+               method:                  method,
+               price:                   price,
+               tax_free:                tax_free,
+               order_name:              order_name,
+               order_id:                order_id,
+               user_token:              user_token,
+               uuid:                    uuid.presence || rand_uuid,
+               sk:                      sk.presence || "#{rand_uuid}-#{Time.current.to_i}",
+               ti:                      ti,
+               tk:                      tk.presence || "#{rand_uuid}-#{Time.current.to_i}",
+               items:                   items,
+               extra:                   extra,
+               user:                    user,
+               __agent:                 agent,
+               ver:                     Bootpay::RestClient::SDK_VERSION,
+               sdk_version:             Bootpay::V2_VERSION
              }
       )
 
