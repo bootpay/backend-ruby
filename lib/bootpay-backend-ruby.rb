@@ -15,7 +15,7 @@ module Bootpay
         development: 'https://dev-api.bootpay.co.kr/v2',
         stage:       'https://stage-api.bootpay.co.kr/v2',
         production:  'https://api.bootpay.co.kr/v2'
-      }.freeze
+      }
 
     SDK_VERSION = '4.2.0'
 
@@ -26,6 +26,13 @@ module Bootpay
       @token          = nil
       @api_version    = SDK_VERSION
       raise ArgumentError, "개발환경 mode는 development, stage, production 중에서 선택이 가능합니다." if API[@mode.to_sym].blank?
+    end
+
+    # API URL을 변경
+    # Comment by GOSOMI
+    # @date: 2023-05-26
+    def set_api_url(url)
+      API[@mode.to_sym] = url
     end
 
     # API 버전을 설정한다
