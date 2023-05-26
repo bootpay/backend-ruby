@@ -17,7 +17,7 @@ module Bootpay
         production:  'https://api.bootpay.co.kr/v2'
       }
 
-    SDK_VERSION = '4.2.0'
+    SDK_VERSION = '4.2.1'
 
     def initialize(application_id:, private_key:, mode: 'production')
       @application_id = application_id
