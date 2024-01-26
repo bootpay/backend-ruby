@@ -123,6 +123,49 @@ module Bootpay::Concern::Subscription
       )
     end
 
+    # 빌링키 발급 요청하기
+    # Comment by GOSOMI
+    # @date: 2024-01-26
+    def request_subscribe_automatic_transfer_billing_key(pg:, order_name:, price: nil, tax_free: nil, subscription_id:,
+                                                         extra: {}, user: {}, metadata: {}, auth_type: 'ARS', username:,
+                                                         bank_name:, bank_account:, identity_no:, cash_receipt_type: 1,
+                                                         cash_receipt_number: nil, phone:)
+      request(
+        uri:     'request/subscribe/automatic-transfer',
+        payload: {
+          pg:                  pg,
+          order_name:          order_name,
+          subscription_id:     subscription_id,
+          price:               price,
+          tax_free:            tax_free,
+          extra:               extra,
+          user:                user,
+          metadata:            metadata,
+          auth_type:           auth_type,
+          username:            username,
+          bank_name:           bank_name,
+          bank_account:        bank_account,
+          identity_no:         identity_no,
+          cash_receipt_type:   cash_receipt_type,
+          cash_receipt_number: cash_receipt_number,
+          phone:               phone
+        }
+      )
+    end
+
+    # ARS나 본인인증 이후 빌링키 발급
+    # Comment by GOSOMI
+    # @date: 2024-01-26
+    def publish_automatic_transfer_billing_key(receipt_id:)
+      request(
+        method:  :post,
+        uri:     "request/subscribe/automatic-transfer/publish",
+        payload: {
+          receipt_id: receipt_id
+        }
+      )
+    end
+
     # 정기결제를 계속해서 진행한다
     # Comment by Gosomi
     # Date: 2022-01-18
@@ -130,6 +173,16 @@ module Bootpay::Concern::Subscription
       request(
         method: :put,
         uri:    "request/subscribe/#{receipt_id}"
+      )
+    end
+
+    # 빌링키로 조회하는 기능을 만든다
+    # Comment by GOSOMI
+    # @date: 2023-09-14
+    def lookup_billing_key(billing_key)
+      request(
+        method: :get,
+        uri:    "billing_key/#{billing_key}"
       )
     end
   end
