@@ -12,6 +12,16 @@ module Bootpay::Concern::Payment
       )
     end
 
+    # OrderId로 결제 정보 조회하기
+    # Comment by GOSOMI
+    # @date: 2024-01-27
+    def lookup_order_id(order_id)
+      request(
+        method: :get,
+        uri:    "lookup/order/#{order_id}",
+      )
+    end
+
     # 결제 승인처리
     # Comment by Gosomi
     # Date: 2022-01-04
@@ -75,7 +85,33 @@ module Bootpay::Concern::Payment
                sdk_version:             Bootpay::V2_VERSION
              }
       )
+    end
 
+    # 가상계좌 bulk 발급 요청
+    # Comment by GOSOMI
+    # @date: 2023-08-08
+    def request_virtual_account_bulk(pg:, order_id:, order_name:, currency: 'KRW', price:, tax_free: nil, bank_code:, bank_account:,
+                                     bank_username:, cash_receipt_type: nil, identity_no: nil, user: {}, metadata: {}, extra: {})
+      request(
+        uri: 'request/virtual-account/bulk',
+        payload:
+             {
+               pg:                pg,
+               order_id:          order_id,
+               order_name:        order_name,
+               currency:          currency,
+               price:             price,
+               tax_free:          tax_free,
+               bank_code:         bank_code,
+               bank_account:      bank_account,
+               bank_username:     bank_username,
+               cash_receipt_type: cash_receipt_type,
+               identity_no:       identity_no,
+               user:              user,
+               metadata:          metadata,
+               extra:             extra
+             }.compact
+      )
     end
   end
 end
