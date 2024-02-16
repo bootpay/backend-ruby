@@ -6,7 +6,8 @@ module Bootpay::Concern::Reseller
     # Comment by Gosomi
     # Date: 2022-01-05
     def create_seller(company_alias:, company_name:, email: nil, regist_no: nil, owner_name: nil,
-                      phone: nil, zip: nil, address1: nil, address2: nil)
+                      phone: nil, zip: nil, address1: nil, address2: nil, app_name: nil, primary_key:, resources: nil,
+                      send_email: false)
       request(
         uri:     'reseller/seller',
         payload: {
@@ -18,7 +19,34 @@ module Bootpay::Concern::Reseller
           phone:         phone,
           zip:           zip,
           address1:      address1,
-          address2:      address2
+          address2:      address2,
+          app_name:      app_name,
+          primary_key:   primary_key,
+          resources:     resources,
+          send_email:    send_email
+        }
+      )
+    end
+
+    # 테스트로 생성한 계정을 모두 삭제한다
+    # Comment by GOSOMI
+    # @date: 2023-10-11
+    def test_destroy_provider(provider_id)
+      request(
+        uri:    "reseller/test/seller/#{provider_id}",
+        method: :delete
+      )
+    end
+
+    # Resource 정보를 갱신한다
+    # Comment by GOSOMI
+    # @date: 2023-10-12
+    def update_seller_payment_resources(app_id:, resources:)
+      request(
+        uri:     "reseller/seller/app/resource/#{app_id}",
+        method:  :put,
+        payload: {
+          resources: resources
         }
       )
     end

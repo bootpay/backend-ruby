@@ -23,7 +23,7 @@ module Bootpay::Concern::Rest
         json: payload
       )
       Bootpay::Response.new(
-        response.status.success?,
+        response.status.to_i == 200,
         JSON.parse(response.body.to_s, symbolize_names: true)
       )
     rescue Exception => e
