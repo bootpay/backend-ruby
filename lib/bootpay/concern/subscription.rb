@@ -129,26 +129,26 @@ module Bootpay::Concern::Subscription
     def request_subscribe_automatic_transfer_billing_key(pg:, order_name:, price: nil, tax_free: nil, subscription_id:,
                                                          extra: {}, user: {}, metadata: {}, auth_type: 'ARS', username:,
                                                          bank_name:, bank_account:, identity_no:, cash_receipt_type: 1,
-                                                         cash_receipt_number: nil, phone:)
+                                                         cash_receipt_identity_no: nil, phone:)
       request(
         uri:     'request/subscribe/automatic-transfer',
         payload: {
-          pg:                  pg,
-          order_name:          order_name,
-          subscription_id:     subscription_id,
-          price:               price,
-          tax_free:            tax_free,
-          extra:               extra,
-          user:                user,
-          metadata:            metadata,
-          auth_type:           auth_type,
-          username:            username,
-          bank_name:           bank_name,
-          bank_account:        bank_account,
-          identity_no:         identity_no,
-          cash_receipt_type:   cash_receipt_type,
-          cash_receipt_number: cash_receipt_number,
-          phone:               phone
+          pg:                       pg,
+          order_name:               order_name,
+          subscription_id:          subscription_id,
+          price:                    price,
+          tax_free:                 tax_free,
+          extra:                    extra,
+          user:                     user,
+          metadata:                 metadata,
+          auth_type:                auth_type,
+          username:                 username,
+          bank_name:                bank_name,
+          bank_account:             bank_account,
+          identity_no:              identity_no,
+          cash_receipt_type:        cash_receipt_type,
+          cash_receipt_identity_no: cash_receipt_identity_no,
+          phone:                    phone
         }
       )
     end
