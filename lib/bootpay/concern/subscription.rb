@@ -15,7 +15,7 @@ module Bootpay::Concern::Subscription
     # 빌링키로 결제 요청하기
     # Comment by Gosomi
     # Date: 2021-11-02
-    def request_subscribe_card_payment(billing_key:, order_name:, price:, tax_free: 0, card_quota: '00',
+    def request_subscribe_card_payment(billing_key:, order_name:, price:, tax_free: 0, card_quota: '00', feedback_url: nil, content_type: nil,
                                        card_interest: nil, order_id:, items: [], user: {}, extra: {}, metadata: {})
       request(
         uri:     'subscribe/payment',
@@ -30,10 +30,38 @@ module Bootpay::Concern::Subscription
           order_id:      order_id,
           items:         items,
           user:          user,
-          extra:         extra
+          extra:         extra,
+          feedback_url:  feedback_url,
+          content_type:  content_type
         }
       )
     end
+
+    # 빌링키로 결제 요청하기
+    # Comment by ehowlsla
+    # Date: 2024-05-29
+    def request_subscribe_payment(billing_key:, order_name:, price:, tax_free: 0, card_quota: '00', feedback_url: nil, content_type: nil,
+                                       card_interest: nil, order_id:, items: [], user: {}, extra: {}, metadata: {})
+      request(
+        uri:     'subscribe/payment',
+        payload: {
+          billing_key:   billing_key,
+          metadata:      metadata,
+          order_name:    order_name,
+          price:         price,
+          tax_free:      tax_free,
+          card_quota:    card_quota,
+          card_interest: card_interest,
+          order_id:      order_id,
+          items:         items,
+          user:          user,
+          extra:         extra,
+          feedback_url:  feedback_url,
+          content_type:  content_type
+        }
+      )
+    end
+
 
     # 자동결제 예약
     # Comment by Gosomi
