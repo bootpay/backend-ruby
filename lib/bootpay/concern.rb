@@ -9,6 +9,7 @@ module Bootpay
     require_relative 'concern/rest'
     require_relative 'concern/sdk'
     require_relative 'concern/seller'
+    require_relative 'concern/service'
     require_relative 'concern/subscription'
     require_relative 'concern/token'
     require_relative 'concern/user_token'
@@ -23,6 +24,7 @@ module Bootpay
     include Rest
     include Sdk
     include Seller
+    include Service
     include Subscription
     include Token
     include UserToken
