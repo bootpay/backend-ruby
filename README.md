@@ -8,28 +8,33 @@ Ruby 언어로 작성된 어플리케이션, 프레임워크 등에서 사용가
 * 결제 검증 및 취소, 빌링키 발급, 본인인증 등의 수행은 서버사이드에서 진행됩니다. (Java, PHP, Python, Ruby, Node.js, Go, ASP.NET 등)
 
 
-## 기능
-1. (부트페이 통신을 위한) 토큰 발급
-2. 결제 단건 조회 
-3. 결제 취소 (전액 취소 / 부분 취소)
-4. 신용카드 자동결제 (빌링결제)
+## 목차
+- [사용하기](#사용하기)
+   - [1. 토큰 발급](#1-토큰-발급)
+   - [2. 결제 단건 조회](#2-결제-단건-조회)
+   - [3. 결제 취소 (전액 취소 / 부분 취소)](#3-결제-취소-전액-취소--부분-취소)
+   - [4. 자동/빌링/정기 결제](#4-자동빌링정기-결제)
+      - [4-1. 카드 빌링키 발급](#4-1-카드-빌링키-발급)
+      - [4-2. 계좌 빌링키 발급](#4-2-계좌-빌링키-발급)
+      - [4-3. 결제 요청하기](#4-3-결제-요청하기)
+      - [4-4. 결제 예약하기](#4-4-결제-예약하기)
+      - [4-5. 예약 조회하기](#4-5-예약-조회하기)
+      - [4-6. 예약 취소하기](#4-6-예약-취소하기)
+      - [4-7. 빌링키 삭제하기](#4-7-빌링키-삭제하기)
+      - [4-8. 빌링키 조회하기](#4-8-빌링키-조회하기)
+   - [5. 회원 토큰 발급요청](#5-회원-토큰-발급요청)
+   - [6. 서버 승인 요청](#6-서버-승인-요청)
+   - [7. 본인 인증 결과 조회](#7-본인-인증-결과-조회)
+   - [8. 에스크로 이용시 PG사로 배송정보 보내기](#8-에스크로-이용시-pg사로-배송정보-보내기)
+   - [9-1. 현금영수증 발행하기](#9-1-현금영수증-발행하기)
+   - [9-2. 현금영수증 발행 취소](#9-2-현금영수증-발행-취소)
+   - [9-3. 별건 현금영수증 발행](#9-3-별건-현금영수증-발행)
+   - [9-4. 별건 현금영수증 발행 취소](#9-4-별건-현금영수증-발행-취소)
+- [Example 프로젝트](#example-프로젝트)
+- [Documentation](#documentation)
+- [기술문의](#기술문의)
+- [License](#license)
 
-   4-1. 빌링키 발급
-
-   4-2. 발급된 빌링키로 결제 승인 요청
-
-   4-3. 발급된 빌링키로 결제 예약 요청
-
-   4-4. 발급된 빌링키로 결제 예약 - 취소 요청
-
-   4-5. 빌링키 삭제
-
-   4-6. 빌링키 조회
-
-5. (생체인증, 비밀번호 결제를 위한) 구매자 토큰 발급
-6. 서버 승인 요청
-7. 본인 인증 결과 조회
-8. (에스크로 이용시) PG사로 배송정보 보내기 
 
 ## Gem으로 설치하기
 
@@ -68,7 +73,7 @@ end
 함수 단위의 샘플 코드는 [이곳](https://github.com/bootpay/backend-ruby/tree/2-x-development/spec/bootpay)을 참조하세요.
 
 
-## 1. (부트페이 통신을 위한) 토큰 발급
+## 1. 토큰 발급
 
 부트페이와 서버간 통신을 하기 위해서는 부트페이 서버로부터 토큰을 발급받아야 합니다.  
 발급된 토큰은 30분간 유효하며, 최초 발급일로부터 30분이 지날 경우 토큰 발급 함수를 재호출 해주셔야 합니다.
@@ -125,7 +130,7 @@ if api.request_access_token.success?
 end
 ```
 
-## 4-1. 빌링키 발급
+## 4-1. 카드 빌링키 발급
 REST API 방식으로 고객의 카드 정보를 전달하여, PG사로부터 빌링키를 발급받을 수 있습니다. (부트페이에서는 PG사의 빌링키를 개발사에게 전달하지 않고, 부트페이가 내부적으로 발급한 빌링키를 전달합니다)
 발급받은 빌링키를 저장하고 있다가, 원하는 시점, 원하는 금액에 결제 승인 요청하여 좀 더 자유로운 결제시나리오에 적용이 가능합니다.
 * 비인증 정기결제(REST API) 방식을 지원하는 PG사만 사용 가능합니다.
@@ -151,7 +156,40 @@ end
  
 ```
 
-## 4-2. 발급된 빌링키로 결제 승인 요청
+
+## 4-2. 계좌 빌링키 발급
+REST API 방식으로 고객의 계좌 정보를 전달하여, PG사에게 빌링키 발급을 요청합니다. 요청 후 빌링키가 바로 발급되진 않고, 출금동의 확인 절차까지 진행해야 빌링키가 발급됩니다.
+먼저 빌링키를 요청합니다.
+```ruby
+res1 = api.request_subscribe_automatic_transfer_billing_key(
+    pg:         'nicepay',
+    order_name: '테스트 결제',
+    price:       100,
+    tax_free:    0,
+    subscription_id:    Time.current.to_i,
+    username:    '홍길동',
+    user:        {
+      phone:    '01012341234',
+      username: '홍길동',
+      email:    'test@bootpay.co.kr'
+    },
+    bank_name: '국민',
+    bank_account: '675123412342472',
+    identity_no: '901014',
+    cash_receipt_identity_no: '01012341234',
+    phone: '01012341234',
+  )
+  print res1.data.to_json
+```
+이후 빌링키 발급 요청시 응답받은 receipt_id로, 출금 동의 확인을 요청합니다.
+
+```ruby
+res2 = api.publish_automatic_transfer_billing_key(receipt_id: res1.data[:receipt_id])
+print "\n\n" + res2.data.to_json
+```
+
+
+## 4-3. 결제 요청하기
 발급된 빌링키로 원하는 시점에 원하는 금액으로 결제 승인 요청을 할 수 있습니다. 잔액이 부족하거나 도난 카드 등의 특별한 건이 아니면 PG사에서 결제를 바로 승인합니다.
 
 ```ruby  
@@ -175,7 +213,7 @@ if api.request_access_token.success?
   puts response.data.to_json
 end
 ```
-## 4-3. 발급된 빌링키로 결제 예약 요청
+## 4-4. 결제 예약하기
 원하는 시점에 4-1로 결제 승인 요청을 보내도 되지만, 빌링키 발급 이후에 바로 결제 예약 할 수 있습니다. (빌링키당 최대 10건)
 ```ruby  
 api = Bootpay::RestClient.new(
@@ -198,8 +236,24 @@ if api.request_access_token.success?
   print response.data.to_json
 end
 ```
-##  4-4. 발급된 빌링키로 결제 예약 - 취소 요청
-빌링키로 예약된 결제건을 취소합니다.
+
+## 4-5. 예약 조회하기
+예약시 응답받은 reserveId로 예약된 건을 조회합니다.
+```ruby  
+api = Bootpay::RestClient.new(
+   application_id: '59bfc738e13f337dbd6ca48a',
+   private_key:    'pDc0NwlkEX3aSaHTp/PPL/i8vn5E/CqRChgyEp/gHD0='
+) 
+if api.request_access_token.success?
+  reserve_id = "628c0d0d1fc19202e5ef2866"
+  response = api.subscribe_payment_reserve_lookup(reserve_id)
+  print response.data.to_json
+``` 
+
+
+
+## 4-6. 예약 취소하기
+예약시 응답받은 reserveId로 예약된 건을 취소합니다.
 ```ruby  
 api = Bootpay::RestClient.new(
    application_id: '59bfc738e13f337dbd6ca48a',
@@ -226,8 +280,8 @@ if api.request_access_token.success?
   end
 end
 ```
-## 4-5. 빌링키 삭제
-발급된 빌링키가 더 이상 사용되지 않도록, 삭제 요청합니다.
+## 4-7. 빌링키 삭제하기
+발급된 빌링키를 삭제합니다. 삭제하더라도 예약된 결제건은 취소되지 않습니다. 예약된 결제건 취소를 원하시면 예약 취소하기를 요청하셔야 합니다.
 ```ruby 
 api = Bootpay::RestClient.new(
    application_id: '59bfc738e13f337dbd6ca48a',
@@ -241,8 +295,9 @@ if api.request_access_token.success?
 end
 ```
 
-## 4-6. 빌링키 조회
-(빌링키 발급 완료시 리턴받았던 receipt_id에 한정) 어떤 빌링키였는지 조회합니다.
+## 4-8. 빌링키 조회하기
+클라이언트에서 빌링키 발급시, 보안상 클라이언트 이벤트에 빌링키를 전달해주지 않습니다. 그러므로 이 API를 통해 조회해야 합니다.
+다음은 빌링키 발급 요청했던 receiptId 로 빌링키를 조회합니다.
 ```ruby 
 api = Bootpay::RestClient.new(
    application_id: '59bfc738e13f337dbd6ca48a',
@@ -256,9 +311,9 @@ if api.request_access_token.success?
 end
 ```
 
-## 5. (생체인증, 비밀번호 결제를 위한) 구매자 토큰 발급
-부트페이에서 제공하는 간편결제창, 생체인증 기반의 결제 사용을 위해서는 개발사에서 회원 고유번호를 관리해야하며, 해당 회원에 대한 사용자 토큰을 발급합니다.
-이 토큰값을 기반으로 클라이언트에서 결제요청 하시면 되겠습니다.
+## 5. 회원 토큰 발급요청
+ㅇㅇ페이 사용을 위해 가맹점 회원의 토큰을 발급합니다. 가맹점은 회원의 고유번호를 관리해야합니다.
+이 토큰값을 기반으로 클라이언트에서 결제요청(payload.user_token) 하시면 되겠습니다.
 ```ruby  
 api = Bootpay::RestClient.new(
    application_id: '59bfc738e13f337dbd6ca48a',
@@ -344,7 +399,7 @@ end
 
 ## Documentation
 
-[부트페이 개발매뉴얼](https://docs.bootpay.co.kr/next/)을 참조해주세요
+[부트페이 개발매뉴얼](https://developer.bootpay.co.kr/)을 참조해주세요
 
 ## 기술문의
 
