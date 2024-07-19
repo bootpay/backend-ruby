@@ -28,6 +28,16 @@ module Bootpay::Concern::Reseller
       )
     end
 
+    # 가맹점 정보를 조회한다
+    # Comment by GOSOMI
+    # @date: 2024-07-09
+    def lookup_seller(provider_id)
+      request(
+        method: :get,
+        uri:    "reseller/seller/#{provider_id}",
+      )
+    end
+
     # 테스트로 생성한 계정을 모두 삭제한다
     # Comment by GOSOMI
     # @date: 2023-10-11
