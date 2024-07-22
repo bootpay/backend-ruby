@@ -60,7 +60,7 @@ module Bootpay::Concern::Payment
     # Comment by Gosomi
     # Date: 2023-03-28
     def request_payment(platform_application_id:, pg:, method: nil, price:, tax_free: 0, order_name:, order_id:, user_token: nil, uuid: nil, sk: nil,
-                        ti: 0, tk: nil, items: [], extra: {}, user: {}, agent: nil)
+                        ti: 0, tk: nil, items: [], extra: {}, user: {}, agent: nil, commerce_keys: nil, wallet_id: nil, terms: [], widget_key: nil, widget_sandbox: false)
       rand_uuid = SecureRandom.uuid
       request(
         uri: 'request/payment',
@@ -74,6 +74,11 @@ module Bootpay::Concern::Payment
                order_name:              order_name,
                order_id:                order_id,
                user_token:              user_token,
+               wallet_id:               wallet_id,
+               commerce_keys:           commerce_keys,
+               terms:                   terms,
+               widget_key:              widget_key,
+               widget_sandbox:          widget_sandbox,
                uuid:                    uuid.presence || rand_uuid,
                sk:                      sk.presence || "#{rand_uuid}-#{Time.current.to_i}",
                ti:                      ti,
