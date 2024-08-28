@@ -45,18 +45,21 @@ module Bootpay::Concern::CashReceipt
     # 결제된 계좌이체/가상계좌 결제건중 누락된 현금영수증을 발행해주는 API
     # Comment by Gosomi
     # Date: 2022-07-21
-    def cash_receipt_publish_on_receipt(receipt_id:, username:, email:, phone:, identity_no:, currency: 'WON', cash_receipt_type: '소득공제')
+    def cash_receipt_publish_on_receipt(receipt_id:, username:, email:, phone:, identity_no:, currency: 'WON',
+                                        cash_receipt_type: '소득공제', pg: nil, test_production: false)
       request(
         method:  :post,
         uri:     "request/receipt/cash/publish",
         payload: {
+          pg:                pg,
           receipt_id:        receipt_id,
           username:          username,
           email:             email,
           phone:             phone,
           identity_no:       identity_no,
           currency:          currency,
-          cash_receipt_type: cash_receipt_type
+          cash_receipt_type: cash_receipt_type,
+          test_production:   test_production
         }
       )
     end

@@ -204,6 +204,13 @@ module Bootpay::Concern::Subscription
       )
     end
 
+    def request_subscribe_automatic_transfer_on_continue(receipt_id)
+      request(
+        method: :put,
+        uri:    "request/subscribe/automatic-transfer/#{receipt_id}"
+      )
+    end
+
     # 빌링키로 조회하는 기능을 만든다
     # Comment by GOSOMI
     # @date: 2023-09-14
