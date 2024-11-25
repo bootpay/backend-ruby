@@ -5,15 +5,15 @@
 require_relative "lib/bootpay/version"
 
 Gem::Specification.new do |spec|
-  spec.name          = "bootpay"
-  spec.version       = Bootpay::VERSION
-  spec.authors       = ["bootpay"]
-  spec.email         = ["bootpay.co.kr@gmail.com"]
+  spec.name    = "bootpay"
+  spec.version = Bootpay::VERSION
+  spec.authors = ["bootpay"]
+  spec.email   = ["bootpay.co.kr@gmail.com"]
 
-  spec.summary       = "Bootpay server side plugin for ruby"
-  spec.description   = "결제검증 및 취소 등의 기능 연동을 위한 bootpay ruby 플러그인 입니다."
-  spec.homepage      = "http://www.bootpay.co.kr"
-  spec.license       = "MIT"
+  spec.summary               = "Bootpay server side plugin for ruby"
+  spec.description           = "결제검증 및 취소 등의 기능 연동을 위한 bootpay ruby 플러그인 입니다."
+  spec.homepage              = "http://www.bootpay.co.kr"
+  spec.license               = "MIT"
   spec.required_ruby_version = ">= 2.4.0"
 
   # spec.metadata["allowed_push_host"] = "TODO: Set to 'http://mygemserver.com'"
@@ -24,7 +24,7 @@ Gem::Specification.new do |spec|
 
   # Specify which files should be added to the gem when it is released.
   # The `git ls-files -z` loads the files in the RubyGem that have been added into git.
-  spec.files = Dir.chdir(File.expand_path(__dir__)) do
+  spec.files         = Dir.chdir(File.expand_path(__dir__)) do
     `git ls-files -z`.split("\x0").reject { |f| f.match(%r{\A(?:test|spec|features)/}) }
   end
   spec.bindir        = "exe"
@@ -32,7 +32,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   # Uncomment to register a new dependency of your gem
-  spec.add_dependency "activesupport", "~> 6.0"
+  spec.add_dependency "activesupport"
   spec.add_dependency "http"
   # spec.add_dependency "example-gem", "~> 1.0"
 
