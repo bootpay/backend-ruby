@@ -13,7 +13,7 @@
 *.iml
 *.gem
 Gemfile.lock
-/spec/bootpay/request_rest_billing_key_spec.rb
+/spec/bootpay/card_billing/request_rest_billing_key_spec.rb
 /spec/bootpay/__stage_test_unit_spec.rb
 /spec/bootpay/__development_test_unit_spec.rb
 .DS_Store
