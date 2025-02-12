@@ -13,6 +13,7 @@ module Bootpay
     require_relative 'concern/subscription'
     require_relative 'concern/token'
     require_relative 'concern/user_token'
+    require_relative 'concern/wallet'
     require_relative 'concern/webhook'
 
     include Authenticate
@@ -28,6 +29,7 @@ module Bootpay
     include Subscription
     include Token
     include UserToken
+    include Wallet
     include Webhook
   end
 end
