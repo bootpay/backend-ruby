@@ -7,7 +7,7 @@ module Bootpay::Concern::Rest
     # HTTP Request 기본 Method
     # Comment by Gosomi
     # Date: 2021-05-21
-    def request(method: :post, uri:, payload: {}, headers: {})
+    def request(method: :post, uri:, payload: {}, headers: {}, params: nil)
       response = HTTP.headers(
         {
           Authorization:       "Bearer #{@token}",
@@ -20,7 +20,8 @@ module Bootpay::Concern::Rest
       ).send(
         method.to_sym,
         [Bootpay::RestClient::API[@mode.to_sym], uri].join('/'),
-        json: payload
+        json:   payload,
+        params: params
       )
       Bootpay::Response.new(
         response.status.to_i == 200,
