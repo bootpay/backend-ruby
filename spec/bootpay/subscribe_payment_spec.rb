@@ -14,7 +14,7 @@ RSpec.describe Bootpay::RestClient do
     )
     if api.request_access_token.success?
       response = api.request_subscribe_card_payment(
-        billing_key: '66542dfb4d18d5fc7b43e1b6',
+        billing_key: '66f9da41e1afdbe0495e6526',
         order_name:  '테스트결제',
         price:       100,
         card_quota:  '00',
