@@ -13,17 +13,9 @@ RSpec.describe Bootpay::RestClient do
       mode:           'production'
     )
     if api.request_access_token.success?
-      response = api.request_subscribe_card_payment(
-        billing_key: '66f9da41e1afdbe0495e6526',
-        order_name:  '테스트결제',
-        price:       100,
-        card_quota:  '00',
-        order_id:    Time.current.to_i,
-        user:        {
-          phone:    '01000000000',
-          username: '홍길동',
-          email:    'test@bootpay.co.kr'
-        }
+      response = api.user_wallets(
+        user_id: 'bootpay',
+        sandbox: true
       )
       print response.data.to_json
     end
