@@ -4,7 +4,7 @@ module Bootpay::Concern::Wallet
   included do
     # 설정된 wallet 기준으로 결제를 진행한다
     def request_wallet_payment(user_id:, order_name:, price:, tax_free: 0, webhook_url: nil, content_type: nil, order_id:,
-                                  items: [], user: {}, extra: {}, metadata: {}, sandbox: false)
+                               items: [], user: {}, extra: {}, metadata: {}, sandbox: false)
       request(
         uri:     'wallet/payment',
         payload: {
@@ -20,6 +20,20 @@ module Bootpay::Concern::Wallet
           extra:        extra,
           metadata:     metadata,
           sandbox:      sandbox
+        }
+      )
+    end
+
+    # 등록된 회원의 지갑 정보를 가져온다
+    # Comment by GOSOMI
+    # @date: 2025-02-13
+    def user_wallets(user_id:, sandbox:)
+      request(
+        uri:    'wallet',
+        method: :get,
+        params: {
+          user_id: user_id,
+          sandbox: sandbox
         }
       )
     end
