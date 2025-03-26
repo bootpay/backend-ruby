@@ -3,8 +3,8 @@
 require 'active_support/all'
 require 'http'
 require_relative 'response'
-require_relative 'bootpay/version'
-require_relative 'bootpay/concern'
+require_relative '../version'
+require_relative 'concern'
 
 module Bootpay
   class RestClient

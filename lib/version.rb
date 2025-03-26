@@ -1,4 +1,4 @@
 # frozen_string_literal: true
 module Bootpay
-  V2_VERSION = "2.1.1"
+  V2_VERSION = "3.0.0"
 end

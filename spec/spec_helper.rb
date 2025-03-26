@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
-require "bootpay-backend-ruby"
+require "bootpay/bootpay-rest-client"
+require "bootpay_store/bootpay-store-rest-client"
+require "bootpay_storage/bootpay-storage-rest-client"
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
