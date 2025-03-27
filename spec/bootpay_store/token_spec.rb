@@ -8,6 +8,10 @@ RSpec.describe BootpayStore::RestClient do
       mode:           'development'
     )
     response = api.request_access_token
-    print response.data.to_json
+    # print response.data.to_json
+    json = JSON.parse(response.data.to_json)
+    puts json
+    puts json['access_token']
+    # print response.data.to_json
   end
 end
