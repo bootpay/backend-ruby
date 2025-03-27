@@ -19,7 +19,7 @@ RSpec.describe BootpayStorage::RestClient do
     api.set_token(res.data[:access_token])
     file = File.open(image_path)
 
-    response = api.image_upload(image_data: file, image_name: 'logo.png')
+    response = api.image_upload(images: [file])
     file.close
 
     print response.data.to_json

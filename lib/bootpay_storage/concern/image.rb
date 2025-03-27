@@ -7,11 +7,10 @@ module BootpayStorage::Concern::Image
     # REST API로 본인인증 요청하기
     # Comment by Gosomi
     # Date: 2022-11-02
-    def image_upload(image_data:, image_name:)
+    def image_upload(images:)
       upload(
         uri:     'images',
-        image_data: image_data,
-        image_name: image_name
+        images: images
       )
     end
 
