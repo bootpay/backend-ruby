@@ -20,11 +20,11 @@ module BootpayStore
     SDK_VERSION = '5.0.0'
 
     def initialize(server_key:, private_key:, mode: 'production')
-      @server_key     = server_key
-      @private_key    = private_key
-      @mode           = mode.presence || 'production'
-      @token          = nil
-      @api_version    = SDK_VERSION
+      @server_key  = server_key
+      @private_key = private_key
+      @mode        = mode.presence || 'production'
+      @token       = nil
+      @api_version = SDK_VERSION
       raise ArgumentError, "개발환경 mode는 development, stage, production 중에서 선택이 가능합니다." if API[@mode.to_sym].blank?
     end
 

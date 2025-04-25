@@ -7,7 +7,7 @@ module BootpayStore::Concern::Token
     # Date: 2021-05-21
     def request_access_token
       response = request(
-        uri:     'token',
+        uri:     'request/token',
         payload: {
           server_key:  @server_key,
           private_key: @private_key
