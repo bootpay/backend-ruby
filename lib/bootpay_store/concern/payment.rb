@@ -45,7 +45,7 @@ module BootpayStore::Concern::Payment
     def approve_order_cancel(idempotency_key: nil, order_cancellation_request_id:)
       request(
         uri:     "order/cancel/#{order_cancellation_request_id}/approve",
-        method:  :put,
+        method:  :post,
         headers: {
           'Idempotency-Key' => idempotency_key.presence || SecureRandom.uuid
         }
