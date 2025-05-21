@@ -42,9 +42,9 @@ module BootpayStore::Concern::Payment
     end
 
     # 주문 취소 요청을 승인처리 한다
-    def approve_order_cancel(idempotency_key: nil, order_cancellation_request_id:)
+    def approve_order_cancel(idempotency_key: nil, order_cancellation_request_history_id:)
       request(
-        uri:     "order/cancel/#{order_cancellation_request_id}/approve",
+        uri:     "order/cancel/#{order_cancellation_request_history_id}/approve",
         method:  :post,
         headers: {
           'Idempotency-Key' => idempotency_key.presence || SecureRandom.uuid
