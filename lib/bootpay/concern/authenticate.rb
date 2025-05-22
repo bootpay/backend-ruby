@@ -16,24 +16,26 @@ module Bootpay::Concern::Authenticate
     # Comment by Gosomi
     # Date: 2022-11-02
     def request_authentication(pg:, method:, username:, identity_no:, carrier:, phone:, site_url:,
-                               authenticate_type: 'sms', order_name: '', authentication_id: '', extra: {}, user: {})
+                               authenticate_type: 'sms', order_name: '', authentication_id: '', extra: {}, user: {}, client_ip: nil)
       request(
-        method:  :post,
-        uri:     'request/authentication',
-        payload: {
-          pg:                pg,
-          method:            method,
-          username:          username,
-          identity_no:       identity_no,
-          carrier:           carrier,
-          phone:             phone,
-          site_url:          site_url,
-          authenticate_type: authenticate_type,
-          order_name:        order_name,
-          authentication_id: authentication_id,
-          extra:             extra,
-          user:              user
-        }
+        method: :post,
+        uri:    'request/authentication',
+        payload:
+                {
+                  pg:                pg,
+                  method:            method,
+                  username:          username,
+                  identity_no:       identity_no,
+                  carrier:           carrier,
+                  phone:             phone,
+                  site_url:          site_url,
+                  authenticate_type: authenticate_type,
+                  order_name:        order_name,
+                  authentication_id: authentication_id,
+                  extra:             extra,
+                  user:              user,
+                  client_ip:         client_ip
+                }.compact
       )
     end
 
