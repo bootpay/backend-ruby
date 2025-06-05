@@ -45,8 +45,8 @@ module BootpayStore::Concern::Payment
     # 주문 취소 요청을 반려처리 한다
     def reject_order_cancel(idempotency_key: nil, order_cancellation_request_id:, message: nil)
       request(
-        uri:     "order/cancel/#{order_cancellation_request_id}",
-        method:  :delete,
+        uri:     "order/cancel/#{order_cancellation_request_id}/reject",
+        method:  :put,
         headers: {
           'Idempotency-Key' => idempotency_key.presence || SecureRandom.uuid
         },
@@ -61,7 +61,7 @@ module BootpayStore::Concern::Payment
     def approve_order_cancel(idempotency_key: nil, order_cancellation_request_history_id:, message: nil)
       request(
         uri:     "order/cancel/#{order_cancellation_request_history_id}/approve",
-        method:  :post,
+        method:  :put,
         headers: {
           'Idempotency-Key' => idempotency_key.presence || SecureRandom.uuid
         },
