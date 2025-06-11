@@ -10,7 +10,7 @@ module Bootpay::Concern::Rest
     def request(method: :post, uri:, payload: {}, headers: {}, params: nil)
       response = HTTP.headers(
         {
-          Authorization:       "Bearer #{@token}",
+          Authorization:       ("Bearer #{@token}" if @token.present?),
           content_type:        'application/json',
           accept:              'application/json',
           bootpay_api_version: @api_version,
