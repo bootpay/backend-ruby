@@ -31,24 +31,43 @@ module BootpayStore::Concern::Payment
     end
 
     # 주문 취소 요청을 철회한다
-    def request_order_cancel_revoke(idempotency_key: nil, order_cancellation_request_id:)
+    # def request_order_cancel_revoke(idempotency_key: nil, order_cancellation_request_id:)
+    #   request(
+    #     uri:     "order/cancel/#{order_cancellation_request_id}",
+    #     method:  :delete,
+    #     headers: {
+    #       'Idempotency-Key' => idempotency_key.presence || SecureRandom.uuid
+    #     }
+    #   )
+    # end
+
+    # (관리자)
+    # 주문 취소 요청을 반려처리 한다
+    def reject_order_cancel(idempotency_key: nil, order_cancellation_request_id:, message: nil)
       request(
-        uri:     "order/cancel/#{order_cancellation_request_id}",
-        method:  :delete,
+        uri:     "order/cancel/#{order_cancellation_request_id}/reject",
+        method:  :put,
         headers: {
           'Idempotency-Key' => idempotency_key.presence || SecureRandom.uuid
-        }
+        },
+        payload: {
+          message: message
+        }.compact
       )
     end
 
+    # (관리자)
     # 주문 취소 요청을 승인처리 한다
-    def approve_order_cancel(idempotency_key: nil, order_cancellation_request_history_id:)
+    def approve_order_cancel(idempotency_key: nil, order_cancellation_request_history_id:, message: nil)
       request(
         uri:     "order/cancel/#{order_cancellation_request_history_id}/approve",
-        method:  :post,
+        method:  :put,
         headers: {
           'Idempotency-Key' => idempotency_key.presence || SecureRandom.uuid
-        }
+        },
+        payload: {
+           message: message
+        }.compact
       )
     end
   end
