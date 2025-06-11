@@ -8,9 +8,8 @@ module BootpayStore::Concern::Token
     def request_access_token
       response = request(
         uri:     'request/token',
-        payload: {
-          server_key:  @server_key,
-          private_key: @private_key
+        headers: {
+          Authorization: "Basic #{Base64.strict_encode64("#{@client_key}:#{@secret_key}")}"
         }
       )
       @token   = response.data[:access_token] if response.success?

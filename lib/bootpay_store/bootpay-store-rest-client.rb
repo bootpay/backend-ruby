@@ -19,9 +19,9 @@ module BootpayStore
 
     SDK_VERSION = '5.0.0'
 
-    def initialize(server_key:, private_key:, mode: 'production')
-      @server_key  = server_key
-      @private_key = private_key
+    def initialize(client_key: nil, private_key: nil, server_key: nil, secret_key: nil, mode: 'production')
+      @client_key  = server_key.presence || client_key
+      @secret_key  = private_key.presence || secret_key
       @mode        = mode.presence || 'production'
       @token       = nil
       @api_version = SDK_VERSION
