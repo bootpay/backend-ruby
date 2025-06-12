@@ -9,7 +9,7 @@ module BootpayStore::Concern::Supervisor
                                         cancel_tax_free_price: 0, cancel_requester: '시스템', cancel_message: '요청취소', cancel_immediately: false,
                                         cancel_order_subscription_bills: nil)
       request(
-        uri:     'role/supervisor/order/cancel',
+        uri:     'supervisor/order/cancel',
         headers: {
           'Idempotency-Key' => idempotency_key.presence || SecureRandom.uuid,
         },
