@@ -12,6 +12,7 @@ module BootpayStore::Concern::Payment
         uri:     'order/cancel',
         headers: {
           'Idempotency-Key' => idempotency_key.presence || SecureRandom.uuid,
+          'Bootpay-Role'    => 'user'
         },
         payload:
                  {
@@ -51,8 +52,8 @@ module BootpayStore::Concern::Payment
           'Idempotency-Key' => idempotency_key.presence || SecureRandom.uuid
         },
         payload: {
-          message: message
-        }.compact
+                   message: message
+                 }.compact
       )
     end
 
@@ -66,8 +67,8 @@ module BootpayStore::Concern::Payment
           'Idempotency-Key' => idempotency_key.presence || SecureRandom.uuid
         },
         payload: {
-           message: message
-        }.compact
+                   message: message
+                 }.compact
       )
     end
   end
