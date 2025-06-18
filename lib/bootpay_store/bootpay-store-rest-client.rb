@@ -2,6 +2,7 @@
 
 require 'active_support/all'
 require 'http'
+require 'base64'
 require_relative 'response'
 require_relative '../version'
 require_relative 'concern'
