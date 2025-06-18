@@ -45,7 +45,7 @@ module BootpayStore::Concern::User
     # @date: 2025-06-16
     def lookup_user(user_id:, idempotency_key: nil)
       request(
-        uri:     "user/users/#{user_id}",
+        uri:     "users/#{user_id}",
         method:  :get,
         headers: {
           'Idempotency-Key' => idempotency_key.presence || SecureRandom.uuid,
@@ -61,7 +61,7 @@ module BootpayStore::Concern::User
                               gender:, birth:, individual_extension:, login_id:, login_email:, login_pw:,
                               join_at:)
       request(
-        uri:     'user/user/join',
+        uri:     'users/join',
         method:  :post,
         headers: {
           'Idempotency-Key' => idempotency_key.presence || SecureRandom.uuid,
@@ -94,12 +94,72 @@ module BootpayStore::Concern::User
     # @date: 2025-06-16
     def withdraw(user_id:, idempotency_key: nil)
       request(
-        uri:     "user/users/#{user_id}",
+        uri:     "users/#{user_id}",
         method:  :delete,
         headers: {
           'Idempotency-Key' => idempotency_key.presence || SecureRandom.uuid,
           'Bootpay-Role'    => 'user'
         }
+      )
+    end
+
+    # 이메일 중복검사
+    # Comment by GOSOMI
+    # @date: 2025-06-18
+    def email_exist(email:, idempotency_key: nil)
+      request(
+        uri:     'users/join/email-exist',
+        method:  :get,
+        headers: {
+          'Idempotency-Key' => idempotency_key.presence || SecureRandom.uuid,
+          'Bootpay-Role'    => 'user'
+        },
+        params:  { pk: email }
+      )
+    end
+
+    # ID 중복검사
+    # Comment by GOSOMI
+    # @date: 2025-06-18
+    def id_exist(id:, idempotency_key: nil)
+      request(
+        uri:     'users/join/id-exist',
+        method:  :get,
+        headers: {
+          'Idempotency-Key' => idempotency_key.presence || SecureRandom.uuid,
+          'Bootpay-Role'    => 'user'
+        },
+        params:  { pk: id }
+      )
+    end
+
+    # 전화번호 중복검사
+    # Comment by GOSOMI
+    # @date: 2025-06-18
+    def phone_exist(phone:, idempotency_key: nil)
+      request(
+        uri:     'users/join/phone-exist',
+        method:  :get,
+        headers: {
+          'Idempotency-Key' => idempotency_key.presence || SecureRandom.uuid,
+          'Bootpay-Role'    => 'user'
+        },
+        params:  { pk: phone }
+      )
+    end
+
+    # 그룹 사업자 번호 중복검사
+    # Comment by GOSOMI
+    # @date: 2025-06-18
+    def group_business_number_exist(business_number:, idempotency: nil)
+      request(
+        uri:     'users/join/group-business-number-exist',
+        method:  :get,
+        headers: {
+          'Idempotency-Key' => idempotency.presence || SecureRandom.uuid,
+          'Bootpay-Role'    => 'user'
+        },
+        params:  { pk: business_number }
       )
     end
   end
