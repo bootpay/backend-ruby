@@ -5,11 +5,13 @@ module BootpayStore
     require_relative 'concern/supervisor'
     require_relative 'concern/token'
     require_relative 'concern/user'
+    require_relative 'concern/user_group'
 
     include Payment
     include Rest
     include Supervisor
     include Token
     include User
+    include UserGroup
   end
 end
