@@ -1,5 +1,7 @@
 module BootpayStore
   module Concern
+    require_relative 'concern/order'
+    require_relative 'concern/order_subscription'
     require_relative 'concern/payment'
     require_relative 'concern/rest'
     require_relative 'concern/supervisor'
@@ -7,6 +9,8 @@ module BootpayStore
     require_relative 'concern/user'
     require_relative 'concern/user_group'
 
+    include Order
+    include OrderSubscription
     include Payment
     include Rest
     include Supervisor
