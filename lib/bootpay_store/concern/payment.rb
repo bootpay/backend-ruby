@@ -49,7 +49,8 @@ module BootpayStore::Concern::Payment
         uri:     "order/cancel/#{order_cancellation_request_id}/reject",
         method:  :put,
         headers: {
-          'Idempotency-Key' => idempotency_key.presence || SecureRandom.uuid
+          'Idempotency-Key' => idempotency_key.presence || SecureRandom.uuid,
+          'Bootpay-Role'    => 'supervisor'
         },
         payload: {
                    message: message
@@ -64,7 +65,8 @@ module BootpayStore::Concern::Payment
         uri:     "order/cancel/#{order_cancellation_request_history_id}/approve",
         method:  :put,
         headers: {
-          'Idempotency-Key' => idempotency_key.presence || SecureRandom.uuid
+          'Idempotency-Key' => idempotency_key.presence || SecureRandom.uuid,
+          'Bootpay-Role'    => 'supervisor'
         },
         payload: {
                    message: message
