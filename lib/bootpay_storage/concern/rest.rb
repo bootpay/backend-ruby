@@ -80,6 +80,51 @@ module BootpayStorage::Concern::Rest
       )
     end
 
+    # csv Multipart 파일 전송 Method
+    # Comment by ehowlsla
+    # Date: 2025-07-17
+    def csv_upload(uri:, files:, headers: {}, params: nil)
+      # 이미지 데이터를 배열로 받음
+      files = files.each_with_index.map do |data, index|
+        filename = "csv_#{Time.now.to_i}_#{index}.csv"
+        HTTP::FormData::File.new(data, filename: filename)
+      end
+
+      # HTTP 요청
+      response = HTTP.headers(
+        {
+          Authorization:       "Bearer #{@token}",
+          accept:              'application/json',
+          bootpay_api_version: @api_version,
+          bootpay_sdk_version: Bootpay::V2_VERSION,
+          bootpay_sdk_type:    '300'
+        }.merge!(headers).compact
+      ).post(
+        [BootpayStorage::RestClient::API[@mode.to_sym], uri].join('/'),
+        form: { images: files },
+        params: params
+      )
+
+      # JSON 파싱 시도
+      parsed_response = begin
+                          JSON.parse(response.body.to_s, symbolize_names: true)
+                        rescue JSON::ParserError => e
+                          { error: "응답 파싱 실패: #{e.message}", body: response.body.to_s }
+                        end
+
+      # 응답 처리
+      BootpayStorage::Response.new(
+        response.status.to_i == 200,
+        parsed_response
+      )
+    rescue Exception => e
+      BootpayStorage::Response.new(
+        false,
+        message:   "파일 업로드 실패: #{e.message}",
+        backtrace: e.backtrace.join("\n")
+      )
+    end
+
 
     # def upload(uri:, image_data:, image_name:, headers: {}, params: nil)
     #
