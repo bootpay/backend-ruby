@@ -6,5 +6,6 @@ module BootpayStorage
     include Rest
     include Image
     include Token
+    include Csv
   end
 end
