@@ -79,6 +79,7 @@ module Bootpay::Concern::Payment
                commission_keys:         commission_keys,
                terms:                   terms,
                redirect_url:            redirect_url,
+               widget:                  widget_key.present? ? 1 : 0,
                widget_key:              widget_key,
                widget_sandbox:          widget_sandbox,
                uuid:                    uuid.presence || rand_uuid,
