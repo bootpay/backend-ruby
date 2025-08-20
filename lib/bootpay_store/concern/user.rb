@@ -7,7 +7,7 @@ module BootpayStore::Concern::User
     # @date: 2025-04-25
     def login_by_user_id(user_id:, idempotency_key: nil)
       request(
-        uri:     "user/users/login/token",
+        uri:     "users/login/token",
         headers: {
           'Idempotency-Key' => idempotency_key.presence || SecureRandom.uuid,
           'Bootpay-Role'    => 'user'
