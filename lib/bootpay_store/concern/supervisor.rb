@@ -30,5 +30,52 @@ module BootpayStore::Concern::Supervisor
                  }.compact
       )
     end
+
+
+
+    # 구독 단건 관리자 승인
+    # 관리자 승인일 경우 bill 생성 후 (선불이면) 결제를 진행해야함
+    # Comment by ehowlsla
+    # @date: 2025-11-19
+    def supervisor_request_order_subscription_approve(idempotency_key: nil, order_subscription_id:, approval_status:, reason: nil)
+      request(
+        uri:     "order_subscriptions/approve",
+        method:  :put,
+        headers: {
+          'Idempotency-Key' => idempotency_key.presence || SecureRandom.uuid,
+          'Bootpay-Role'    => 'supervisor'
+        },
+        payload:
+          {
+            order_subscription_id:    order_subscription_id,
+            approval_status:          approval_status,
+            reason:                   reason
+          }.compact
+      )
+    end
+
+
+    # 구독 단건 승인 거절
+    # 요청된 구독건에 대해 거절 처리
+    # 만약 생성된 bill 이 있다면 함께 취소 처리
+    # Comment by ehowlsla
+    # @date: 2025-11-9
+    def supervisor_request_order_subscription_reject(idempotency_key: nil, order_subscription_id:, approval_status:, reason: nil)
+      request(
+        uri:     "order_subscriptions/reject",
+        method:  :put,
+        headers: {
+          'Idempotency-Key' => idempotency_key.presence || SecureRandom.uuid,
+          'Bootpay-Role'    => 'supervisor'
+        },
+        payload:
+                 {
+                   order_subscription_id:    order_subscription_id,
+                   approval_status:          approval_status,
+                   reason:                   reason
+                 }.compact
+      )
+    end
+
   end
 end
