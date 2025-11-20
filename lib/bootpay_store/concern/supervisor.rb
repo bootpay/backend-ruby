@@ -39,7 +39,7 @@ module BootpayStore::Concern::Supervisor
     # @date: 2025-11-19
     def supervisor_request_order_subscription_approve(idempotency_key: nil, order_subscription_id:, approval_status:, reason: nil)
       request(
-        uri:     "order_subscriptions/approve",
+        uri:     "order_subscriptions/#{order_subscription_id}/approve",
         method:  :put,
         headers: {
           'Idempotency-Key' => idempotency_key.presence || SecureRandom.uuid,
@@ -47,7 +47,6 @@ module BootpayStore::Concern::Supervisor
         },
         payload:
           {
-            order_subscription_id:    order_subscription_id,
             approval_status:          approval_status,
             reason:                   reason
           }.compact
@@ -62,7 +61,7 @@ module BootpayStore::Concern::Supervisor
     # @date: 2025-11-9
     def supervisor_request_order_subscription_reject(idempotency_key: nil, order_subscription_id:, approval_status:, reason: nil)
       request(
-        uri:     "order_subscriptions/reject",
+        uri:     "order_subscriptions/#{order_subscription_id}/reject",
         method:  :put,
         headers: {
           'Idempotency-Key' => idempotency_key.presence || SecureRandom.uuid,
@@ -70,7 +69,6 @@ module BootpayStore::Concern::Supervisor
         },
         payload:
                  {
-                   order_subscription_id:    order_subscription_id,
                    approval_status:          approval_status,
                    reason:                   reason
                  }.compact
