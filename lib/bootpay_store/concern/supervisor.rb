@@ -37,7 +37,7 @@ module BootpayStore::Concern::Supervisor
     # Comment by ehowlsla
     # @date: 2025-04-04
     def supervisor_request_order_subscription_bill_cancel(idempotency_key: nil, cancel_id: nil, order_subscription_bill_id:, cancel_products: [], cancel_price: nil,
-                                        cancel_tax_free_price: nil, cancel_requester: '시스템', cancel_message: '요청취소')
+                                        cancel_tax_free_price: nil, cancel_requester: '시스템', cancel_message: '요청취소', cancel_immediately: false)
 
       request(
         uri:     'order_subscriptions/bill/cancel',
@@ -47,17 +47,14 @@ module BootpayStore::Concern::Supervisor
         },
         payload:
                  {
-                   order_number:              order_number,
-                   request_cancel_parameters: {
-                                                cancel_id:                       cancel_id,
-                                                cancel_products:                 cancel_products,
-                                                cancel_order_subscription_bills: cancel_order_subscription_bills,
-                                                cancel_price:                    cancel_price,
-                                                cancel_tax_free_price:           cancel_tax_free_price,
-                                                cancel_requester:                cancel_requester,
-                                                cancel_message:                  cancel_message,
-                                                cancel_immediately:              cancel_immediately
-                                              }.compact
+                   order_subscription_bill_id: order_subscription_bill_id,
+                   cancel_id:                       cancel_id,
+                   cancel_products:                 cancel_products,
+                   cancel_price:                    cancel_price,
+                   cancel_tax_free_price:           cancel_tax_free_price,
+                   cancel_requester:                cancel_requester,
+                   cancel_message:                  cancel_message,
+                   cancel_immediately:              cancel_immediately
                  }.compact
       )
 
