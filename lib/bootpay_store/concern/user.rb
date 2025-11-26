@@ -56,10 +56,10 @@ module BootpayStore::Concern::User
     # 회원가입
     # Comment by GOSOMI
     # @date: 2025-06-16
-    def external_user_sign_in(ex_uid:, user_group_id:, is_group_admin:,
-                              name:, phone:, email:, tel:, nickname:, comment:,
-                              gender:, birth:, individual_extension:, login_id:, login_email:, login_pw:,
-                              join_at:)
+    def external_user_sign_in(idempotency_key: nil, uid:, user_group_id: nil, is_group_admin: false,
+                              name:, phone:, email:, tel: nil, nickname: nil, comment: nil,
+                              gender: nil, birth: nil, individual_extension: nil, login_id:, login_email:,
+                              login_pw: nil, join_at: nil)
       request(
         uri:     'users/join',
         method:  :post,
@@ -69,7 +69,7 @@ module BootpayStore::Concern::User
         },
         payload:
                  {
-                   ex_uid:               ex_uid,
+                   uid:                  uid,
                    user_group_id:        user_group_id,
                    is_group_admin:       is_group_admin,
                    name:                 name,

@@ -30,13 +30,30 @@ module BootpayStore::Concern::Order
     end
 
     # 주문 상세를 조회한다
-    def order_detail(order_id:, idempotency_key: nil)
+    def order_detail(order_number:, idempotency_key: nil)
       request(
-        uri:     "orders/#{order_id}",
+        uri:     "orders/#{order_number}",
         method:  :get,
         headers: {
           'Idempotency-Key' => idempotency_key.presence || SecureRandom.uuid,
           'Bootpay-Role'    => 'user'
+        }
+      )
+    end
+
+    # 주문 결제 승인
+    # Comment by GOSOMI
+    # @date: 2025-10-28
+    def order_confirm(order_number:, idempotency_key: nil)
+      request(
+        uri:     'order/confirm',
+        method:  :post,
+        headers: {
+          'Idempotency-Key' => idempotency_key.presence || SecureRandom.uuid,
+          'Bootpay-Role'    => 'user'
+        },
+        payload: {
+          order_number: order_number
         }
       )
     end

@@ -15,7 +15,7 @@ RSpec.describe BootpayStore::RestClient do
     # )
     token = api.request_access_token
     if token.success?
-      response = api.order_detail(order_id: '685425f81c872444f161f00c')
+      response = api.order_detail(order_number: "25102941848506519161")
       puts response.data.to_json
     else
       puts token.data
