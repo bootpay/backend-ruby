@@ -5,7 +5,7 @@ module BootpayStore::Concern::Invoice
     # 청구서를 생성한다
     # Comment by GOSOMI
     # @date: 2025-10-03
-    def create_invoice(idempotency_key: nil, name:, memo: nil, user: {}, products: [], price: 0, tax_free_price: 0, delivery_price: 0,
+    def create_invoice(idempotency_key: nil, sdk: false, name:, memo: nil, user: {}, products: [], price: 0, tax_free_price: 0, delivery_price: 0,
                        redirect_url: nil, request_id: nil, use_notification: false, use_auto_login: false, expired_at: nil, metadata: {},
                        webhook_url: nil, header_content_type: 'application/json', usage_api_url: nil, extra: {})
       request(
@@ -17,6 +17,7 @@ module BootpayStore::Concern::Invoice
         },
         payload:
                  {
+                   sdk:                 sdk,
                    name:                name,
                    memo:                memo,
                    user:                user,
