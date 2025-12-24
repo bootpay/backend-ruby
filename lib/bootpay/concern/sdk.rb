@@ -32,5 +32,21 @@ module Bootpay::Concern::Sdk
         }
       )
     end
+
+    # Validate Password Token
+    # Comment by GOSOMI
+    # @date: 2025-12-24
+    def validate_password_token(token:, user_token:)
+      request(
+        method:  :post,
+        uri:     'sdk/password-token',
+        headers: {
+          'Bootpay-User-Token': user_token
+        },
+        payload: {
+          token: token
+        }
+      )
+    end
   end
 end

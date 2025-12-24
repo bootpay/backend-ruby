@@ -24,25 +24,29 @@ RSpec.describe BootpayStore::RestClient do
         puts user_create.data
       end
       response   = api.create_invoice(
-        name:           '테스트 청구서',
-        memo:           '테스트 청구서 상세 메모',
-        user:           {
-          user_id: 'gosomi85'
+        name:             '테스트 청구서',
+        memo:             '테스트 청구서 상세 메모',
+        user:             {
+          membership_type: 'guest',
+          name:            '부트페이',
+          user_id:         'test123',
+          phone:           '01095735114'
         },
-        products:       [
-                          {
-                            product_id:        '66fa14954eac568eab4fc2d0',
-                            product_option_id: '68ede8c675febc5627363fb2',
-                            duration:          24,
-                            quantity:          1,
-                          }
-                        ],
-        price:          1000,
-        redirect_url:   'https://example.com',
-        use_auto_login: true,
-        request_id:     'test1',
-        expired_at:     (Time.current + 7.days).strftime('%Y-%m-%d 00:00:00'),
-        metadata:       { custom_key: 'custom_value' }
+        products:         [
+                            {
+                              product_id:        '66fa14954eac568eab4fc2d0',
+                              product_option_id: '68ede8c675febc5627363fb2',
+                              duration:          24,
+                              quantity:          1,
+                            }
+                          ],
+        price:            1000,
+        redirect_url:     'https://example.com',
+        use_auto_login:   true,
+        request_id:       'test1',
+        use_notification: true,
+        expired_at:       (Time.current + 7.days).strftime('%Y-%m-%d 00:00:00'),
+        metadata:         { custom_key: 'custom_value' }
       )
       puts JSON.pretty_generate(response.data)
     end
