@@ -5,7 +5,7 @@ module BootpayStore::Concern::User
     # UserId로 로그인을 시도한다
     # Comment by GOSOMI
     # @date: 2025-04-25
-    def login_by_user_id(user_id:, idempotency_key: nil)
+    def login_by_user_id(user_id:, membership_type: 'member', corporate_type: 'individual' idempotency_key: nil)
       request(
         uri:     "users/login/token",
         headers: {
@@ -14,7 +14,9 @@ module BootpayStore::Concern::User
         },
         payload:
                  {
-                   user_id: user_id
+                   user_id:         user_id,
+                   membership_type: membership_type,
+                   corporate_type:  corporate_type
                  }
       )
     end
