@@ -5,9 +5,10 @@ module BootpayStore::Concern::Supervisor
     # 주문 취소
     # Comment by GOSOMI
     # @date: 2025-04-04
+    # param force: 결제취소 실패시 주문을 강제로 취소 상태로 변경
     def supervisor_request_order_cancel(idempotency_key: nil, cancel_id: nil, order_number:, cancel_products: nil, cancel_price: nil,
                                         cancel_tax_free_price: 0, cancel_requester: '시스템', cancel_message: '요청취소', cancel_immediately: false,
-                                        cancel_order_subscription_bills: nil)
+                                        cancel_order_subscription_bills: nil, force: false)
       request(
         uri:     'order/cancel',
         headers: {
@@ -25,7 +26,8 @@ module BootpayStore::Concern::Supervisor
                                                 cancel_tax_free_price:           cancel_tax_free_price,
                                                 cancel_requester:                cancel_requester,
                                                 cancel_message:                  cancel_message,
-                                                cancel_immediately:              cancel_immediately
+                                                cancel_immediately:              cancel_immediately,
+                                                force:                           force
                                               }.compact
                  }.compact
       )
