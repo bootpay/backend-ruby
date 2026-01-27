@@ -37,7 +37,7 @@ module BootpayStore::Concern::Supervisor
     # Comment by ehowlsla
     # @date: 2025-04-04
     def supervisor_request_order_subscription_bill_cancel(idempotency_key: nil, cancel_id: nil, order_subscription_bill_id:, cancel_products: [], cancel_price: nil,
-                                        cancel_tax_free_price: nil, cancel_requester: '시스템', cancel_message: '요청취소', cancel_immediately: false)
+                                                          cancel_tax_free_price: nil, cancel_requester: '시스템', cancel_message: '요청취소', cancel_immediately: false)
 
       request(
         uri:     'order_subscriptions/bill/cancel',
@@ -48,25 +48,23 @@ module BootpayStore::Concern::Supervisor
         payload:
                  {
                    order_subscription_bill_id: order_subscription_bill_id,
-                   cancel_id:                       cancel_id,
-                   cancel_products:                 cancel_products,
-                   cancel_price:                    cancel_price,
-                   cancel_tax_free_price:           cancel_tax_free_price,
-                   cancel_requester:                cancel_requester,
-                   cancel_message:                  cancel_message,
-                   cancel_immediately:              cancel_immediately
+                   cancel_id:                  cancel_id,
+                   cancel_products:            cancel_products,
+                   cancel_price:               cancel_price,
+                   cancel_tax_free_price:      cancel_tax_free_price,
+                   cancel_requester:           cancel_requester,
+                   cancel_message:             cancel_message,
+                   cancel_immediately:         cancel_immediately
                  }.compact
       )
 
     end
 
-
-
     # 구독 단건 관리자 승인
     # 관리자 승인일 경우 bill 생성 후 (선불이면) 결제를 진행해야함
     # Comment by ehowlsla
     # @date: 2025-11-19
-    def supervisor_request_order_subscription_approve(idempotency_key: nil, order_subscription_id:, approval_status:, reason: nil)
+    def supervisor_request_order_subscription_approve(idempotency_key: nil, order_subscription_id:, reason: nil)
       request(
         uri:     "order_subscriptions/#{order_subscription_id}/approve",
         method:  :put,
@@ -75,20 +73,18 @@ module BootpayStore::Concern::Supervisor
           'Bootpay-Role'    => 'supervisor'
         },
         payload:
-          {
-            approval_status:          approval_status,
-            reason:                   reason
-          }.compact
+                 {
+                   reason: reason
+                 }.compact
       )
     end
-
 
     # 구독 단건 승인 거절
     # 요청된 구독건에 대해 거절 처리
     # 만약 생성된 bill 이 있다면 함께 취소 처리
     # Comment by ehowlsla
     # @date: 2025-11-9
-    def supervisor_request_order_subscription_reject(idempotency_key: nil, order_subscription_id:, approval_status:, reason: nil)
+    def supervisor_request_order_subscription_reject(idempotency_key: nil, order_subscription_id:, reason: nil)
       request(
         uri:     "order_subscriptions/#{order_subscription_id}/reject",
         method:  :put,
@@ -98,11 +94,73 @@ module BootpayStore::Concern::Supervisor
         },
         payload:
                  {
-                   approval_status:          approval_status,
-                   reason:                   reason
+                   reason: reason
                  }.compact
       )
     end
 
+    # 구독 해지 실행
+    # Comment by GOSOMI
+    # @date: 2026-01-21
+    def supervisor_request_order_subscription_terminate(idempotency_key: nil, order_subscription_id:, reason: nil,
+                                                        termination_fee: nil, last_bill_refund_price: nil, final_fee: nil,
+                                                        service_end_at: nil, cancel_date: nil)
+      request(
+        uri:     "order_subscriptions/#{order_subscription_id}/terminate",
+        method:  :put,
+        headers: {
+          'Idempotency-Key' => idempotency_key.presence || SecureRandom.uuid,
+          'Bootpay-Role'    => 'supervisor'
+        },
+        payload:
+                 {
+                   reason:                 reason,
+                   termination_fee:        termination_fee,
+                   last_bill_refund_price: last_bill_refund_price,
+                   final_fee:              final_fee,
+                   service_end_at:         service_end_at,
+                   cancel_date:            cancel_date
+                 }.compact
+      )
+    end
+
+    # 구독 멈춤
+    # Comment by GOSOMI
+    # @date: 2026-01-22
+    def supervisor_request_order_subscription_pause(idempotency_key: nil, order_subscription_id:, reason: nil,
+                                                    paused_at:, expected_resume_at: nil)
+      request(
+        uri:     "order_subscriptions/#{order_subscription_id}/pause",
+        method:  :put,
+        headers: {
+          'Idempotency-Key' => idempotency_key.presence || SecureRandom.uuid,
+          'Bootpay-Role'    => 'supervisor'
+        },
+        payload:
+                 {
+                   reason:             reason,
+                   paused_at:          paused_at,
+                   expected_resume_at: expected_resume_at
+                 }.compact
+      )
+    end
+
+    # 구독 재개
+    # Comment by GOSOMI
+    # @date: 2026-01-22
+    def supervisor_request_order_subscription_resume(idempotency_key: nil, order_subscription_id:, reason: nil)
+      request(
+        uri:     "order_subscriptions/#{order_subscription_id}/resume",
+        method:  :put,
+        headers: {
+          'Idempotency-Key' => idempotency_key.presence || SecureRandom.uuid,
+          'Bootpay-Role'    => 'supervisor'
+        },
+        payload:
+                 {
+                   reason: reason
+                 }.compact
+      )
+    end
   end
 end
