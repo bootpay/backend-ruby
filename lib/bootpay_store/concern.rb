@@ -10,6 +10,7 @@ module BootpayStore
     require_relative 'concern/token'
     require_relative 'concern/user'
     require_relative 'concern/user_group'
+    require_relative 'concern/store'
 
     include Invoice
     include Order
@@ -21,5 +22,6 @@ module BootpayStore
     include Token
     include User
     include UserGroup
+    include Store
   end
 end
