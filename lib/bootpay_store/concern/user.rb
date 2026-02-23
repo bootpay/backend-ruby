@@ -13,10 +13,10 @@ module BootpayStore::Concern::User
           'Idempotency-Key' => idempotency_key.presence || SecureRandom.uuid
         },
         payload: {
-          login_id:       login_id,
-          password:       password,
-          corporate_type: corporate_type
-        }.compact
+                   login_id:       login_id,
+                   password:       password,
+                   corporate_type: corporate_type
+                 }.compact
       )
     end
 
@@ -28,9 +28,9 @@ module BootpayStore::Concern::User
         uri:     'user/session',
         method:  :get,
         headers: {
-          'Idempotency-Key' => idempotency_key.presence || SecureRandom.uuid,
-          'Bootpay-User-JWT' => user_jwt
-        }.compact
+                   'Idempotency-Key'  => idempotency_key.presence || SecureRandom.uuid,
+                   'Bootpay-User-JWT' => user_jwt
+                 }.compact
       )
     end
 
@@ -42,7 +42,7 @@ module BootpayStore::Concern::User
         uri:     'user/session',
         method:  :delete,
         headers: {
-          'Idempotency-Key' => idempotency_key.presence || SecureRandom.uuid,
+          'Idempotency-Key'  => idempotency_key.presence || SecureRandom.uuid,
           'Bootpay-User-JWT' => user_jwt
         }
       )
@@ -60,17 +60,17 @@ module BootpayStore::Concern::User
           'Idempotency-Key' => idempotency_key.presence || SecureRandom.uuid
         },
         payload: {
-          login_id:       login_id,
-          password:       password,
-          name:           name,
-          email:          email,
-          phone:          phone,
-          nickname:       nickname,
-          gender:         gender,
-          birth:          birth,
-          corporate_type: corporate_type,
-          group:          group
-        }.compact
+                   login_id:       login_id,
+                   password:       password,
+                   name:           name,
+                   email:          email,
+                   phone:          phone,
+                   nickname:       nickname,
+                   gender:         gender,
+                   birth:          birth,
+                   corporate_type: corporate_type,
+                   group:          group
+                 }.compact
       )
     end
 
@@ -80,12 +80,12 @@ module BootpayStore::Concern::User
     # @date: 2026-02-23
     def user_join_check(type:, pk:, idempotency_key: nil)
       request(
-        uri:    "user/join/#{type}",
-        method: :get,
+        uri:     "user/join/#{type}",
+        method:  :get,
         headers: {
           'Idempotency-Key' => idempotency_key.presence || SecureRandom.uuid
         },
-        params: {
+        params:  {
           pk: pk
         }
       )
