@@ -2,6 +2,95 @@ module BootpayStore::Concern::User
   extend ActiveSupport::Concern
 
   included do
+    # 회원 로그인 (V1 Mall API)
+    # Comment by Codex
+    # @date: 2026-02-23
+    def user_login(login_id:, password:, corporate_type: 0, idempotency_key: nil)
+      request(
+        uri:     'user/login',
+        method:  :post,
+        headers: {
+          'Idempotency-Key' => idempotency_key.presence || SecureRandom.uuid
+        },
+        payload: {
+          login_id:       login_id,
+          password:       password,
+          corporate_type: corporate_type
+        }.compact
+      )
+    end
+
+    # 회원 세션 조회 (V1 Mall API)
+    # Comment by Codex
+    # @date: 2026-02-23
+    def user_session(user_jwt: nil, idempotency_key: nil)
+      request(
+        uri:     'user/session',
+        method:  :get,
+        headers: {
+          'Idempotency-Key' => idempotency_key.presence || SecureRandom.uuid,
+          'Bootpay-User-JWT' => user_jwt
+        }.compact
+      )
+    end
+
+    # 회원 로그아웃 (V1 Mall API)
+    # Comment by Codex
+    # @date: 2026-02-23
+    def user_logout(user_jwt:, idempotency_key: nil)
+      request(
+        uri:     'user/session',
+        method:  :delete,
+        headers: {
+          'Idempotency-Key' => idempotency_key.presence || SecureRandom.uuid,
+          'Bootpay-User-JWT' => user_jwt
+        }
+      )
+    end
+
+    # 회원가입 (V1 Mall API)
+    # Comment by Codex
+    # @date: 2026-02-23
+    def user_join(login_id:, password:, name:, email: nil, phone: nil, nickname: nil, gender: nil, birth: nil, corporate_type: 0,
+                  group: nil, idempotency_key: nil)
+      request(
+        uri:     'user/join',
+        method:  :post,
+        headers: {
+          'Idempotency-Key' => idempotency_key.presence || SecureRandom.uuid
+        },
+        payload: {
+          login_id:       login_id,
+          password:       password,
+          name:           name,
+          email:          email,
+          phone:          phone,
+          nickname:       nickname,
+          gender:         gender,
+          birth:          birth,
+          corporate_type: corporate_type,
+          group:          group
+        }.compact
+      )
+    end
+
+    # 회원가입 중복 확인 (V1 Mall API)
+    # type: email-exist, id-exist, phone-exist, group-business-number-exist
+    # Comment by Codex
+    # @date: 2026-02-23
+    def user_join_check(type:, pk:, idempotency_key: nil)
+      request(
+        uri:    "user/join/#{type}",
+        method: :get,
+        headers: {
+          'Idempotency-Key' => idempotency_key.presence || SecureRandom.uuid
+        },
+        params: {
+          pk: pk
+        }
+      )
+    end
+
     # UserId로 로그인을 시도한다
     # Comment by GOSOMI
     # @date: 2025-04-25
