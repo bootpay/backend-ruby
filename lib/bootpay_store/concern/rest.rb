@@ -10,7 +10,7 @@ module BootpayStore::Concern::Rest
     def request(method: :post, uri:, payload: {}, headers: {}, params: nil)
       response = HTTP.headers(
         {
-          Authorization:       "Bearer #{@token}",
+          Authorization:       @token.present? ? "Bearer #{@token}" : "Basic #{basic_authentification}",
           content_type:        'application/json',
           accept:              'application/json',
           bootpay_api_version: @api_version,
@@ -33,6 +33,13 @@ module BootpayStore::Concern::Rest
         message:   "부트페이 API 서버와의 통신이 실패하였습니다. 오류 메세지: #{e.message}",
         backtrace: e.backtrace.join("\n")
       )
+    end
+
+    # basic authenticate 추가
+    # Comment by GOSOMI
+    # @date: 2026-02-20
+    def basic_authentification
+      @token = Base64.strict_encode64("#{@client_key}:#{@secret_key}")
     end
   end
 end

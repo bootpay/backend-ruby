@@ -13,14 +13,18 @@ RSpec.describe BootpayStore::RestClient do
     #   secret_key: '4QoNzXcjT_H4brpq0AgM8ETtrBTFhabo3gmU_DJ148E=',
     #   mode:       'stage'
     # )
-    token = api.request_access_token
-    if token.success?
-      response = api.supervisor_request_order_subscription_terminate(
-        order_subscription_id: '69701b495854363bb96c998a'
-      )
-      puts response.data.to_json
-    else
-      puts token.data
-    end
+    # token = api.request_access_token
+    # if token.success?
+    #   response = api.supervisor_request_order_subscription_terminate(
+    #     order_subscription_id: '69701b495854363bb96c998a'
+    #   )
+    #   puts response.data.to_json
+    # else
+    #   puts token.data
+    # end
+    response = api.supervisor_request_order_subscription_terminate(
+      order_subscription_id: '69701b495854363bb96c998a'
+    )
+    puts response.data.to_json
   end
 end
