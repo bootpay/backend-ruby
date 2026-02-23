@@ -5,6 +5,7 @@ module BootpayStore::Concern::Token
     # Access Token을 요청한다
     # Comment by Gosomi
     # Date: 2021-05-21
+    # @deprecated
     def request_access_token
       response = request(
         uri:     'request/token',
