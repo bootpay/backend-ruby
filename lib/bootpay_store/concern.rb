@@ -11,6 +11,7 @@ module BootpayStore
     require_relative 'concern/user'
     require_relative 'concern/user_group'
     require_relative 'concern/store'
+    require_relative 'concern/webhook'
 
     include Invoice
     include Order
@@ -23,5 +24,6 @@ module BootpayStore
     include User
     include UserGroup
     include Store
+    include Webhook
   end
 end
