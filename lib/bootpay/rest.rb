@@ -9,8 +9,6 @@ module Bootpay::Rest
     # Date: 2021-05-21
     def request(method: :post, uri:, payload: {}, headers: {})
 
-      print([Bootpay::Api::API[@mode.to_sym], uri].join('/'))
-
       response = HTTP.headers(
         {
           # Authorization: "Bearer #{@token}",
