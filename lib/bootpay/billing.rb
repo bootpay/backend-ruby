@@ -60,6 +60,7 @@ module Bootpay::Billing
                                        area: nil, # 서울|인천|대구|광주|부산|울산|경기|강원|충청북도|충북|충청남도|충남|전라북도|전북|전라남도|전남|경상북도|경북|경상남도|경남|제주|세종|대전 중 택 1
                                        birth: nil # 생일 901004
                           },
+                          items: nil, # 상품 정보 배열
                           feedback_url: nil, feedback_content_type: nil,
                           extra: { # 기타 설정
                                    subscribe_test_payment: nil, # subscribe_test_payment:100원 결제 후 결제가 되면 billing key를 발행, 결제가 실패하면 에러
@@ -80,6 +81,7 @@ module Bootpay::Billing
           quota:          quota, # 5만원 이상 결제건에 적용하는 할부개월수. 0-일시불, 1은 지정시 에러 발생함, 2-2개월, 3-3개월... 12까지 지정가능
           interest:       interest, # 웰컴페이먼츠 전용, 무이자여부를 보내는 파라미터가 있다
           user_info:      user_info.values.any? {|v|v != nil} ? user_info : nil,
+          items:          items, # 상품 정보 배열
           feedback_url:   feedback_url, # webhook 통지시 받으실 url 주소 (localhost 사용 불가)
           feedback_content_type: feedback_content_type.presence || 'urlencoded', # webhook 통지시 받으실 데이터 타입 (json 또는 urlencoded, 기본값 urlencoded)
           extra:          extra.values.any? {|v|v != nil} ? extra : nil # subscribe_test_payment:100원 결제 후 결제가 되면 billing key를 발행, 결제가 실패하면 에러, raw_data: PG 오류 코드 및 메세지까지 리턴
@@ -92,8 +94,9 @@ module Bootpay::Billing
     # Date: 2021-08-30
     def subscribe_reserve_billing(billing_key: nil, item_name: nil, price: 0, tax_free: 0, order_id: nil, quota: 12, interest: 0,
                           user_info: {id: nil, username: nil, email: nil, phone: nil, gender: nil, area: nil, birth: nil},
+                          items: nil, # 상품 정보 배열
                           feedback_url: nil, feedback_content_type: nil,
-                          extra: {subscribeTestPayment: 0, raw_data: 0},
+                          extra: {subscribe_test_payment: 0, raw_data: 0},
                           execute_at: nil)
       raise 'billing_key 값을 입력해주세요.' if billing_key.blank?
       raise 'item_name 값을 입력해주세요.' if item_name.blank?
@@ -110,6 +113,7 @@ module Bootpay::Billing
           quota:          quota, # 5만원 이상 결제건에 적용하는 할부개월수. 0-일시불, 1은 지정시 에러 발생함, 2-2개월, 3-3개월... 12까지 지정가능
           interest:       interest, # 웰컴페이먼츠 전용, 무이자여부를 보내는 파라미터가 있다
           user_info:      user_info.values.any? {|v|v != nil} ? user_info : nil,
+          items:          items, # 상품 정보 배열
           feedback_url:   feedback_url,  # webhook 통지시 받으실 url 주소 (localhost 사용 불가)
           feedback_content_type: feedback_content_type.presence || 'urlencoded', # webhook 통지시 받으실 데이터 타입 (json 또는 urlencoded, 기본값 urlencoded)
           extra:          extra.values.any? {|v|v != nil} ? extra : nil, # subscribe_test_payment:100원 결제 후 결제가 되면 billing key를 발행, 결제가 실패하면 에러, raw_data: PG 오류 코드 및 메세지까지 리턴
