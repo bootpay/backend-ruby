@@ -14,6 +14,7 @@ require_relative 'bootpay/submit'
 require_relative 'bootpay/token'
 require_relative 'bootpay/verification'
 require_relative "bootpay/version"
+require_relative 'bootpay/wallet'
 
 module Bootpay
   class Api
@@ -29,6 +30,7 @@ module Bootpay
     include Submit
     include Token
     include Verification
+    include Wallet
 
     API =
       {
