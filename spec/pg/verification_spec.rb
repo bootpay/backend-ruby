@@ -5,11 +5,10 @@ RSpec.describe Bootpay::Api do
     puts "verification"
     receipt_id = '612df0250d681b001de61de6'
 
-    api = Bootpay::Api.new(
-      application_id: '5b8f6a4d396fa665fdc2b5ea',
-      private_key:    'rm6EYECr6aroQVG2ntW0A6LpWnkTgP4uQ3H18sDDUYw=',
-    )
-    if api.request_access_token.success?
+    api = create_pg_api
+    # (legacy) application_id 방식에서만 필요. ck/sk 는 매 요청 Basic Auth 헤더로 직접 인증되므로 호출 불필요.
+
+    if true # api.request_access_token.success?
       response = api.verify(receipt_id)
       puts  response.data.to_json
     end
@@ -19,11 +18,10 @@ RSpec.describe Bootpay::Api do
     puts "certificate"
     receipt_id = '612df0250d681b001de61de6'
   
-    api = Bootpay::Api.new(
-      application_id: '5b8f6a4d396fa665fdc2b5ea',
-      private_key:    'rm6EYECr6aroQVG2ntW0A6LpWnkTgP4uQ3H18sDDUYw=',
-      )
-    if api.request_access_token.success?
+    api = create_pg_api
+    # (legacy) application_id 방식에서만 필요. ck/sk 는 매 요청 Basic Auth 헤더로 직접 인증되므로 호출 불필요.
+
+    if true # api.request_access_token.success?
       response = api.certificate(receipt_id)
       puts  response.data.to_json
     end

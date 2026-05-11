@@ -161,7 +161,10 @@ module Bootpay
           'BOOTPAY-SDK-TYPE'     => SDK_TYPE,
           'BOOTPAY-ROLE'         => @role || 'user'
         }
-        headers['Authorization'] = "Bearer #{@token}" if include_auth && @token
+        if include_auth
+          basic = basic_auth_header
+          headers['Authorization'] = basic unless basic.empty?
+        end
         headers
       end
 
@@ -174,7 +177,8 @@ module Bootpay
           'BOOTPAY-SDK-TYPE'     => SDK_TYPE,
           'BOOTPAY-ROLE'         => @role || 'user'
         }
-        headers['Authorization'] = "Bearer #{@token}" if @token
+        basic = basic_auth_header
+        headers['Authorization'] = basic unless basic.empty?
         headers
       end
 

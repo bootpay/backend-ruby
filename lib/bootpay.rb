@@ -1,4 +1,5 @@
 require 'active_support/all'
+require 'base64'
 require 'http'
 require_relative 'response'
 require_relative 'bootpay/billing'
@@ -34,19 +35,26 @@ module Bootpay
 
     API =
       {
-        development: 'https://dev-api.bootpay.co.kr',
-        stage:       'https://stage-api.bootpay.co.kr',
-        production:  'https://api.bootpay.co.kr',
+        development: 'https://dev-api.bootpay.co.kr/v2',
+        stage:       'https://stage-api.bootpay.co.kr/v2',
+        production:  'https://api.bootpay.co.kr/v2',
         ehowlsla:    'https://ehowlsla.bootpay.co.kr/api/v2'
       }.freeze
 
-    def initialize(application_id:, private_key:, mode: 'production')
-    
+    def initialize(application_id: nil, private_key: nil, client_key: nil, secret_key: nil, mode: 'production')
       @application_id = application_id
       @private_key    = private_key
+      @client_key     = client_key
+      @secret_key     = secret_key
       @mode           = mode.presence || 'production'
       @token          = nil
+
       raise ArgumentError, "개발환경 mode는 development, stage, production 중에서 선택이 가능합니다." if API[@mode.to_sym].blank?
+      if @client_key.present?
+        raise ArgumentError, 'secret_key 값이 비어있습니다.' if @secret_key.blank?
+      elsif @application_id.blank? || @private_key.blank?
+        raise ArgumentError, 'application_id/private_key 또는 client_key/secret_key를 입력해주세요.'
+      end
     end 
   end
 end
