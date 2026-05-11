@@ -3,7 +3,9 @@
 RSpec.describe "PG API - Authentication", :integration do
   let(:api) do
     api = create_pg_api
-    api.request_access_token
+    # (legacy) application_id 방식에서만 필요. ck/sk 는 매 요청 Basic Auth 헤더로 직접 인증되므로 호출 불필요.
+
+    # api.request_access_token
     api
   end
 

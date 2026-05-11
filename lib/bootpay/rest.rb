@@ -7,12 +7,19 @@ module Bootpay::Rest
     # HTTP Request 기본 Method
     # Comment by Gosomi
     # Date: 2021-05-21
+    def authorization_header
+      if @client_key.present? && @secret_key.present?
+        "Basic #{Base64.strict_encode64("#{@client_key}:#{@secret_key}")}"
+      elsif @token.present?
+        "Bearer #{@token}"
+      end
+    end
+
     def request(method: :post, uri:, payload: {}, headers: {})
 
       response = HTTP.headers(
         {
-          # Authorization: "Bearer #{@token}",
-          Authorization: "#{@token}",
+          Authorization: authorization_header,
           content_type:  'application/json',
           accept:        'application/json'
         }.merge!(headers).compact
