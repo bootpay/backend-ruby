@@ -39,12 +39,12 @@ module Bootpay
 
       # 그룹에 사용자 추가
       def user_create(user_group_id, user_id)
-        @bootpay.post("user-groups/#{user_group_id}/add_user", { user_id: user_id })
+        @bootpay.post("user-groups/#{user_group_id}/user", { user_id: user_id })
       end
 
       # 그룹에서 사용자 제거
       def user_delete(user_group_id, user_id)
-        @bootpay.delete("user-groups/#{user_group_id}/remove_user?user_id=#{user_id}")
+        @bootpay.delete("user-groups/#{user_group_id}/user/#{user_id}")
       end
 
       # 그룹 제한 설정
