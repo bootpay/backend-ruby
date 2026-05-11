@@ -10,7 +10,12 @@ require_relative 'bootpay/commerce/order_cancel'
 require_relative 'bootpay/commerce/order_subscription'
 require_relative 'bootpay/commerce/order_subscription_bill'
 require_relative 'bootpay/commerce/order_subscription_adjustment'
+require_relative 'bootpay/commerce/order_subscription_request'
 require_relative 'bootpay/commerce/store'
+require_relative 'bootpay/commerce/category'
+require_relative 'bootpay/commerce/coupon'
+require_relative 'bootpay/commerce/point'
+require_relative 'bootpay/commerce/cart'
 
 module Bootpay
   module Commerce
@@ -38,7 +43,8 @@ module Bootpay
     class Api < CommerceResource
       attr_reader :user, :user_group, :product, :invoice, :order,
                   :order_cancel, :order_subscription, :order_subscription_bill,
-                  :order_subscription_adjustment, :store
+                  :order_subscription_adjustment, :order_subscription_request,
+                  :store, :category, :coupon, :point, :cart
 
       def initialize(client_key: nil, secret_key: nil, mode: 'production')
         super()
@@ -134,7 +140,12 @@ module Bootpay
         @order_subscription              = OrderSubscriptionModule.new(self)
         @order_subscription_bill         = OrderSubscriptionBillModule.new(self)
         @order_subscription_adjustment   = OrderSubscriptionAdjustmentModule.new(self)
+        @order_subscription_request      = OrderSubscriptionRequestModule.new(self)
         @store                           = StoreModule.new(self)
+        @category                        = CategoryModule.new(self)
+        @coupon                          = CouponModule.new(self)
+        @point                           = PointModule.new(self)
+        @cart                            = CartModule.new(self)
       end
     end
   end
