@@ -133,5 +133,25 @@ module Bootpay::Billing
         uri: "subscribe/billing/reserve/#{reserve_id}"
       )
     end
+
+    # 빌링키 단일 조회
+    # NodeJS: GET billing_key/{billingKey}
+    def lookup_billing_key(billing_key)
+      raise 'billing_key 값을 입력해주세요.' if billing_key.blank?
+      request(
+        method: :get,
+        uri:    "billing_key/#{billing_key}"
+      )
+    end
+
+    # 예약 결제 단일 조회
+    # NodeJS: GET subscribe/payment/reserve/{reserveId}
+    def subscribe_payment_reserve_lookup(reserve_id)
+      raise 'reserve_id 값을 입력해주세요.' if reserve_id.blank?
+      request(
+        method: :get,
+        uri:    "subscribe/payment/reserve/#{reserve_id}"
+      )
+    end
   end
 end

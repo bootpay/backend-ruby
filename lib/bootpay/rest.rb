@@ -15,7 +15,10 @@ module Bootpay::Rest
       end
     end
 
-    def request(method: :post, uri:, payload: {}, headers: {})
+    def request(method: :post, uri:, payload: {}, headers: {}, params: nil)
+
+      http_options = { json: payload }
+      http_options[:params] = params if params && !params.empty?
 
       response = HTTP.headers(
         {
@@ -26,7 +29,7 @@ module Bootpay::Rest
       ).send(
         method.to_sym,
         [Bootpay::Api::API[@mode.to_sym], uri].join('/'),
-        json: payload
+        **http_options
       )
       Bootpay::Response.new(
         response.status.success?,
