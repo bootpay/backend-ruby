@@ -2,8 +2,11 @@ require 'active_support/all'
 require 'base64'
 require 'http'
 require_relative 'response'
+require_relative 'bootpay/authentication'
+require_relative 'bootpay/automatic_transfer'
 require_relative 'bootpay/billing'
 require_relative 'bootpay/cancel'
+require_relative 'bootpay/cash_receipt'
 require_relative 'bootpay/easy'
 require_relative 'bootpay/escrow'
 require_relative 'bootpay/link'
@@ -19,8 +22,11 @@ require_relative 'bootpay/wallet'
 
 module Bootpay
   class Api
+    include Authentication
+    include AutomaticTransfer
     include Billing
     include Cancel
+    include CashReceipt
     include Easy
     include Escrow
     include Link
