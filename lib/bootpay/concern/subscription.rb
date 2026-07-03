@@ -197,5 +197,15 @@ module Bootpay::Concern::Subscription
         uri:    "billing_key/#{billing_key}"
       )
     end
+
+    # 우선순위 빌링키 조회기능 추가
+    # Comment by GOSOMI
+    # @date: 2026-07-03
+    def lookup_sequential_billing_key(widget_key:, billing_key:)
+      request(
+        method: :get,
+        uri:    "subscribe/sequential_billing_key/#{billing_key}?widget_key=#{widget_key}"
+      )
+    end
   end
 end
