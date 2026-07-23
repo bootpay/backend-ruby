@@ -39,7 +39,7 @@ module BootpayStore::Concern::Rest
     # Comment by GOSOMI
     # @date: 2026-02-20
     def basic_authentification
-      @token = Base64.strict_encode64("#{@client_key}:#{@secret_key}")
+      Base64.strict_encode64("#{@client_key}:#{@secret_key}")
     end
   end
 end
