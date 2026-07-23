@@ -164,5 +164,48 @@ module BootpayStore::Concern::Supervisor
                  }.compact
       )
     end
+
+    # 수시결제(온디맨드) charge_key 즉시 결제
+    # charge_key는 body로만 전송한다 (URL/query 금지 — 액세스 로그 노출 방지)
+    # Comment by GOSOMI
+    # @date: 2026-07-23
+    def supervisor_request_order_subscription_charge(idempotency_key: nil, charge_key:, price:,
+                                                     tax_free_price: nil, user: nil, metadata: nil)
+      request(
+        uri:     'order_subscriptions/charge',
+        headers: {
+          'Idempotency-Key' => idempotency_key.presence || SecureRandom.uuid,
+          'Bootpay-Role'    => 'supervisor'
+        },
+        payload:
+                 {
+                   charge_key:     charge_key,
+                   price:          price,
+                   tax_free_price: tax_free_price,
+                   user:           user,
+                   metadata:       metadata
+                 }.compact
+      )
+    end
+
+    # 수시결제(온디맨드) charge_key 해지
+    # 해지 이후 해당 키로의 재결제는 불가능하다
+    # Comment by GOSOMI
+    # @date: 2026-07-23
+    def supervisor_request_order_subscription_charge_revoke(idempotency_key: nil, charge_key:, user: nil)
+      request(
+        uri:     'order_subscriptions/charge',
+        method:  :delete,
+        headers: {
+          'Idempotency-Key' => idempotency_key.presence || SecureRandom.uuid,
+          'Bootpay-Role'    => 'supervisor'
+        },
+        payload:
+                 {
+                   charge_key: charge_key,
+                   user:       user
+                 }.compact
+      )
+    end
   end
 end
