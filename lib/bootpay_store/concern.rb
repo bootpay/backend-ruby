@@ -1,6 +1,7 @@
 module BootpayStore
   module Concern
     require_relative 'concern/invoice'
+    require_relative 'concern/mall_setting'
     require_relative 'concern/order'
     require_relative 'concern/order_subscription'
     require_relative 'concern/payment'
@@ -14,6 +15,7 @@ module BootpayStore
     require_relative 'concern/webhook'
 
     include Invoice
+    include MallSetting
     include Order
     include OrderSubscription
     include Payment
