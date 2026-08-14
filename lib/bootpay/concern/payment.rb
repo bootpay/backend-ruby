@@ -59,7 +59,7 @@ module Bootpay::Concern::Payment
     # REST API로 결제 요청하기
     # Comment by Gosomi
     # Date: 2023-03-28
-    def request_payment(platform_application_id:, pg:, method: nil, price:, tax_free: 0, order_name:, order_id:, user_token: nil, uuid: nil, sk: nil,
+    def request_payment(platform_application_id: nil, pg:, method: nil, price:, tax_free: 0, order_name:, order_id:, user_token: nil, uuid: nil, sk: nil,
                         ti: 0, tk: nil, items: [], extra: {}, user: {}, agent: nil, commission_keys: nil, wallet_id: nil, terms: [], widget_key: nil, widget_sandbox: false,
                         redirect_url: nil)
       rand_uuid = SecureRandom.uuid

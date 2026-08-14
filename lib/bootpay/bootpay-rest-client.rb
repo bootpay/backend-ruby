@@ -10,6 +10,8 @@ module Bootpay
   class RestClient
     include Concern
 
+    attr_accessor :application_id, :private_key, :client_key, :secret_key, :use_client_key, :mode, :token, :api_version
+
     API =
       {
         development: 'https://dev-api.bootpay.co.kr/v2',
@@ -17,11 +19,14 @@ module Bootpay
         production:  'https://api.bootpay.co.kr/v2'
       }
 
-    SDK_VERSION = '5.2.0'
+    SDK_VERSION = '5.3.0'
 
-    def initialize(application_id:, private_key:, mode: 'production')
+    def initialize(application_id: nil, private_key: nil, client_key: nil, secret_key: nil, mode: 'production')
       @application_id = application_id
       @private_key    = private_key
+      @client_key     = client_key
+      @secret_key     = secret_key
+      @use_client_key = client_key.present?
       @mode           = mode.presence || 'production'
       @token          = nil
       @api_version    = SDK_VERSION
