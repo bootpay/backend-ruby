@@ -2,12 +2,15 @@ module BootpayStore::Concern::User
   extend ActiveSupport::Concern
 
   included do
-    # 회원 로그인 (V1 Mall API)
+    # 회원 로그인 (V1 API)
     # Comment by Codex
     # @date: 2026-02-23
+    # @date: 26-08-14 uri 'user/login' → 'users/session' 로 정정.
+    #   v1 에는 단수 user/* 라우트가 없다(bin/rails routes 844줄 전수 확인). 로그인은 POST /v1/users/session (v1/users/sessions#create).
+    #   /mall/user/login 은 스토어프론트 스코프라 서버사이드 SDK(base=/v1)와 무관하다.
     def user_login(login_id:, password:, corporate_type: 0, idempotency_key: nil)
       request(
-        uri:     'user/login',
+        uri:     'users/session',
         method:  :post,
         headers: {
           'Idempotency-Key' => idempotency_key.presence || SecureRandom.uuid
@@ -23,9 +26,10 @@ module BootpayStore::Concern::User
     # 회원 세션 조회 (V1 Mall API)
     # Comment by Codex
     # @date: 2026-02-23
+    # @date: 26-08-14 uri 'user/session' → 'users/session' 로 정정 (GET /v1/users/session).
     def user_session(user_jwt: nil, idempotency_key: nil)
       request(
-        uri:     'user/session',
+        uri:     'users/session',
         method:  :get,
         headers: {
                    'Idempotency-Key'  => idempotency_key.presence || SecureRandom.uuid,
@@ -37,9 +41,10 @@ module BootpayStore::Concern::User
     # 회원 로그아웃 (V1 Mall API)
     # Comment by Codex
     # @date: 2026-02-23
+    # @date: 26-08-14 uri 'user/session' → 'users/session' 로 정정 (DELETE /v1/users/session).
     def user_logout(user_jwt:, idempotency_key: nil)
       request(
-        uri:     'user/session',
+        uri:     'users/session',
         method:  :delete,
         headers: {
           'Idempotency-Key'  => idempotency_key.presence || SecureRandom.uuid,
@@ -48,13 +53,17 @@ module BootpayStore::Concern::User
       )
     end
 
-    # 회원가입 (V1 Mall API)
+    # 회원가입 (V1 API) — 일반 회원가입용
     # Comment by Codex
     # @date: 2026-02-23
+    # @date: 26-08-14 uri 'user/join' → 'users/join' 로 정정 (POST /v1/users/join).
+    #   ⚠️ external_user_sign_in 과 같은 엔드포인트를 부른다. 중복이 아니라 용도가 다르다 —
+    #   이쪽은 password/corporate_type/group 을 쓰는 일반 회원가입, 저쪽은 uid/login_email/login_pw 를 쓰는 외부 uid 연동 가입이다.
+    #   서버가 파라미터 조합으로 분기하므로 둘 다 유지한다(26-08-14 사용자 결정). 매뉴얼 customer/register.md 는 external_user_sign_in 에 대응.
     def user_join(login_id:, password:, name:, email: nil, phone: nil, nickname: nil, gender: nil, birth: nil, corporate_type: 0,
                   group: nil, idempotency_key: nil)
       request(
-        uri:     'user/join',
+        uri:     'users/join',
         method:  :post,
         headers: {
           'Idempotency-Key' => idempotency_key.presence || SecureRandom.uuid
@@ -74,13 +83,16 @@ module BootpayStore::Concern::User
       )
     end
 
-    # 회원가입 중복 확인 (V1 Mall API)
-    # type: email-exist, id-exist, phone-exist, group-business-number-exist
+    # 회원가입 중복 확인 (V1 API) — key 를 인자로 받는 일반형
+    # type: email-exist, id-exist, phone-exist, uid-exist, group-business-number-exist
     # Comment by Codex
     # @date: 2026-02-23
+    # @date: 26-08-14 uri 'user/join/#{type}' → 'users/join/#{type}' 로 정정 (GET /v1/users/join/:id).
+    #   ⚠️ email_exist·id_exist·phone_exist·uid_exist·group_business_number_exist 전용형 5종과 기능이 겹치지만 둘 다 유지한다(26-08-14 사용자 결정).
+    #   일반형은 서버에 새 key 가 생겨도 SDK 수정 없이 쓸 수 있고, 매뉴얼 customer/check-exist.md 가 key/value 형태를 안내하므로 이쪽에 대응한다.
     def user_join_check(type:, pk:, idempotency_key: nil)
       request(
-        uri:     "user/join/#{type}",
+        uri:     "users/join/#{type}",
         method:  :get,
         headers: {
           'Idempotency-Key' => idempotency_key.presence || SecureRandom.uuid
@@ -251,6 +263,56 @@ module BootpayStore::Concern::User
           'Bootpay-Role'    => 'user'
         },
         params:  { pk: business_number }
+      )
+    end
+
+    # 외부 uid(ex_uid) 중복검사 (GET /v1/users/join/uid-exist)
+    # @comment_by Claude (alfred)
+    # @date: 26-08-14
+    # email/id/phone/group-business-number 전용형과 같은 패턴. 이걸로 *_exist 계열이 5종 완성된다.
+    def uid_exist(uid:, idempotency_key: nil)
+      request(
+        uri:     'users/join/uid-exist',
+        method:  :get,
+        headers: {
+          'Idempotency-Key' => idempotency_key.presence || SecureRandom.uuid,
+          'Bootpay-Role'    => 'user'
+        },
+        params:  { pk: uid }
+      )
+    end
+
+    # 회원 정보를 수정한다 (PUT /v1/users/:id)
+    # @comment_by Claude (alfred)
+    # @date: 26-08-14
+    # 컨트롤러 build_user_params 기준. 사업자 정보는 group: { company_name:, business_number:, registration_number: } 로 중첩 전달.
+    # 바뀐 값만 보내면 된다.
+    def user_update(user_id:, login_id: nil, login_pw: nil, name: nil, phone: nil, email: nil,
+                    tel: nil, nickname: nil, bank_username: nil, bank_account: nil, bank_code: nil,
+                    comment: nil, gender: nil, birth: nil, group: nil, idempotency_key: nil, **attrs)
+      request(
+        uri:     "users/#{user_id}",
+        method:  :put,
+        headers: {
+          'Idempotency-Key' => idempotency_key.presence || SecureRandom.uuid,
+          'Bootpay-Role'    => 'user'
+        },
+        payload: {
+                   login_id:      login_id,
+                   login_pw:      login_pw,
+                   name:          name,
+                   phone:         phone,
+                   email:         email,
+                   tel:           tel,
+                   nickname:      nickname,
+                   bank_username: bank_username,
+                   bank_account:  bank_account,
+                   bank_code:     bank_code,
+                   comment:       comment,
+                   gender:        gender,
+                   birth:         birth,
+                   group:         group
+                 }.merge(attrs).compact
       )
     end
   end
