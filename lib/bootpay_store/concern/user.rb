@@ -5,12 +5,15 @@ module BootpayStore::Concern::User
     # 회원 로그인 (V1 API)
     # Comment by Codex
     # @date: 2026-02-23
-    # @date: 26-08-14 uri 'user/login' → 'users/session' 로 정정.
-    #   v1 에는 단수 user/* 라우트가 없다(bin/rails routes 844줄 전수 확인). 로그인은 POST /v1/users/session (v1/users/sessions#create).
+    # @date: 26-08-14 uri 'user/login' → 'users/login' 로 정정.
+    #   v1 에는 단수 user/* 라우트가 없다(bin/rails routes 전수 확인). 로그인은 POST /v1/users/login (v1/users/login#create).
+    #   ⚠️ POST /v1/users/session 은 resource :session 이 만들어낸 라우트일 뿐 sessions_controller 에 create 액션이 없다.
+    #      라우트 존재만 보고 그리로 보내면 안 된다 — show(GET)/destroy(DELETE) 만 정의돼 있다.
+    #   ⚠️ 서버(LoginService)는 login_id·password 만 읽는다. corporate_type 은 전달돼도 무시된다.
     #   /mall/user/login 은 스토어프론트 스코프라 서버사이드 SDK(base=/v1)와 무관하다.
     def user_login(login_id:, password:, corporate_type: 0, idempotency_key: nil)
       request(
-        uri:     'users/session',
+        uri:     'users/login',
         method:  :post,
         headers: {
           'Idempotency-Key' => idempotency_key.presence || SecureRandom.uuid
