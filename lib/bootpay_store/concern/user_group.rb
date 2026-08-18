@@ -170,5 +170,52 @@ module BootpayStore::Concern::UserGroup
         }
       )
     end
+
+    # 그룹 구매한도를 설정한다 (PUT /v1/user-groups/:id/limit)
+    # @comment_by Claude (alfred)
+    # @date: 26-08-14
+    # ⚠️ update_user_group 으로는 한도가 절대 반영되지 않는다.
+    #    user_groups_controller#update 가 use_limit/limit_message/limit_month_purchase/limit_week_purchase 를
+    #    params.except! 로 명시적으로 제거하기 때문 — 한도는 이 전용 라우트로만 바뀐다.
+    # 서버 scope: manager:limit
+    def user_group_limit(user_group_id:, use_limit: nil, limit_month_purchase: nil,
+                         limit_week_purchase: nil, limit_message: nil, idempotency_key: nil)
+      request(
+        uri:     "user-groups/#{user_group_id}/limit",
+        method:  :put,
+        headers: {
+          'Idempotency-Key' => idempotency_key.presence || SecureRandom.uuid,
+          'Bootpay-Role'    => 'manager'
+        },
+        payload: {
+                   use_limit:            use_limit,
+                   limit_month_purchase: limit_month_purchase,
+                   limit_week_purchase:  limit_week_purchase,
+                   limit_message:        limit_message
+                 }.compact
+      )
+    end
+
+    # 그룹 구독 합산청구(정산주기) 설정을 변경한다 (PUT /v1/user-groups/:id/aggregate-transaction)
+    # @comment_by Claude (alfred)
+    # @date: 26-08-14
+    # update_user_group 에도 같은 이름의 인자가 있지만 서버는 이 전용 라우트에서만 처리한다.
+    def user_group_aggregate_transaction(user_group_id:, use_subscription_aggregate_transaction: nil,
+                                         subscription_month_day: nil, subscription_week_day: nil,
+                                         idempotency_key: nil)
+      request(
+        uri:     "user-groups/#{user_group_id}/aggregate-transaction",
+        method:  :put,
+        headers: {
+          'Idempotency-Key' => idempotency_key.presence || SecureRandom.uuid,
+          'Bootpay-Role'    => 'manager'
+        },
+        payload: {
+                   use_subscription_aggregate_transaction: use_subscription_aggregate_transaction,
+                   subscription_month_day:                 subscription_month_day,
+                   subscription_week_day:                  subscription_week_day
+                 }.compact
+      )
+    end
   end
 end
