@@ -18,3 +18,6 @@ Gemfile.lock
 /spec/bootpay/__development_test_unit_spec.rb
 /spec/bootpay/
 .DS_Store
+# 실 API 키가 들어가는 로컬 설정 — 커밋 금지 (26-08-24 추가)
+.env
+.env.local
