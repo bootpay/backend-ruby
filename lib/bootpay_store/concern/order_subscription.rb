@@ -49,11 +49,17 @@ module BootpayStore::Concern::OrderSubscription
 
     # 구독 계약 내용을 변경한다 (PUT /v1/order_subscriptions/:id)
     # 바뀐 값만 보내면 된다 (나머지는 서버가 그대로 유지).
+    #
+    # price 는 회차별 결제 금액의 **기준금액**이다. 바꾸면 결제예정(READY) 회차의 청구액이
+    # 즉시 다시 계산되고, 이후 회차도 이 금액으로 만들어진다. 이미 결제된 회차는 그대로다.
+    # 0 이하는 받지 않는다. 특정 회차만 가감하려면 order_subscription_adjustment_create 를 쓴다.
+    # (관리자 화면의 금액 변경과 같은 구현을 탄다) (@date: 26-08-24)
     def order_subscription_update(order_subscription_id:, product_id: nil, product_option_id: nil,
                                   order_name: nil, total_subscription_duration: nil, quantity: nil,
                                   address_id: nil, username: nil, phone: nil, email: nil,
                                   use_free_trial: nil, free_trial_day: nil,
-                                  service_start_at: nil, service_end_at: nil, idempotency_key: nil)
+                                  service_start_at: nil, service_end_at: nil, price: nil,
+                                  idempotency_key: nil)
       request(
         uri:     "order_subscriptions/#{order_subscription_id}",
         method:  :put,
@@ -74,7 +80,8 @@ module BootpayStore::Concern::OrderSubscription
                    use_free_trial:              use_free_trial,
                    free_trial_day:              free_trial_day,
                    service_start_at:            service_start_at,
-                   service_end_at:              service_end_at
+                   service_end_at:              service_end_at,
+                   price:                       price
                  }.compact
       )
     end
@@ -82,8 +89,16 @@ module BootpayStore::Concern::OrderSubscription
     # 가감산 조정항목을 추가한다 (POST /v1/order_subscriptions/:id/adjustments)
     # ⚠️ /adjustments 한 경로에 POST·PUT·DELETE 세 동사가 걸려 있다. method 를 반드시 명시할 것.
     # type 미전달 시 서버가 price>0 이면 SETUP_PRICE, 아니면 PERIOD_DISCOUNT 로 자동 판정한다.
+    #
+    # 회차 지정 방법 3가지 (아래로 갈수록 넓다):
+    #   - duration: 5                      → 5회차 한 건만
+    #   - duration_from: 3, duration_to: 7 → 3~7회차 각각 한 건씩 (총 5건)
+    #   - duration_from: 3, is_unlimited: true → 3회차부터 계약 끝까지 (레코드는 1건, duration_to 는 무시)
+    # 상한은 계약 총회차이며, 총회차가 무제한인 계약은 60회차까지다.
+    # 이미 결제가 끝난 회차는 거절된다. 범위 중 한 회차라도 최종 금액이 음수면 전부 거절된다(부분 반영 없음).
     def order_subscription_adjustment_create(order_subscription_id:, name: nil, price: 0, duration: 1,
-                                             tax_free_price: 0, type: nil, idempotency_key: nil)
+                                             tax_free_price: 0, type: nil, duration_from: nil,
+                                             duration_to: nil, is_unlimited: nil, idempotency_key: nil)
       request(
         uri:     "order_subscriptions/#{order_subscription_id}/adjustments",
         method:  :post,
@@ -96,7 +111,10 @@ module BootpayStore::Concern::OrderSubscription
                    price:          price,
                    duration:       duration,
                    tax_free_price: tax_free_price,
-                   type:           type
+                   type:           type,
+                   duration_from:  duration_from,
+                   duration_to:    duration_to,
+                   is_unlimited:   is_unlimited
                  }.compact
       )
     end
