@@ -8,7 +8,10 @@ module BootpayStore::Concern::Product
     # @date: 26-08-14 ⚠️ keyword 는 서버(v1/products_controller#index)가 읽지 않는다.
     #   컨트롤러는 page/limit/category_id/ex_uid/sort 만 사용 — keyword 를 보내도 조용히 무시된다.
     #   하위호환 때문에 인자는 남겨두되, 검색이 필요하면 서버 지원 추가가 선행되어야 한다.
-    def products(page: 1, limit: 20, category_id: nil, sort: nil, keyword: nil, user_jwt: nil, idempotency_key: nil)
+    # @date: 26-08-26 ex_uid 인자 추가. 컨트롤러가 params[:ex_uid] 를 읽는데 SDK 에 인자가 없어
+    #   외부 UID 로 상품을 찾을 수 없었다.
+    def products(page: 1, limit: 20, category_id: nil, ex_uid: nil, sort: nil, keyword: nil,
+                 user_jwt: nil, idempotency_key: nil)
       request(
         uri:     'products',
         method:  :get,
@@ -20,6 +23,7 @@ module BootpayStore::Concern::Product
                    page:        page,
                    limit:       limit,
                    category_id: category_id,
+                   ex_uid:      ex_uid,
                    sort:        sort,
                    keyword:     keyword
                  }.compact
@@ -45,13 +49,16 @@ module BootpayStore::Concern::Product
     # @date: 2025-10-10
     # @date: 26-08-14 product_detail 과 uri·동작이 같다(차이는 user_jwt 인자 유무).
     #   중복이지만 기존 사용자가 있을 수 있어 제거하지 않는다 — 신규 코드는 product_detail 을 쓸 것.
-    def lookup_product(product_id:, idempotency_key: nil)
+    # @date: 26-08-26 user_jwt 를 여기에도 추가했다. 매뉴얼이 GET /v1/products/:id 에 user_jwt 를
+    #   안내하는데 이 메서드만 헤더를 안 보내 회원 컨텍스트 조회가 안 됐다. 이제 product_detail 과 동작이 같다.
+    def lookup_product(product_id:, user_jwt: nil, idempotency_key: nil)
       request(
         uri:     "products/#{product_id}",
         method:  :get,
         headers: {
-          'Idempotency-Key' => idempotency_key.presence || SecureRandom.uuid,
-        }
+          'Idempotency-Key'  => idempotency_key.presence || SecureRandom.uuid,
+          'Bootpay-User-JWT' => user_jwt
+        }.compact
       )
     end
 

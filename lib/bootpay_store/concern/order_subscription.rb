@@ -8,8 +8,11 @@ module BootpayStore::Concern::OrderSubscription
     #   `params[:limit].presence || 20` 으로 이미 받고 있었는데 SDK 가 안 보내고 있었다.
     #   기본값 20 은 서버 기본과 같아 기존 호출 결과가 바뀌지 않는다.
     #   ⚠️ 날짜 키는 search_date_from/to (또는 s_at/e_at). orders 의 css_at/cse_at 와 다르다.
+    # @date: 26-08-26 order_number 인자 추가. 서버(#index)가 params[:order_number] 로 주문번호 역조회를
+    #   지원하는데 SDK 에 인자가 없어 주문번호로 구독을 찾을 수 없었다.
     def order_subscriptions(page: 1, limit: 20, keyword: nil, search_date_from: nil, search_date_to: nil,
-                            request_type: nil, user_group_id: nil, status: nil, user_id: nil, idempotency_key: nil)
+                            request_type: nil, user_group_id: nil, status: nil, user_id: nil,
+                            order_number: nil, idempotency_key: nil)
       request(
         uri:     'order_subscriptions',
         method:  :get,
@@ -26,7 +29,8 @@ module BootpayStore::Concern::OrderSubscription
                    request_type:     request_type,
                    user_group_id:    user_group_id,
                    status:           status,
-                   user_id:          user_id
+                   user_id:          user_id,
+                   order_number:     order_number
                  }.compact
       )
     end
@@ -54,12 +58,15 @@ module BootpayStore::Concern::OrderSubscription
     # 즉시 다시 계산되고, 이후 회차도 이 금액으로 만들어진다. 이미 결제된 회차는 그대로다.
     # 0 이하는 받지 않는다. 특정 회차만 가감하려면 order_subscription_adjustment_create 를 쓴다.
     # (관리자 화면의 금액 변경과 같은 구현을 탄다) (@date: 26-08-24)
+    #
+    # memo 는 변경이력(SUBSCRIPTION_ACTION_UPDATE)에 남길 사유다. 서버가 읽고 있었는데
+    # SDK 에 인자가 없었다. (@date: 26-08-26)
     def order_subscription_update(order_subscription_id:, product_id: nil, product_option_id: nil,
                                   order_name: nil, total_subscription_duration: nil, quantity: nil,
                                   address_id: nil, username: nil, phone: nil, email: nil,
                                   use_free_trial: nil, free_trial_day: nil,
                                   service_start_at: nil, service_end_at: nil, price: nil,
-                                  idempotency_key: nil)
+                                  memo: nil, idempotency_key: nil)
       request(
         uri:     "order_subscriptions/#{order_subscription_id}",
         method:  :put,
@@ -81,7 +88,8 @@ module BootpayStore::Concern::OrderSubscription
                    free_trial_day:              free_trial_day,
                    service_start_at:            service_start_at,
                    service_end_at:              service_end_at,
-                   price:                       price
+                   price:                       price,
+                   memo:                        memo
                  }.compact
       )
     end
