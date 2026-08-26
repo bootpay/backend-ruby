@@ -128,7 +128,10 @@ module BootpayStore::Concern::User
     # 회원 목록 정보를 가져온다
     # Comment by GOSOMI
     # @date: 2025-06-16
-    def users(member_type: nil, keyword: nil, page: 1, limit: 20, idempotency_key: nil)
+    # @date: 26-08-26 회원등급 필터 키 정정. 서버(v1/users_controller#index)가 읽는 이름은
+    #   membership_type 인데 SDK 는 member_type 을 보내고 있어 등급 필터가 조용히 무시됐다
+    #   (에러 없이 전체 목록이 돌아온다). 기존 호출 호환을 위해 member_type 인자는 남기고 별칭으로 매핑한다.
+    def users(membership_type: nil, member_type: nil, keyword: nil, page: 1, limit: 20, idempotency_key: nil)
       request(
         uri:     'users',
         method:  :get,
@@ -138,10 +141,10 @@ module BootpayStore::Concern::User
         },
         params:
                  {
-                   member_type: member_type,
-                   keyword:     keyword,
-                   page:        page,
-                   limit:       limit
+                   membership_type: membership_type.presence || member_type,
+                   keyword:         keyword,
+                   page:            page,
+                   limit:           limit
                  }.compact
       )
     end
