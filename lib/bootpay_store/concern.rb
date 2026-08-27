@@ -1,5 +1,12 @@
 module BootpayStore
   module Concern
+    require_relative 'concern/alimtalk_message'
+    require_relative 'concern/alimtalk_official'
+    require_relative 'concern/alimtalk_optout'
+    require_relative 'concern/alimtalk_send'
+    require_relative 'concern/alimtalk_sender'
+    require_relative 'concern/alimtalk_template'
+    require_relative 'concern/alimtalk_webhook'
     require_relative 'concern/invoice'
     require_relative 'concern/mall_setting'
     require_relative 'concern/order'
@@ -14,6 +21,13 @@ module BootpayStore
     require_relative 'concern/store'
     require_relative 'concern/webhook'
 
+    include AlimtalkMessage
+    include AlimtalkOfficial
+    include AlimtalkOptout
+    include AlimtalkSend
+    include AlimtalkSender
+    include AlimtalkTemplate
+    include AlimtalkWebhook
     include Invoice
     include MallSetting
     include Order
