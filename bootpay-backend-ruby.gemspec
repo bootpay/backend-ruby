@@ -13,8 +13,15 @@ Gem::Specification.new do |spec|
   spec.license     = "MIT"
   # Specify which files should be added to the gem when it is released.
   # The `git ls-files -z` loads the files in the RubyGem that have been added into git.
+  # ⚠️ 루트의 tests_*.rb / *.gem 도 제외한다 — 종전 규칙은 test/·spec/·features/ **디렉터리**만
+  #    걸러서 루트에 있던 tests_basic_auth_product_info.rb 가 gem 에 실려 나갔다.
+  #    그 파일에는 dev Commerce secret_key 가 하드코딩돼 있었다 (26-09-02).
   spec.files         = Dir.chdir(File.expand_path(__dir__)) do
-    `git ls-files -z`.split("\x0").reject { |f| f.match(%r{\A(?:test|spec|features)/}) }
+    `git ls-files -z`.split("\x0").reject do |f|
+      f.match(%r{\A(?:test|spec|features)/}) ||
+        f.match(%r{\A(?:tests?_.*\.rb|.*\.gem)\z}) ||
+        f.match(%r{\A\.env})
+    end
   end
   spec.bindir        = "exe"
   spec.executables   = spec.files.grep(%r{\Aexe/}) { |f| File.basename(f) }
