@@ -1,32 +1,4 @@
 
-> ## ⚠️ 이 브랜치는 더 이상 개발되지 않습니다 — `bootpay-backend-ruby` 로 이전해 주세요
->
-> 이 `main` 브랜치는 **`bootpay`** gem(최신 1.2.0, 2026-05-14)의 소스이고, 여기서 멈춰 있습니다.
-> 현재 개발은 **[`2-x-development`](https://github.com/bootpay/backend-ruby/tree/2-x-development)**
-> 브랜치에서 이어지며 **[`bootpay-backend-ruby`](https://rubygems.org/gems/bootpay-backend-ruby)**
-> gem 으로 배포됩니다.
->
-> ```ruby
-> # Gemfile
-> gem 'bootpay-backend-ruby'
-> ```
-> ```bash
-> $ gem install bootpay-backend-ruby
-> ```
->
-> **`bootpay-backend-ruby` 에만 있는 것**
->
-> * 카카오 알림톡 v1 API 35종 (발송·발송내역·공식 템플릿·자체 템플릿·발신프로필·수신거부·웹훅)
-> * Commerce store API (주문·정기구독·상품·청구서·회원/그룹·몰 설정 등)
-> * 내부용 storage API
-> * 다른 언어 SDK(NodeJS·Java·Python·PHP·Go·.NET)와 동기화되는 자동 파이프라인 대상
->
-> **⚠️ 드롭인 교체가 아닙니다.** 두 계보는 파일 구조가 다르므로 `require` 경로와 클래스가 바뀝니다.
-> 이전 방법은 [`2-x-development` 의 README](https://github.com/bootpay/backend-ruby/blob/2-x-development/README.md)
-> 를 참고하세요.
->
-> 기존 `bootpay` gem 을 쓰던 코드는 그대로 동작합니다. 다만 신규 기능은 추가되지 않습니다.
-
 ## Bootpay Ruby Server Side Library
 부트페이 공식 Ruby 라이브러리 입니다 (서버사이드 용)
 
@@ -56,8 +28,6 @@ Ruby 언어로 작성된 어플리케이션, 프레임워크 등에서 사용가
 
 ## Gem으로 설치하기 
 
-> ℹ️ 신규 프로젝트는 위 안내대로 **`bootpay-backend-ruby`** 를 쓰세요. 아래는 이 브랜치(`bootpay` gem) 기준입니다.
-
 
 ```ruby
 gem 'bootpay'
@@ -71,7 +41,7 @@ Gemfile에 위 라인을 추가하고, 아래 라인으로 인스톨 합니다.
 
 또는 아래 문장을 통해 바로 설치할 수 있습니다:
 
-    $ gem install bootpay
+    $ gem install backend-ruby
 
 #
 ## 환경변수 설정
