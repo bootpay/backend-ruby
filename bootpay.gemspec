@@ -3,14 +3,21 @@
 require_relative "lib/version"
 
 Gem::Specification.new do |spec|
-  spec.name    = "bootpay-backend-ruby"
-  spec.version = Bootpay::V2_VERSION
+  spec.name    = "bootpay"
+  spec.version = Bootpay::VERSION
   spec.authors = ["gosomi"]
   spec.email   = ["gosomi@bootpay.co.kr"]
 
   spec.summary     = "Bootpay Ruby REST Client"
   spec.description = "부트페이 공식 Ruby 서버사이드 모듈입니다. 결제조회, 취소, 빌링키 결제시 사용됩니다."
   spec.license     = "MIT"
+  spec.homepage    = "https://www.bootpay.ai"
+  spec.required_ruby_version = ">= 2.6.0"
+
+  spec.metadata["homepage_uri"]    = spec.homepage
+  spec.metadata["source_code_uri"] = "https://github.com/bootpay/backend-ruby/tree/2-x-development"
+  spec.metadata["changelog_uri"]   = "https://github.com/bootpay/backend-ruby/blob/2-x-development/CHANGELOG.md"
+  spec.metadata["documentation_uri"] = "https://developers.bootpay.ai"
   # Specify which files should be added to the gem when it is released.
   # The `git ls-files -z` loads the files in the RubyGem that have been added into git.
   # ⚠️ 루트의 tests_*.rb / *.gem 도 제외한다 — 종전 규칙은 test/·spec/·features/ **디렉터리**만

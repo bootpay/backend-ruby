@@ -1,7 +1,27 @@
 ### 3.0.0
 
 2025-03 부터 alpha.1~alpha.4 로 쌓아 온 3.0 라인을 **정식 릴리스**한다.
-`gem install bootpay-backend-ruby` 로 바로 설치된다 (2.0.5 → 3.0.0).
+
+#### ⚠️ gem 이름이 `bootpay` 로 바뀐다
+
+이 버전부터 **정본 gem 은 `bootpay`** 다. 같은 코드가 `bootpay-backend-ruby` 3.0.0 으로도
+배포돼 있지만, **앞으로 신규 릴리스는 `bootpay` 로만 나간다.**
+
+```ruby
+# Gemfile
+gem 'bootpay', '~> 3.0'
+```
+```bash
+$ gem install bootpay
+```
+
+- **`bootpay-backend-ruby` 사용자**: `require 'bootpay-backend-ruby'` 는 계속 동작한다
+  (호환 진입점을 남겨 두었다). Gemfile 만 `gem 'bootpay'` 로 바꾸면 코드 변경은 없다.
+  기존 `bootpay-backend-ruby` 버전들은 RubyGems 에 그대로 남지만 갱신되지 않는다.
+- **`bootpay` 1.x 사용자**: ⚠️ 1.x 와 3.0.0 은 **계보가 다르다.** 진입 클래스부터 바뀐다
+  (`Bootpay::Api` → `Bootpay::RestClient`). 1.x 를 계속 쓰려면 `gem 'bootpay', '~> 1.2'`
+  로 버전을 고정하면 된다. 두 계보는 파일 경로가 겹치지 않는다.
+- `Bootpay::VERSION` 이 정본 상수다. `Bootpay::V2_VERSION` 은 같은 값을 가리키는 별칭으로 남는다.
 
 #### 추가
 - **알림톡 v1 API 35종** — 발송·발송내역·공식 카탈로그·자체 템플릿·발신프로필·수신거부·알림톡 웹훅 7개 모듈

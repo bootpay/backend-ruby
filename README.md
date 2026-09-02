@@ -38,9 +38,13 @@ Ruby 언어로 작성된 어플리케이션, 프레임워크 등에서 사용가
 
 ## Gem으로 설치하기
 
+> ℹ️ **3.0.0 부터 gem 이름이 `bootpay` 입니다.** 구 이름 `bootpay-backend-ruby` 는 신규 릴리스가
+> 나가지 않습니다. 쓰시던 분은 Gemfile 만 바꾸면 되고 `require 'bootpay-backend-ruby'` 도 그대로 동작합니다.
+>
+> `bootpay` **1.x 는 별개 계보**입니다. 1.x 를 계속 쓰시려면 `gem 'bootpay', '~> 1.2'` 로 고정하세요.
 
 ```ruby
-gem 'bootpay-backend-ruby'
+gem 'bootpay', '~> 3.0'
 ```
 
 Gemfile에 위 라인을 추가하고, 아래 라인으로 인스톨 합니다.
@@ -51,14 +55,14 @@ $ bundle install
 
 또는 아래 문장을 통해 바로 설치할 수 있습니다:
 ```ruby
-$ gem install bootpay-backend-ruby
+$ gem install bootpay
 ```
 
 ## 사용하기
 
 ```ruby
 
-require 'bootpay-backend-ruby'
+require 'bootpay'
 
 @api = Bootpay::RestClient.new(
   application_id: '5b8f6a4d396fa665fdc2b5ea',
