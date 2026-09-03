@@ -17,17 +17,17 @@ module Bootpay::Concern::Token
       response
     end
 
-    # 둘다 겸하는 경우 우회함수
+    # client_key/secret_key 를 쓰면 Basic Auth 라 토큰 발급이 필요 없다.
+    # 그 경우 요청 없이 성공 응답을 돌려주고, application_id/private_key 면 실제로 토큰을 받는다.
+    #
+    # ⚠️ 반환 타입은 항상 Bootpay::Response 다. 종전에는 client_key 분기에서 success? 만 정의된
+    #    맨 Object 를 돌려줘, 다른 메서드처럼 `.data` 를 부르면 NoMethodError 로 죽었다.
     # Comment by GOSOMI
     # @date: 2026-03-11
     def basic_or_request_access_token
-      if @use_client_key
-        Object.new.tap do |o|
-          o.define_singleton_method(:success?) { true }
-        end
-      else
-        request_access_token
-      end
+      return Bootpay::Response.new(true, {}) if @use_client_key
+
+      request_access_token
     end
   end
 end
