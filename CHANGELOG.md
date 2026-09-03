@@ -1,3 +1,19 @@
+### 3.0.1
+
+`bootpay` 이름으로 낸 3.0.0 을 실제 배포본으로 점검하다 나온 수정 2건. **API 변경 없음.**
+
+- `basic_or_request_access_token` 이 항상 `Bootpay::Response` 를 돌려준다.
+  client_key/secret_key 를 쓰면 Basic Auth 라 토큰 요청이 필요 없는데, 그 분기에서
+  `success?` 만 정의된 **맨 `Object`** 를 돌려주고 있었다. 다른 메서드처럼 `.data` 를 부르면
+  `NoMethodError` 로 죽는다. `success?` 동작은 그대로다(둘 다 true).
+- gemspec 의 `required_ruby_version` 제거. 3.0.0 에서 `>= 2.6.0` 으로 선언했는데 **근거 없는
+  추정값**이었다 — 실제 의존성 체인은 그보다 높은 Ruby 를 요구한다. 정확한 하한을 확인하기 전까지
+  잘못된 값을 박아 두는 대신 선언하지 않는다(3.0.0 이전과 같은 상태).
+- Gemfile 주석의 옛 gemspec 파일명 정정.
+
+검증(development, 읽기 전용): PG 토큰·Commerce 토큰·상품 조회·알림톡 수신거부/발신프로필 조회가
+모두 도메인 응답으로 성공. 알림톡 메서드 35개 로드 확인.
+
 ### 3.0.0
 
 2025-03 부터 alpha.1~alpha.4 로 쌓아 온 3.0 라인을 **정식 릴리스**한다.

@@ -12,7 +12,6 @@ Gem::Specification.new do |spec|
   spec.description = "부트페이 공식 Ruby 서버사이드 모듈입니다. 결제조회, 취소, 빌링키 결제시 사용됩니다."
   spec.license     = "MIT"
   spec.homepage    = "https://www.bootpay.ai"
-  spec.required_ruby_version = ">= 2.6.0"
 
   spec.metadata["homepage_uri"]    = spec.homepage
   spec.metadata["source_code_uri"] = "https://github.com/bootpay/backend-ruby/tree/2-x-development"
