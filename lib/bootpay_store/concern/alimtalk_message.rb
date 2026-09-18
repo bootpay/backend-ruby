@@ -1,7 +1,7 @@
 module BootpayStore::Concern::AlimtalkMessage
   extend ActiveSupport::Concern
 
-  # 알림톡 발송내역·집계 — GET /v1/alimtalk/messages 계열
+  # 알림톡 발송내역·집계 — GET /alimtalk/messages 계열
   #
   # **유료** 알림톡만 조회된다(무료 커머스 알림톡은 포함되지 않는다).
   # 상태는 벤더 결과 동기화로 확정되므로 접수 직후에는 requested 로 보인다.
@@ -9,7 +9,7 @@ module BootpayStore::Concern::AlimtalkMessage
   # @comment_by Claude (alfred)
   # @date: 26-08-27
   included do
-    # 발송내역 목록을 조회한다 (GET /v1/alimtalk/messages)
+    # 발송내역 목록을 조회한다 (GET /alimtalk/messages)
     # status: requested·success·failed·canceled
     # to: 수신번호(하이픈 무관, 정확 매칭) / ref_id: 발송 시 넘긴 멱등키
     # ⚠️ 기간 기본값은 최근 30일이고 최대 조회 폭은 92일이다 — 초과분은 거부하지 않고 시작일을 당겨 잘라낸다.
@@ -34,7 +34,7 @@ module BootpayStore::Concern::AlimtalkMessage
       )
     end
 
-    # 기간 집계를 조회한다 (GET /v1/alimtalk/messages/stats)
+    # 기간 집계를 조회한다 (GET /alimtalk/messages/stats)
     # 일자별 집계 원장에서 읽으므로 응답이 빠르다.
     # 응답: { period:, totals: { sent, success, failed, fallback, opted_out_hit, rejected, canceled, success_rate },
     #        daily: [...], billing: { billable_count, unit_price, fallback_count, ..., amount } }
@@ -52,7 +52,7 @@ module BootpayStore::Concern::AlimtalkMessage
       )
     end
 
-    # 단건 발송 결과를 조회한다 (GET /v1/alimtalk/messages/:receipt_id)
+    # 단건 발송 결과를 조회한다 (GET /alimtalk/messages/:receipt_id)
     # 실패 사유는 error_code·error_message 에 담긴다.
     # fallback_type 은 폴백이 꺼진 건이면 null, 켜진 건이면 LMS 다.
     # 다른 프로젝트의 건이거나 없으면 404(3025).

@@ -1,3 +1,12 @@
+### Unreleased
+
+- 알림톡 API(`alimtalk_*` 메서드 35종) 요청 호스트 변경 — `/alimtalk/*` 경로는 커머스 API(`api.bootapi.com/v1`)가
+  아니라 메시지 API(`message.bootapi.com`, 경로에 `/v1` 없음)로 보낸다. development 는 `dev-m.bootapi.com`,
+  stage 는 `stage-m.bootapi.com`. 경로·파라미터·응답은 그대로이며 메서드 시그니처 변경 없음.
+  옛 주소(`api.bootapi.com/v1/alimtalk/*`)는 410 으로 응답한다.
+- `BootpayStore::RestClient::MESSAGE_API` 상수와 `set_message_api_url(url)` 추가 — 알림톡 호스트만 따로 바꿀 수 있다.
+  그 외 API 는 기존처럼 `API` / `set_api_url` 을 쓴다.
+
 ### 3.0.1
 
 `bootpay` 이름으로 낸 3.0.0 을 실제 배포본으로 점검하다 나온 수정 2건. **API 변경 없음.**

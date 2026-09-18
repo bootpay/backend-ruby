@@ -1,7 +1,7 @@
 module BootpayStore::Concern::AlimtalkSend
   extend ActiveSupport::Concern
 
-  # 알림톡 발송 — POST /v1/alimtalk/send · /send/bulk · DELETE /send/:receipt_id
+  # 알림톡 발송 — POST /alimtalk/send · /send/bulk · DELETE /send/:receipt_id
   #
   # ⚠️ **실제로 카카오톡이 발송되고 과금된다. 샌드박스가 없다.**
   #
@@ -18,7 +18,7 @@ module BootpayStore::Concern::AlimtalkSend
   # @comment_by Claude (alfred)
   # @date: 26-08-27
   included do
-    # 단건 발송 (POST /v1/alimtalk/send)
+    # 단건 발송 (POST /alimtalk/send)
     # variables: { company_name: '부트페이몰', user_name: '홍길동' } 형태의 치환값
     # ref_id: 가맹점 발송 식별자 — **멱등 키**로 쓰인다
     # reserved_at: 예약 발송 시각(ISO8601). 생략하면 즉시 발송
@@ -45,7 +45,7 @@ module BootpayStore::Concern::AlimtalkSend
       )
     end
 
-    # 벌크 발송 (POST /v1/alimtalk/send/bulk) — 1요청 = N수신자
+    # 벌크 발송 (POST /alimtalk/send/bulk) — 1요청 = N수신자
     # recipients: [{ to: '01012345678', ref_id: 'bulk-0001', variables: { ... } }, ...]
     # ⚠️ 수신자 수만큼 실제 발송되고 과금된다.
     # - 쿼터를 넘으면 요청 시점에 **전체 거부**된다(3022) — 일부만 나가지 않는다.
@@ -70,7 +70,7 @@ module BootpayStore::Concern::AlimtalkSend
       )
     end
 
-    # 예약 발송을 취소한다 (DELETE /v1/alimtalk/send/:receipt_id)
+    # 예약 발송을 취소한다 (DELETE /alimtalk/send/:receipt_id)
     # 접수(READY) 상태의 예약 건만 취소할 수 있다 — 이미 전송에 들어갔으면 3023 이다.
     def alimtalk_send_cancel(receipt_id:)
       request(

@@ -4,6 +4,17 @@ module BootpayStore::Concern::Rest
   included do
     private
 
+    # 요청 경로에 맞는 API 기본 주소.
+    # @comment_by Claude (alfred)
+    # @date: 26-09-18
+    # 알림톡 API 는 26-09-18 부터 커머스 API(api.bootapi.com/v1)가 아니라 메시지 API(message.bootapi.com, /v1 없음)가 받는다.
+    #   경로·파라미터·응답은 그대로이고 호스트만 다르다 — 그래서 알림톡 메서드는 고치지 않고 여기서 주소만 가른다.
+    #   옛 주소(/alimtalk/*)는 410 으로 응답한다.
+    def api_base_url(uri)
+      table = uri.to_s.sub(%r{\A/}, '').start_with?('alimtalk') ? BootpayStore::RestClient::MESSAGE_API : BootpayStore::RestClient::API
+      table[@mode.to_sym]
+    end
+
     # HTTP Request 기본 Method
     # Comment by Gosomi
     # Date: 2021-05-21
@@ -19,7 +30,7 @@ module BootpayStore::Concern::Rest
         }.merge!(headers).compact
       ).send(
         method.to_sym,
-        [BootpayStore::RestClient::API[@mode.to_sym], uri].join('/'),
+        [api_base_url(uri), uri].join('/'),
         json:   payload,
         params: params
       )
@@ -54,7 +65,7 @@ module BootpayStore::Concern::Rest
         }.merge!(headers).compact
       ).send(
         method.to_sym,
-        [BootpayStore::RestClient::API[@mode.to_sym], uri].join('/'),
+        [api_base_url(uri), uri].join('/'),
         params: params
       )
       BootpayStore::Response.new(
@@ -86,7 +97,7 @@ module BootpayStore::Concern::Rest
           bootpay_sdk_type:    '300'
         }.merge!(headers).compact
       ).post(
-        [BootpayStore::RestClient::API[@mode.to_sym], uri].join('/'),
+        [api_base_url(uri), uri].join('/'),
         form: form
       )
       BootpayStore::Response.new(
