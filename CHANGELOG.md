@@ -1,5 +1,11 @@
 ### Unreleased
 
+- `alimtalk_send` / `alimtalk_send_bulk` 에 `webhook_url` 인자 추가(선택). 주면 그 건(bulk 는 요청 전체)의
+  발송 성공·실패·문자 대체발송·예약취소 웹훅이 **이 주소로만** 가고 프로젝트 웹훅 설정은 쓰이지 않는다.
+  `https` 만 허용하며 2,000자를 넘으면 `3028` 로 거부된다(bulk 는 요청 전체가 거부). 서명은 프로젝트
+  시크릿으로 하며, 시크릿만 필요하면 `alimtalk_webhook_rotate_secret` 으로 설정 없이 발급받을 수 있다.
+  ⚠️ 같은 `ref_id` 로 이미 접수·성공한 건을 다시 요청하면 기존 접수가 그대로 돌아와 새 주소는 무시된다.
+  기본값이 `nil` 이라 기존 호출은 그대로 동작한다.
 - 알림톡 API(`alimtalk_*` 메서드 35종) 요청 호스트 변경 — `/alimtalk/*` 경로는 커머스 API(`api.bootapi.com/v1`)가
   아니라 메시지 API(`message.bootapi.com`, 경로에 `/v1` 없음)로 보낸다. development 는 `dev-m.bootapi.com`,
   stage 는 `stage-m.bootapi.com`. 경로·파라미터·응답은 그대로이며 메서드 시그니처 변경 없음.

@@ -25,9 +25,14 @@ module BootpayStore::Concern::AlimtalkSend
     # fallback: 알림톡 실패 시 문자(LMS) 대체발송 여부.
     #   ⚠️ **미지정(nil)과 false 는 다르다** — nil 이면 프로젝트 기본값을 따르고, false 는 명시적으로 끈다.
     #   켜면 발신번호가 등록돼 있어야 하며 없으면 3030 으로 거부된다. 대체 문자에는 수신거부 링크가 자동 포함된다.
+    # webhook_url: 이 건의 결과 웹훅을 받을 주소(26-09-21).
+    #   주면 발송 성공·실패·문자 대체발송·예약취소 웹훅이 **이 주소로만** 간다(프로젝트 웹훅 설정은 쓰이지 않는다).
+    #   https 만 허용하며 2,000자를 넘으면 3028 로 거부된다. 서명은 프로젝트 시크릿으로 하고,
+    #   시크릿만 필요하면 alimtalk_webhook_rotate_secret 으로 설정 없이 발급받을 수 있다.
+    #   ⚠️ 같은 ref_id 로 이미 접수·성공한 건을 다시 요청하면 기존 접수가 그대로 돌아와 새 주소는 무시된다.
     # 응답: { receipt_id:, ref_id:, to:, status: } — 접수 직후 status 는 requested
     def alimtalk_send(template_code:, to:, variables: nil, ref_id: nil, fallback: nil,
-                      reserved_at: nil, sender_key: nil, user_id: nil)
+                      reserved_at: nil, sender_key: nil, user_id: nil, webhook_url: nil)
       request(
         uri:     'alimtalk/send',
         method:  :post,
@@ -40,7 +45,8 @@ module BootpayStore::Concern::AlimtalkSend
           fallback:      fallback, # compact 은 nil 만 걷어내므로 false 는 그대로 전달된다
           reserved_at:   reserved_at,
           sender_key:    sender_key,
-          user_id:       user_id
+          user_id:       user_id,
+          webhook_url:   webhook_url
         }.compact
       )
     end
@@ -52,9 +58,11 @@ module BootpayStore::Concern::AlimtalkSend
     # - 개별 수신자의 실패는 건별 rejected 로 표시되고 나머지는 정상 발송된다.
     # - 수신거부 번호는 skipped 이며 **과금되지 않고 발송 기록도 만들지 않는다**.
     # - fallback 은 요청 단위로 한 번만 판정한다 — 발신번호가 없으면 요청 전체가 3030 으로 거부된다.
+    # - webhook_url 도 요청 단위 하나다 — 이 요청으로 나간 모든 수신자 건의 결과 웹훅이 그 주소로 간다.
+    #   형식이 틀리면(https 아님·2,000자 초과) 요청 전체가 3028 로 거부된다(26-09-21).
     # 응답: { count:, requested:, skipped:, rejected:, receipts: [...] }
     def alimtalk_send_bulk(template_code:, recipients:, fallback: nil, reserved_at: nil,
-                           sender_key: nil, user_id: nil)
+                           sender_key: nil, user_id: nil, webhook_url: nil)
       request(
         uri:     'alimtalk/send/bulk',
         method:  :post,
@@ -65,7 +73,8 @@ module BootpayStore::Concern::AlimtalkSend
           fallback:      fallback,
           reserved_at:   reserved_at,
           sender_key:    sender_key,
-          user_id:       user_id
+          user_id:       user_id,
+          webhook_url:   webhook_url
         }.compact
       )
     end
