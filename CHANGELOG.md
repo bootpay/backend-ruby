@@ -1,5 +1,18 @@
 ### Unreleased
 
+- 커머스 게시판 API 28종 SDK 메서드 추가 — FAQ · 공지사항 · 1:1 문의 · 상품문의(Q&A) · 상품평.
+  `BootpayStore::RestClient` 에 아래 메서드가 생긴다.
+  - FAQ(5): `faqs` `faq_detail` `faq_create` `faq_update` `faq_delete`
+  - 공지사항(5): `notices` `notice_detail` `notice_create` `notice_update` `notice_delete`
+  - 1:1 문의(6): `inquiries` `inquiry_detail` `inquiry_create` `inquiry_update` `inquiry_delete` `inquiry_answer`
+  - 상품문의(6): `product_qnas` `product_qna_detail` `product_qna_create` `product_qna_update` `product_qna_delete` `product_qna_answer`
+  - 상품평(6): `reviews` `review_detail` `review_create` `review_update` `review_delete` `review_reply`
+  공통 규칙: 목록·단건·삭제 조회 계열은 `supervisor: true` 를 주면 운영자 모드(`Bootpay-Role: supervisor`)로
+  비공개·숨김 글까지 다루고, 기본값은 고객 모드다. 등록·수정 계열 중 `faq_*` · `notice_*` 와
+  `*_answer` / `review_reply` 는 운영자 전용이다. 회원 대상 메서드는 `user_id` · `login_id` · `user_jwt`
+  중 하나로 회원을 지정하며, `product_qna_create` 는 몰이 허용할 때 `guest_name` + `guest_password` 로
+  비회원 작성도 된다. 모든 메서드가 `idempotency_key` 를 받고 안 주면 UUID 를 자동 생성한다.
+  기존 상품 상세의 공개 상품평 목록(`GET /v1/products/:id/reviews`)은 그대로 쓴다.
 - `alimtalk_send` / `alimtalk_send_bulk` 에 `webhook_url` 인자 추가(선택). 주면 그 건(bulk 는 요청 전체)의
   발송 성공·실패·문자 대체발송·예약취소 웹훅이 **이 주소로만** 가고 프로젝트 웹훅 설정은 쓰이지 않는다.
   `https` 만 허용하며 2,000자를 넘으면 `3028` 로 거부된다(bulk 는 요청 전체가 거부). 서명은 프로젝트
