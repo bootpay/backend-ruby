@@ -1,4 +1,4 @@
-### Unreleased
+### 3.1.0
 
 - 커머스 게시판 API 28종 SDK 메서드 추가 — FAQ · 공지사항 · 1:1 문의 · 상품문의(Q&A) · 상품평.
   `BootpayStore::RestClient` 에 아래 메서드가 생긴다.
