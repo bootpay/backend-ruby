@@ -31,15 +31,18 @@ module BootpayStore::Concern::AlimtalkWebhook
     #   300 발송 접수(기본 미구독) / 301 전달 성공 / 302 전달 실패 / 303 예약 취소 /
     #   304 문자(LMS) 대체발송 전환 / 310 검수 승인 / 311 검수 반려 / 320 수신거부 등록(기본 미구독)
     # events 를 비우면 기본 구독셋(301·302·303·304·310·311)이 적용된다.
-    def alimtalk_webhook_update(url: nil, events: nil, enabled: nil)
+    # retry_count: 건별 재시도 횟수(1~25, 기본 10). 범위 밖이면 11304. 생략하면 기존 값을 유지한다.
+    #   @date: 26-09-30
+    def alimtalk_webhook_update(url: nil, events: nil, enabled: nil, retry_count: nil)
       request(
         uri:     'alimtalk/webhook',
         method:  :put,
         headers: { 'Bootpay-Role' => 'user' },
         payload: {
-          url:     url,
-          events:  events,
-          enabled: enabled
+          url:         url,
+          events:      events,
+          enabled:     enabled,
+          retry_count: retry_count
         }.compact
       )
     end
