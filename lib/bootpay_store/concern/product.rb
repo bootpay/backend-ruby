@@ -67,6 +67,8 @@ module BootpayStore::Concern::Product
     # @date: 26-08-14
     # images 가 있으면 multipart, 없으면 JSON 으로 보낸다.
     # 컨트롤러가 읽는 필드는 _product_params 참조 — 여기 명시하지 않은 값도 attrs 로 그대로 전달된다.
+    # @date: 26-11-02 Bootpay-Role manager → user. 서버 스코프는 user:product_create/update/delete/status 뿐이라
+    #   manager 로 보내면 manager:product_* 를 찾다 401 API_ROLE_NOT_SUPPORT(-50) 로 막혔다 (수정·삭제·상태변경도 같다)
     def product_create(name:, display_price: nil, desc: nil, content: nil, category_id: nil,
                        type: nil, stock: nil, status_sale: nil, status_display: nil,
                        use_subscription: nil, subscription_setting_id: nil,
@@ -88,7 +90,7 @@ module BootpayStore::Concern::Product
 
       headers = {
         'Idempotency-Key' => idempotency_key.presence || SecureRandom.uuid,
-        'Bootpay-Role'    => 'manager'
+        'Bootpay-Role'    => 'user'
       }
 
       if images.present?
@@ -104,6 +106,7 @@ module BootpayStore::Concern::Product
     # @comment_by Claude (alfred)
     # @date: 26-08-14
     # 바뀐 값만 보내면 된다. category_id 는 키 존재 여부로 '해제 의사'를 판별하므로 주의.
+    # @date: 26-11-02 Bootpay-Role manager → user (product_create 주석 참고)
     def product_update(product_id:, name: nil, display_price: nil, desc: nil, content: nil,
                        category_id: nil, stock: nil, status_sale: nil, status_display: nil,
                        save_by: nil, idempotency_key: nil, **attrs)
@@ -112,7 +115,7 @@ module BootpayStore::Concern::Product
         method:  :put,
         headers: {
           'Idempotency-Key' => idempotency_key.presence || SecureRandom.uuid,
-          'Bootpay-Role'    => 'manager'
+          'Bootpay-Role'    => 'user'
         },
         payload: {
                    name:           name,
@@ -131,13 +134,14 @@ module BootpayStore::Concern::Product
     # 상품을 삭제한다 (DELETE /v1/products/:id)
     # @comment_by Claude (alfred)
     # @date: 26-08-14
+    # @date: 26-11-02 Bootpay-Role manager → user (product_create 주석 참고)
     def product_delete(product_id:, idempotency_key: nil)
       request(
         uri:     "products/#{product_id}",
         method:  :delete,
         headers: {
           'Idempotency-Key' => idempotency_key.presence || SecureRandom.uuid,
-          'Bootpay-Role'    => 'manager'
+          'Bootpay-Role'    => 'user'
         }
       )
     end
@@ -146,6 +150,7 @@ module BootpayStore::Concern::Product
     # @comment_by Claude (alfred)
     # @date: 26-08-14
     # 컨트롤러 _status_params 기준. 재고(stock)는 여기가 아니라 product_update 로 바꾼다.
+    # @date: 26-11-02 Bootpay-Role manager → user (product_create 주석 참고)
     def product_status(product_id:, status_sale: nil, status_display: nil, status_frozen: nil,
                        status_review: nil, use_display_period: nil, display_start_at: nil, display_end_at: nil,
                        use_sale_period: nil, sale_start_at: nil, sale_end_at: nil,
@@ -155,7 +160,7 @@ module BootpayStore::Concern::Product
         method:  :put,
         headers: {
           'Idempotency-Key' => idempotency_key.presence || SecureRandom.uuid,
-          'Bootpay-Role'    => 'manager'
+          'Bootpay-Role'    => 'user'
         },
         payload: {
                    status_sale:        status_sale,
