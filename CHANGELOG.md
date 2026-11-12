@@ -1,5 +1,19 @@
-### Unreleased
+### 3.2.0
 
+- 뱅크알람 입금대기 API 5종 추가 — `deposit_accounts` · `deposit_webhook_secret` · `deposit_create` ·
+  `deposit_detail` · `deposit_cancel` (`/v1/sdk/deposits`). 가맹점 서버가 입금 전 주문을 등록하면 판매자 폰의
+  입금 알림 중 금액·입금자명이 맞는 것을 뱅크알람이 연결해 입금 웹훅으로 알린다.
+  같은 `merchant_order_id` 로 금액·입금자명·계좌가 같은 재호출은 기존 주문을 돌려주고, 하나라도 다르면 `18110`.
+  `deposit_webhook_secret` 은 부를 때마다 비밀값이 바뀌고 원문은 그 응답에서만 온다.
+  `deposit_id` 는 가맹점 주문번호 또는 부트페이 주문번호이며 경로 인코딩한다. 웹훅 이벤트 상수
+  `BootpayStore::Concern::Deposit::BANK_DEPOSIT_WEBHOOK_EVENT_*`(400~407).
+- 입점사 지급 요청 API 3종 추가 — `payout_create` · `payout_detail` · `payouts` (`/v1/sdk/payouts`).
+  가맹점 지정 금액(`manual`) 정산 쇼핑몰이 입점사·지급액을 정해 지급 원장에 등록하고, 송금은 부트페이 배치가 한다.
+  같은 `merchant_payout_id` 재호출은 처음 항목을 돌려준다. `payouts` 의 응답 `data` 는 항목 배열이다(전체 개수 없음).
+- 위 8개는 전부 supervisor scope 라 `Bootpay-Role: supervisor` 로 보내며, `idempotency_key` 를 안 주면 UUID 를 생성한다.
+  nil 인자는 본문·쿼리에서 뺀다(`deposit_create` 의 `notify` 안쪽 포함, `false` 는 유지).
+- `product_create` · `product_update` · `product_delete` · `product_status` 의 `Bootpay-Role` 을 `manager` → `user` 로.
+  서버 스코프가 `user:product_*` 뿐이라 manager 로 보내면 401 `API_ROLE_NOT_SUPPORT(-50)` 였다.
 - `alimtalk_webhook_update` 에 `retry_count` 인자 추가(선택). 웹훅 전달 실패 시 건별 재시도 횟수를
   `1`~`25` 사이로 정한다(기본 `10`). 범위 밖 값을 주면 `11304` 로 거부된다. 생략하면 기존에 저장된
   값을 그대로 유지하므로 기존 호출은 변화 없이 동작한다.
