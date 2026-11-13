@@ -7,7 +7,7 @@ RSpec.describe Bootpay::RestClient do
       threads << Thread.new do
         puts "thread #{i} start"
         loop do
-          response = HTTP.get('http://192.168.55.76:10000')
+          response = HTTP.get(ENV['BP_THREAD_TEST_URL'] || 'http://localhost:10000')
           puts "status: #{response.status.to_i}, headers: #{response.headers.map { |k, v| [k, v].join('=') }.join(', ')}"
           sleep(2)
         end

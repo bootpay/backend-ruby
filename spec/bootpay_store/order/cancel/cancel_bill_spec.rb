@@ -4,7 +4,7 @@ RSpec.describe BootpayStore::RestClient do
   it "order cancel bill" do
     api   = BootpayStore::RestClient.new(
       server_key:  '644642d87ae4e600391a7cd3',
-      private_key: 'tnNiygbEITl62dmDr9zf3uJFMFtT+R3AuB2eEnDqR4M=',
+      private_key: ENV['BOOTPAY_PRIVATE_KEY'],
       mode:        'development'
     )
     token = api.request_access_token

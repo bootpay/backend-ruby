@@ -13,7 +13,7 @@ CURRENT_ENV = 'production'
 
 ### 전체 테스트 실행
 ```bash
-cd /Users/taesupyoon/bootpay/server/sdk/ruby
+cd backend-ruby  # 리포 루트
 bundle exec rspec spec/bootpay/pg/
 ```
 

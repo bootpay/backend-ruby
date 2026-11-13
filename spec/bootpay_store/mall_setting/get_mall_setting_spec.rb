@@ -3,8 +3,8 @@
 RSpec.describe BootpayStore::RestClient do
   it "get mall setting" do
     api      = BootpayStore::RestClient.new(
-      client_key: 'QIzXk4M3EeD-6B1GTfmGHA',
-      secret_key: '***REMOVED***',
+      client_key: ENV['BP_CLIENT_KEY'],
+      secret_key: ENV['BP_SECRET_KEY'],
       mode:       'development'
     )
     response = api.get_mall_setting

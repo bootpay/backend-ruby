@@ -65,8 +65,8 @@ $ gem install bootpay
 require 'bootpay'
 
 @api = Bootpay::RestClient.new(
-  application_id: '5b8f6a4d396fa665fdc2b5ea',
-  private_key:    '***REMOVED***',
+  application_id: ENV['BOOTPAY_APPLICATION_ID'],
+  private_key:    ENV['BOOTPAY_PRIVATE_KEY'],
 ) 
 
 response = @api.request_access_token
@@ -83,8 +83,8 @@ end
 발급된 토큰은 30분간 유효하며, 최초 발급일로부터 30분이 지날 경우 토큰 발급 함수를 재호출 해주셔야 합니다.
 ```ruby 
 api = Bootpay::RestClient.new(
-   application_id: '59bfc738e13f337dbd6ca48a',
-   private_key:    '***REMOVED***'
+   application_id: ENV['BOOTPAY_APPLICATION_ID'],
+   private_key:    ENV['BOOTPAY_PRIVATE_KEY']
 )
     
 api.request_access_token.success?
@@ -95,8 +95,8 @@ api.request_access_token.success?
    승인/취소된 결제건을 조회합니다. 위변조된 결제인지 검증하기 위해 사용됩니다.
 ```ruby  
 api = Bootpay::RestClient.new(
-      application_id: '59bfc738e13f337dbd6ca48a',
-      private_key:    '***REMOVED***'
+      application_id: ENV['BOOTPAY_APPLICATION_ID'],
+      private_key:    ENV['BOOTPAY_PRIVATE_KEY']
 )
 
 if api.request_access_token.success?
@@ -120,8 +120,8 @@ price를 지정하지 않으면 전액취소 됩니다.
 간혹 개발사에서 실수로 여러번 부분취소를 보내서 여러번 취소되는 경우가 있기때문에, 부트페이에서는 부분취소 중복 요청을 막기 위해 cancel_id 라는 필드를 추가했습니다. cancel_id를 지정하시면, 해당 건에 대해 중복 요청방지가 가능합니다.
 ```ruby 
 api = Bootpay::RestClient.new(
-   application_id: '59bfc738e13f337dbd6ca48a',
-   private_key:    '***REMOVED***'
+   application_id: ENV['BOOTPAY_APPLICATION_ID'],
+   private_key:    ENV['BOOTPAY_PRIVATE_KEY']
 )
 if api.request_access_token.success?
   response = api.cancel_payment(
@@ -140,8 +140,8 @@ REST API 방식으로 고객의 카드 정보를 전달하여, PG사로부터 �
 * 비인증 정기결제(REST API) 방식을 지원하는 PG사만 사용 가능합니다.
 ```ruby 
 api = Bootpay::RestClient.new(
-   application_id: '59bfc738e13f337dbd6ca48a',
-   private_key:    '***REMOVED***'
+   application_id: ENV['BOOTPAY_APPLICATION_ID'],
+   private_key:    ENV['BOOTPAY_PRIVATE_KEY']
 )
 
 if api.request_access_token.success?
@@ -198,8 +198,8 @@ print "\n\n" + res2.data.to_json
 
 ```ruby  
 api = Bootpay::RestClient.new(
-   application_id: '59bfc738e13f337dbd6ca48a',
-   private_key:    '***REMOVED***'
+   application_id: ENV['BOOTPAY_APPLICATION_ID'],
+   private_key:    ENV['BOOTPAY_PRIVATE_KEY']
 )
 if api.request_access_token.success?
   response = api.request_subscribe_card_payment(
@@ -221,8 +221,8 @@ end
 원하는 시점에 4-1로 결제 승인 요청을 보내도 되지만, 빌링키 발급 이후에 바로 결제 예약 할 수 있습니다. (빌링키당 최대 10건)
 ```ruby  
 api = Bootpay::RestClient.new(
-   application_id: '59bfc738e13f337dbd6ca48a',
-   private_key:    '***REMOVED***'
+   application_id: ENV['BOOTPAY_APPLICATION_ID'],
+   private_key:    ENV['BOOTPAY_PRIVATE_KEY']
 ) 
 if api.request_access_token.success?
   response = api.subscribe_payment_reserve( 
@@ -245,8 +245,8 @@ end
 예약시 응답받은 reserveId로 예약된 건을 조회합니다.
 ```ruby  
 api = Bootpay::RestClient.new(
-   application_id: '59bfc738e13f337dbd6ca48a',
-   private_key:    '***REMOVED***'
+   application_id: ENV['BOOTPAY_APPLICATION_ID'],
+   private_key:    ENV['BOOTPAY_PRIVATE_KEY']
 ) 
 if api.request_access_token.success?
   reserve_id = "628c0d0d1fc19202e5ef2866"
@@ -260,8 +260,8 @@ if api.request_access_token.success?
 예약시 응답받은 reserveId로 예약된 건을 취소합니다.
 ```ruby  
 api = Bootpay::RestClient.new(
-   application_id: '59bfc738e13f337dbd6ca48a',
-   private_key:    '***REMOVED***'
+   application_id: ENV['BOOTPAY_APPLICATION_ID'],
+   private_key:    ENV['BOOTPAY_PRIVATE_KEY']
 )
 if api.request_access_token.success?
   response = api.subscribe_payment_reserve(
@@ -288,8 +288,8 @@ end
 발급된 빌링키를 삭제합니다. 삭제하더라도 예약된 결제건은 취소되지 않습니다. 예약된 결제건 취소를 원하시면 예약 취소하기를 요청하셔야 합니다.
 ```ruby 
 api = Bootpay::RestClient.new(
-   application_id: '59bfc738e13f337dbd6ca48a',
-   private_key:    '***REMOVED***'
+   application_id: ENV['BOOTPAY_APPLICATION_ID'],
+   private_key:    ENV['BOOTPAY_PRIVATE_KEY']
 )
 if api.request_access_token.success?
   response = api.destroy_billing_key(
@@ -304,8 +304,8 @@ end
 다음은 빌링키 발급 요청했던 receiptId 로 빌링키를 조회합니다.
 ```ruby 
 api = Bootpay::RestClient.new(
-   application_id: '59bfc738e13f337dbd6ca48a',
-   private_key:    '***REMOVED***'
+   application_id: ENV['BOOTPAY_APPLICATION_ID'],
+   private_key:    ENV['BOOTPAY_PRIVATE_KEY']
 )
 if api.request_access_token.success?
   response = api.lookup_subscribe_billing_key(
@@ -320,8 +320,8 @@ end
 이 토큰값을 기반으로 클라이언트에서 결제요청(payload.user_token) 하시면 되겠습니다.
 ```ruby  
 api = Bootpay::RestClient.new(
-   application_id: '59bfc738e13f337dbd6ca48a',
-   private_key:    '***REMOVED***' 
+   application_id: ENV['BOOTPAY_APPLICATION_ID'],
+   private_key:    ENV['BOOTPAY_PRIVATE_KEY'] 
  )
 if api.request_access_token.success?
   response = api.request_user_token(
@@ -343,8 +343,8 @@ end
 
 ```ruby  
 api = Bootpay::RestClient.new(
-   application_id: '59bfc738e13f337dbd6ca48a',
-   private_key:    '***REMOVED***'
+   application_id: ENV['BOOTPAY_APPLICATION_ID'],
+   private_key:    ENV['BOOTPAY_PRIVATE_KEY']
 )
 if api.request_access_token.success?
   response = api.confirm_payment(
@@ -359,8 +359,8 @@ end
 다날 본인인증에서 통신사, 외국인여부, 전화번호 이 3가지 정보는 다날에 추가로 요청하셔야 받으실 수 있습니다.
 ```ruby 
 api = Bootpay::RestClient.new(
-   application_id: '59bfc738e13f337dbd6ca48a',
-   private_key:    '***REMOVED***'
+   application_id: ENV['BOOTPAY_APPLICATION_ID'],
+   private_key:    ENV['BOOTPAY_PRIVATE_KEY']
 )
 if api.request_access_token.success?
   response = api.certificate(
@@ -377,8 +377,8 @@ end
 PG사로 배송정보( 이니시스, KCP만 지원 )를 보내서 에스크로 상태를 변경하는 API 입니다.
 ```ruby 
 api = Bootpay::RestClient.new(
-   application_id: '59bfc738e13f337dbd6ca48a',
-   private_key:    '***REMOVED***',
+   application_id: ENV['BOOTPAY_APPLICATION_ID'],
+   private_key:    ENV['BOOTPAY_PRIVATE_KEY'],
    mode:           'development'
 )
 if api.request_access_token.success?
