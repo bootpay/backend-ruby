@@ -5,9 +5,12 @@ RSpec.describe BootpayStore::RestClient do
     # ⚠️ 부를 때마다 웹훅 비밀값이 바뀐다.
     skip 'BOOTPAY_TEST_DEPOSIT_LIVE=true 일 때만 실행' unless ENV['BOOTPAY_TEST_DEPOSIT_LIVE'] == 'true'
 
+    # 키는 환경변수로만 받는다 — 이 리포는 공개된다
+    skip 'BP_CLIENT_KEY / BP_SECRET_KEY 환경변수가 필요합니다' if ENV['BP_CLIENT_KEY'].to_s.empty? || ENV['BP_SECRET_KEY'].to_s.empty?
+
     api   = BootpayStore::RestClient.new(
-      client_key: 'QIzXk4M3EeD-6B1GTfmGHA',
-      secret_key: '***REMOVED***',
+      client_key: ENV['BP_CLIENT_KEY'],
+      secret_key: ENV['BP_SECRET_KEY'],
       mode:       'development'
     )
     token = api.request_access_token
