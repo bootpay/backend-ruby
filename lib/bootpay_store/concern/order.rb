@@ -70,5 +70,61 @@ module BootpayStore::Concern::Order
         }
       )
     end
+
+    # 월별 주문 (GET /v1/orders/month)
+    # @comment_by Claude (alfred)
+    # @date: 26-11-13
+    def order_month(user_group_id: nil, search_date: nil, user_jwt: nil, idempotency_key: nil)
+      request(
+        uri:     'orders/month',
+        method:  :get,
+        headers: {
+          'Idempotency-Key'  => idempotency_key.presence || SecureRandom.uuid,
+          'Bootpay-Role'     => 'user',
+          'Bootpay-User-JWT' => user_jwt
+        }.compact,
+        params:  {
+                   user_group_id: user_group_id,
+                   search_date:   search_date
+                 }.compact
+      )
+    end
+
+    # 주문 발주 목록 (GET /v1/orders/:order_number/purchases)
+    # @comment_by Claude (alfred)
+    # @date: 26-11-13
+    # 회원을 지정하면 서버는 해당 회원의 주문만 연다
+    def order_purchases(order_number:, user_id: nil, login_id: nil, user_jwt: nil, idempotency_key: nil)
+      request(
+        uri:     "orders/#{order_number}/purchases",
+        method:  :get,
+        headers: {
+          'Idempotency-Key'  => idempotency_key.presence || SecureRandom.uuid,
+          'Bootpay-Role'     => 'user',
+          'Bootpay-User-JWT' => user_jwt
+        }.compact,
+        params:  {
+                   user_id:  user_id,
+                   login_id: login_id
+                 }.compact
+      )
+    end
+
+    # 주문 발주 수정 (PUT /v1/orders/:order_number/purchases)
+    # @comment_by Claude (alfred)
+    # @date: 26-11-13
+    # purchases: [{ order_purchase_number:, status:, chosen_product_option_id:, delivery_type:,
+    #               delivery_company_code:, tracking_number: }, ...]
+    def order_purchases_update(order_number:, purchases:, idempotency_key: nil)
+      request(
+        uri:     "orders/#{order_number}/purchases",
+        method:  :put,
+        headers: {
+          'Idempotency-Key' => idempotency_key.presence || SecureRandom.uuid,
+          'Bootpay-Role'    => 'user'
+        },
+        payload: { purchases: purchases }
+      )
+    end
   end
 end

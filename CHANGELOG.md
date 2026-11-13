@@ -1,3 +1,19 @@
+### Unreleased
+
+- 커머스 쿠폰 API 3종 추가 — `coupon_list` · `coupon_available` · `coupon_download` (`/v1/coupon`).
+- 커머스 적립금 API 2종 추가 — `point_balance` · `point_transactions` (`/v1/point`).
+- 장바구니 주문 미리보기 추가 — `cart_order_preview` (`POST /v1/cart/order-preview`).
+- 카테고리 API 5종 추가 — `category_list` · `category_detail` · `category_create` · `category_update` ·
+  `category_delete` (`/v1/categories`). 등록·수정·삭제는 `Bootpay-Role: supervisor`.
+- 정기구독 청구서 상세·수정 추가 — `order_subscription_bill_detail` · `order_subscription_bill_update`
+  (`/v1/order_subscription_bills/:id`). 수정은 supervisor 전용이며 본문에도 `order_subscription_bill_id` 를 넣는다.
+- 주문 월별 집계·발주 조회·발주 수정 추가 — `order_month` (`GET /v1/orders/month`) ·
+  `order_purchases` · `order_purchases_update` (`/v1/orders/:order_number/purchases`).
+- 가입 이메일 인증 대기 상태 조회 추가 — `user_authenticate` (`GET /v1/users/authenticate/:user_standby_id`,
+  `verification_context` 선택).
+- 회원 지정 계열 메서드는 `user_id` / `login_id` / `user_jwt`(`Bootpay-User-JWT`) 를 받으며,
+  `idempotency_key` 를 안 주면 UUID 를 생성한다. nil 인자는 본문·쿼리에서 뺀다.
+
 ### 3.2.0
 
 - 뱅크알람 입금대기 API 5종 추가 — `deposit_accounts` · `deposit_webhook_secret` · `deposit_create` ·

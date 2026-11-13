@@ -321,5 +321,21 @@ module BootpayStore::Concern::User
                  }.merge(attrs).compact
       )
     end
+
+    # 가입 이메일 인증 대기 상태 조회 (GET /v1/users/authenticate/:user_standby_id)
+    # @comment_by Claude (alfred)
+    # @date: 26-11-13
+    # 서버는 이 조회에 스코프 검사를 걸지 않는다(기존 계약 유지). role 은 다른 회원 API 와 맞춰 user 로 보낸다.
+    def user_authenticate(user_standby_id:, verification_context: nil, idempotency_key: nil)
+      request(
+        uri:     "users/authenticate/#{user_standby_id}",
+        method:  :get,
+        headers: {
+          'Idempotency-Key' => idempotency_key.presence || SecureRandom.uuid,
+          'Bootpay-Role'    => 'user'
+        },
+        params:  { verification_context: verification_context }.compact
+      )
+    end
   end
 end

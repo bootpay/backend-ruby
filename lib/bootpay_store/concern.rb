@@ -7,6 +7,9 @@ module BootpayStore
     require_relative 'concern/alimtalk_sender'
     require_relative 'concern/alimtalk_template'
     require_relative 'concern/alimtalk_webhook'
+    require_relative 'concern/cart'
+    require_relative 'concern/category'
+    require_relative 'concern/coupon'
     require_relative 'concern/deposit'
     require_relative 'concern/faq'
     require_relative 'concern/inquiry'
@@ -17,6 +20,7 @@ module BootpayStore
     require_relative 'concern/order_subscription'
     require_relative 'concern/payment'
     require_relative 'concern/payout'
+    require_relative 'concern/point'
     require_relative 'concern/product'
     require_relative 'concern/product_qna'
     require_relative 'concern/product_review'
@@ -35,6 +39,9 @@ module BootpayStore
     include AlimtalkSender
     include AlimtalkTemplate
     include AlimtalkWebhook
+    include Cart
+    include Category
+    include Coupon
     include Deposit
     include Faq
     include Inquiry
@@ -45,6 +52,7 @@ module BootpayStore
     include OrderSubscription
     include Payment
     include Payout
+    include Point
     include Product
     include ProductQna
     include ProductReview

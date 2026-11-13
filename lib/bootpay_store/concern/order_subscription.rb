@@ -179,6 +179,42 @@ module BootpayStore::Concern::OrderSubscription
       )
     end
 
+    # 구독 청구서 상세 (GET /v1/order_subscription_bills/:id)
+    # @comment_by Claude (alfred)
+    # @date: 26-11-13
+    def order_subscription_bill_detail(order_subscription_bill_id:, idempotency_key: nil)
+      request(
+        uri:     "order_subscription_bills/#{order_subscription_bill_id}",
+        method:  :get,
+        headers: {
+          'Idempotency-Key' => idempotency_key.presence || SecureRandom.uuid,
+          'Bootpay-Role'    => 'user'
+        }
+      )
+    end
+
+    # 구독 청구서 수정 (PUT /v1/order_subscription_bills/:id)
+    # @comment_by Claude (alfred)
+    # @date: 26-11-13
+    # supervisor 전용. 서버는 경로 id 가 아니라 본문의 order_subscription_bill_id 를 읽으므로 본문에도 반드시 넣는다.
+    def order_subscription_bill_update(order_subscription_bill_id:, quantity: nil, product_option_snapshot_id: nil,
+                                       order_subscription_adjustments: nil, idempotency_key: nil)
+      request(
+        uri:     "order_subscription_bills/#{order_subscription_bill_id}",
+        method:  :put,
+        headers: {
+          'Idempotency-Key' => idempotency_key.presence || SecureRandom.uuid,
+          'Bootpay-Role'    => 'supervisor'
+        },
+        payload: {
+                   order_subscription_bill_id:     order_subscription_bill_id,
+                   quantity:                       quantity,
+                   product_option_snapshot_id:     product_option_snapshot_id,
+                   order_subscription_adjustments: order_subscription_adjustments
+                 }.compact
+      )
+    end
+
     # ─────────────────────────────────────────────────────────────
     # 구독 진행중 요청 (requests/ing)   (@comment_by Claude (alfred) / @date: 26-08-14)
     #
